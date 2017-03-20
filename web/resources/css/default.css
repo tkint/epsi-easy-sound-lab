@@ -1,29 +1,88 @@
-body {
-    background-color: #ffffff;
-    font-size: 12px;
-    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    color: #000000;  
-    margin: 10px;
+.brand {
+    height: 50px;
+    width: 150px;
 }
 
-h1 {
-    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    border-bottom: 1px solid #AFAFAF; 
-    font-size:  16px;
-    font-weight: bold;
+#brand-img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     margin: 0px;
     padding: 0px;
-    color: #D20005;
+    height: 50px;
+    width: 150px;
 }
 
-a:link, a:visited {
-  color: #045491;
-  font-weight : bold;
-  text-decoration: none;
+.container-fluid {
+    
 }
 
-a:link:hover, a:visited:hover  {
-  color: #045491;
-  font-weight : bold;
-  text-decoration : underline;
+.copyright {
+    height: 50px;
+    width: 150px;
+    color: white;
+    text-shadow: 1px 1px black;
+    line-height: 45px;
+    text-align: center;
+}
+
+.copyright h5 {
+    
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.navbar-fixed-top {
+    height: 50px;
+}
+
+.navbar-fixed-bottom {
+    height: 50px;
+}
+
+.navbar-fixed-left {
+    width: 150px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    border-radius: 0;
+    margin-top: 49px;
+    margin-bottom: 49px;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+    float: none;
+    width: 199px;
+}
+
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+    margin-top: -50px;
+    margin-left: 150px;
+}
+
+.content {
+    display: block;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    border-radius: 0;
+    margin-left: 160px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.caret-right {
+    width: 0;
+    height: 0;
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 4px solid;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 7px;
+    margin-left: 5px;
 }
