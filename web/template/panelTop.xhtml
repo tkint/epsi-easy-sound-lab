@@ -18,18 +18,12 @@
                 </div>
 
                 <ul class="nav navbar-nav navbar-left">
+                    <li><a href="#">Link</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
                     <c:choose>
-                        <c:when test="#{userBean.currentUser.id != -1}">
-                            <li>
-                                <h:form  class="navbar-form navbar-left">
-                                    <div class="form-group">
-                                        <h:commandButton class="btn btn-default" value="#{userBean.currentUser.login}" action="#{userBean.user()}" />
-                                        <h:commandButton class="btn btn-default" value="Disconnect" action="#{userBean.disconnect()}" />
-                                    </div>
-                                </h:form>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
+                        <c:when test="#{userBean.currentUser.id == -1}">
                             <li>
                                 <h:form  class="navbar-form navbar-left">
                                     <div class="form-group">
@@ -40,9 +34,11 @@
                                     </div>
                                 </h:form>
                             </li>
-                        </c:otherwise>
+                        </c:when>
                     </c:choose>
                 </ul>
+
+
             </nav>
         </ui:composition>
     </body>

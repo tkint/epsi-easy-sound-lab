@@ -11,22 +11,135 @@
             <c:choose>
                 <c:when test="#{userBean.currentUser.id != -1}">
                     <nav class="navbar navbar-default navbar-fixed-left">
-                        Folders
-                        <h:dataTable value="#{userBean.currentUser.folders}" var="f">
-                            <h:column>
-                                <h:form>
-                                    <h:commandLink value="#{f.name}" action="#{folderBean.open(f)}" />
-                                </h:form>
-                            </h:column>
-                        </h:dataTable>
-                        <h:form>
-                            <div class="input-group">
-                                <h:inputText id="foldername" class="form-control" p:placeholder="Folder name" value="#{userBean.newFolderName}" />
-                                <span class="input-group-btn">
-                                    <h:commandButton value="+" action="#{userBean.addFolder()}" class="btn btn-default" />
-                                </span>
+
+                        <div class="panel-group" id="accordion">
+
+                            <!-- PROFILE -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="avatar">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#profile"><img src="resources/images/Sound.jpg" alt="sound" /></a>
+                                    </div>
+                                </div>
+                                <div id="profile" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <h:outputLabel value="#{userBean.currentUser.login}" />
+                                        <h:form  class="navbar-form navbar-left">
+                                            <h:commandButton class="btn btn-default" value="Disconnect" action="#{userBean.disconnect()}" />
+                                        </h:form>
+                                    </div>
+                                </div>
                             </div>
-                        </h:form>
+
+                            <!-- MAILBOX -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <span class="glyphicon glyphicon-envelope" style="color: blue" /> <a data-toggle="collapse" data-parent="#accordion" href="#mailbox">Mailbox</a>
+                                    </h4>
+                                </div>
+                                <div id="mailbox" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <tr>
+                                                <td><a href="#">New</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">Inbox</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">Sent</a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FOLDERS -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <span class="glyphicon glyphicon-folder-close" /> <a data-toggle="collapse" data-parent="#accordion" href="#folders">Folders</a>
+                                    </h4>
+                                </div>
+                                <div id="folders" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <h:form>
+                                            <div class="input-group">
+                                                <h:inputText id="foldername" class="form-control" p:placeholder="Create folder" value="#{folderBean.newFolderName}" />
+                                                <span class="input-group-btn">
+                                                    <h:commandButton value="+" action="#{folderBean.addFolder()}" class="btn btn-default" />
+                                                </span>
+                                            </div>
+                                        </h:form>
+
+                                        <h:dataTable class="table" value="#{userBean.currentUser.folders}" var="f">
+                                            <h:column>
+                                                <h:form>
+                                                    <h:commandLink value="#{f.id + 1} #{f.name}" action="#{folderBean.open(f)}" />
+                                                </h:form>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PLAYLISTS -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <span class="glyphicon glyphicon-headphones" /> <a data-toggle="collapse" data-parent="#accordion" href="#playlists">Playlists</a>
+                                    </h4>
+                                </div>
+                                <div id="playlists" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <h:form>
+                                            <div class="input-group">
+                                                <h:inputText id="foldername" class="form-control" p:placeholder="Create playlist" value="#{playlistBean.newPlaylistName}" />
+                                                <span class="input-group-btn">
+                                                    <h:commandButton value="+" action="#{playlistBean.addPlaylist()}" class="btn btn-default" />
+                                                </span>
+                                            </div>
+                                        </h:form>
+
+                                        <h:dataTable class="table" value="#{userBean.currentUser.playlists}" var="p">
+                                            <h:column>
+                                                <h:form>
+                                                    <h:commandLink value="#{p.id + 1} #{p.name}" action="#{playlistBean.open(p)}" />
+                                                </h:form>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ACTIVITY -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <span class="glyphicon glyphicon-eye-open" /> <a data-toggle="collapse" data-parent="#accordion" href="#activity">Activity</a>
+                                    </h4>
+                                </div>
+                                <div id="activity" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <tr>
+                                                <td><a href="#">Following</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">Followers</a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </nav>
                 </c:when>
             </c:choose>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./template/template.xhtml">
+            <ui:define name="content">
+                <c:choose>
+                    <c:when test="#{userBean.currentUser.id != -1}">
+
+                        <h1><h:outputLabel value="#{playlistBean.currentPlaylist.name}" /></h1>
+
+                        <ui:repeat value="#{playlistBean.currentPlaylist.musicFiles}" var="p">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="thumbnail">
+                                    <img src="resources/images/Sound.jpg" alt="sound" />
+                                    <div class="caption">
+                                        <h3><h:outputLabel value="#{p.name}" /></h3>
+                                        <h6><h:outputLabel value="#{p.duration}" /></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </ui:repeat>
+
+                    </c:when>
+                </c:choose>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
