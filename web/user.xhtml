@@ -11,11 +11,8 @@
             <ui:define name="content">
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
-                        User connected
+                        User
                     </c:when>
-                    <c:otherwise>
-                        Visitor
-                    </c:otherwise>
                 </c:choose>
             </ui:define>
 

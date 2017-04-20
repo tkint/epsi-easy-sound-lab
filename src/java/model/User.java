@@ -96,31 +96,68 @@ public class User {
     public String toString() {
         return "User{" + "id=" + id + ", login=" + login + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", eMail=" + eMail + '}';
     }
-    
+
     public String getFullName() {
         return lastName + " " + firstName;
     }
-    
+
     public Folder getFolderById(int id) {
         int i = 0;
         Folder folder = null;
-        
+
         while (i < folders.size() && folder == null) {
             if (folders.get(i).getId() == id) {
                 folder = folders.get(i);
             }
+            i++;
         }
+
+        return folder;
+    }
+
+    public Folder getFolderByName(String name) {
+        int i = 0;
+        Folder folder = null;
+
+        while (i < folders.size() && folder == null) {
+            if (folders.get(i).getName().equals(name)) {
+                folder = folders.get(i);
+            }
+            i++;
+        }
+
+        return folder;
+    }
+
+    public int getLastFolderId() {
+        int id = 0;
+
+        for (Folder folder : folders) {
+            if (folder.getId() > id) {
+                id = folder.getId();
+            }
+        }
+
+        return id;
+    }
+    
+    public Folder getLastFolder() {
+        Folder folder = null;
+        
+        folder = folders.get(folders.size() - 1);
         
         return folder;
     }
-    
+
     public void addFolder(Folder folder) {
-        folders.add(folder);
+        if (this.getFolderByName(folder.getName()) == null) {
+            folders.add(folder);
+        }
     }
-    
+
     public void addMusicFileToFolder(MusicFile musicFile, int folderId) {
         Folder folder = getFolderById(folderId);
-        
+
         if (folder != null) {
             folder.addMusicFile(musicFile);
         }

@@ -51,6 +51,18 @@ public class Folder {
     public String toString() {
         return "Folder{" + "id=" + id + ", name=" + name + ", musicFiles=" + musicFiles + '}';
     }
+    
+    public int getLastMusicFileId() {
+        int id = 0;
+        
+        for (MusicFile musicFile : musicFiles) {
+            if (musicFile.getId() > id) {
+                id = musicFile.getId();
+            }
+        }
+        
+        return id;
+    }
 
     public void addMusicFile(MusicFile musicFile) {
         musicFiles.add(musicFile);

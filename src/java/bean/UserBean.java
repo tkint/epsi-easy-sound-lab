@@ -8,6 +8,7 @@ package bean;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import model.Folder;
 import model.MusicFile;
 import model.User;
@@ -19,11 +20,12 @@ import model.User;
 @Named(value = "userBean")
 @SessionScoped
 public class UserBean implements Serializable {
-
+    
     private User currentUser;
 
     private String login;
     private String password;
+    private String newFolderName;
 
     /**
      * Creates a new instance of UserBean
@@ -56,7 +58,15 @@ public class UserBean implements Serializable {
         this.password = password;
     }
 
-    public void connect() {
+    public String getNewFolderName() {
+        return newFolderName;
+    }
+
+    public void setNewFolderName(String newFolderName) {
+        this.newFolderName = newFolderName;
+    }
+
+    public String connect() {
         currentUser = new User(0, login, password, "firstname", "lastname", "email");
 
         Folder folder1 = new Folder(0, "Premier dossier");
@@ -82,10 +92,39 @@ public class UserBean implements Serializable {
 
         currentUser.addFolder(folder1);
         currentUser.addFolder(folder2);
+        
+        login = null;
+        password = null;
+        
+        return "index";
     }
 
     public String disconnect() {
         currentUser = new User(-1);
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
+        folderBean.close();
+        
         return "index";
+    }
+    
+    public String register() {
+        return "register";
+    }
+    
+    public String user() {
+        return "user";
+    }
+    
+    public String addFolder() {
+        Folder folder = new Folder(currentUser.getLastFolderId() + 1, newFolderName);
+        currentUser.addFolder(folder);
+        newFolderName = null;
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
+        
+        return folderBean.open(folder);
     }
 }

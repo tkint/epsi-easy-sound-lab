@@ -3,21 +3,33 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <body>
         <ui:composition>
-            <nav class="navbar navbar-default navbar-fixed-left">
-                <ul class="nav navbar-nav">
-                    <li>Folders</li>
-                    <h:dataTable value="#{userBean.currentUser.folders}" var="f">
-                        <h:column>
-                            <h:form  class="navbar-form navbar-left">
-                                <h:commandButton class="btn btn-default" value="#{f.name}" action="#{folderBean.openFolder(f)}" />
-                            </h:form>
-                        </h:column>
-                    </h:dataTable>
-                </ul>
-            </nav>
+            <c:choose>
+                <c:when test="#{userBean.currentUser.id != -1}">
+                    <nav class="navbar navbar-default navbar-fixed-left">
+                        Folders
+                        <h:dataTable value="#{userBean.currentUser.folders}" var="f">
+                            <h:column>
+                                <h:form>
+                                    <h:commandLink value="#{f.name}" action="#{folderBean.open(f)}" />
+                                </h:form>
+                            </h:column>
+                        </h:dataTable>
+                        <h:form>
+                            <div class="input-group">
+                                <h:inputText id="foldername" class="form-control" p:placeholder="Folder name" value="#{userBean.newFolderName}" />
+                                <span class="input-group-btn">
+                                    <h:commandButton value="+" action="#{userBean.addFolder()}" class="btn btn-default" />
+                                </span>
+                            </div>
+                        </h:form>
+                    </nav>
+                </c:when>
+            </c:choose>
         </ui:composition>
     </body>
 </html>

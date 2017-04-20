@@ -17,7 +17,7 @@ import model.Folder;
 @Named(value = "folderBean")
 @SessionScoped
 public class FolderBean implements Serializable {
-
+    
     private Folder currentFolder;
 
     private int id;
@@ -44,8 +44,13 @@ public class FolderBean implements Serializable {
         this.id = id;
     }
 
-    public String openFolder(Folder currentFolder) {
+    public String open(Folder currentFolder) {
         this.currentFolder = currentFolder;
+        
         return "folder";
+    }
+
+    public void close() {
+        this.currentFolder = null;
     }
 }

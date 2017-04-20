@@ -74,9 +74,22 @@ body {
     bottom: 0;
     top: 0;
     border-radius: 0;
-    margin-left: 160px;
-    margin-top: 60px;
-    margin-bottom: 60px;
+    margin-left: 150px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    overflow: auto;
+}
+
+.visitor {
+    display: block;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    border-radius: 0;
+    margin-top: 50px;
+    margin-bottom: 50px;
     overflow: auto;
 }
 

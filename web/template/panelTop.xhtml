@@ -19,14 +19,12 @@
 
                 <ul class="nav navbar-nav navbar-left">
                     <c:choose>
-                        <c:when test="#{userBean.currentUser.id eq -1}">
+                        <c:when test="#{userBean.currentUser.id != -1}">
                             <li>
                                 <h:form  class="navbar-form navbar-left">
                                     <div class="form-group">
-                                        <h:inputText id="login" class="form-control" p:placeholder="Login" value="#{userBean.login}" />
-                                        <h:inputText id="password" class="form-control" p:placeholder="Password" value="#{userBean.password}" />
-                                        <h:commandButton class="btn btn-default" value="Connect" action="#{userBean.connect()}" />
-                                        <h:commandButton class="btn btn-default" value="Register" />
+                                        <h:commandButton class="btn btn-default" value="#{userBean.currentUser.login}" action="#{userBean.user()}" />
+                                        <h:commandButton class="btn btn-default" value="Disconnect" action="#{userBean.disconnect()}" />
                                     </div>
                                 </h:form>
                             </li>
@@ -35,8 +33,10 @@
                             <li>
                                 <h:form  class="navbar-form navbar-left">
                                     <div class="form-group">
-                                        <h:commandButton class="btn btn-default" value="#{userBean.currentUser.login}" />
-                                        <h:commandButton class="btn btn-default" value="Disconnect" action="#{userBean.disconnect()}" />
+                                        <h:inputText id="login" class="form-control" p:placeholder="Login" value="#{userBean.login}" />
+                                        <h:inputText id="password" class="form-control" p:placeholder="Password" value="#{userBean.password}" />
+                                        <h:commandButton class="btn btn-default" value="Connect" action="#{userBean.connect()}" />
+                                        <h:commandButton class="btn btn-default" value="Register" action="#{userBean.register()}" />
                                     </div>
                                 </h:form>
                             </li>

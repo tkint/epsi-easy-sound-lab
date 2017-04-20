@@ -2,25 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <body>
 
         <ui:composition template="./template/template.xhtml">
             <ui:define name="content">
-                <h1><h:outputLabel value="#{folderBean.currentFolder.name}" /></h1>
+                <c:choose>
+                    <c:when test="#{userBean.currentUser.id != -1}">
 
-                <ui:repeat value="#{folderBean.currentFolder.musicFiles}" var="m">
-                    <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                            <img src="..." alt="..." />
-                            <div class="caption">
-                                <h3><h:outputLabel value="#{m.name}" /></h3>
-                                <h6><h:outputLabel value="#{m.duration}" /></h6>
+                        <h1><h:outputLabel value="#{folderBean.currentFolder.name}" /></h1>
+
+                        <ui:repeat value="#{folderBean.currentFolder.musicFiles}" var="m">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="thumbnail">
+                                    <img src="resources/images/Sound.jpg" alt="sound" />
+                                    <div class="caption">
+                                        <h3><h:outputLabel value="#{m.name}" /></h3>
+                                        <h6><h:outputLabel value="#{m.duration}" /></h6>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </ui:repeat>
+                        </ui:repeat>
+
+                    </c:when>
+                </c:choose>
             </ui:define>
 
         </ui:composition>
