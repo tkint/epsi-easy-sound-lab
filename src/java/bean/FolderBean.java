@@ -8,7 +8,6 @@ package bean;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import model.Folder;
 
@@ -30,11 +29,6 @@ public class FolderBean implements Serializable {
     public FolderBean() {
     }
     
-    @PostConstruct
-    public void init() {
-        this.browsing = true;
-    }
-
     public boolean isBrowsing() {
         return browsing;
     }
@@ -61,6 +55,11 @@ public class FolderBean implements Serializable {
 
     public String open(Folder currentFolder) {
         this.currentFolder = currentFolder;
+        this.browsing = true;
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        NavigationBean navigationBean = context.getApplication().evaluateExpressionGet(context, "#{navigationBean}", NavigationBean.class);
+        navigationBean.setIndex(2);
 
         return "folder";
     }

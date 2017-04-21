@@ -55,6 +55,11 @@ public class PlaylistBean implements Serializable {
 
     public String open(Playlist currentPlaylist) {
         this.currentPlaylist = currentPlaylist;
+        this.browsing = true;
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        NavigationBean navigationBean = context.getApplication().evaluateExpressionGet(context, "#{navigationBean}", NavigationBean.class);
+        navigationBean.setIndex(3);
 
         return "playlist";
     }

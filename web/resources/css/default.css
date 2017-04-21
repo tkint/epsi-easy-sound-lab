@@ -106,25 +106,6 @@ body {
     margin-left: 5px;
 }
 
-#foldersleftpan, #playlistsleftpan {
-    height: 50%;
-    padding-bottom: 5px;
-}
-
-#foldersleftpan .title, #playlistsleftpan .title {
-    height: 18%;
-}
-
-#foldersleftpan .list, #playlistsleftpan .list {
-    height: 83%;
-    margin-bottom: 60px;
-    overflow: auto;
-}
-
-#playlistsleftpan {
-    border-top: 1px gray dotted;
-}
-
 .panel-body { 
     padding: 0px;
     margin: 0px;

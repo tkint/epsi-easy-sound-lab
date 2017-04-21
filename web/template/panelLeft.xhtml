@@ -65,7 +65,7 @@
                                         <span class="glyphicon glyphicon-folder-close" /> <a data-toggle="collapse" data-parent="#accordion" href="#folders">Folders</a>
                                     </h4>
                                 </div>
-                                <div id="folders" class="panel-collapse collapse">
+                                <div id="folders" class="panel-collapse collapse  #{navigationBean.index == 2 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:form>
                                             <div class="input-group">
@@ -95,11 +95,11 @@
                                         <span class="glyphicon glyphicon-headphones" /> <a data-toggle="collapse" data-parent="#accordion" href="#playlists">Playlists</a>
                                     </h4>
                                 </div>
-                                <div id="playlists" class="panel-collapse collapse">
+                                <div id="playlists" class="panel-collapse collapse #{navigationBean.index == 3 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:form>
                                             <div class="input-group">
-                                                <h:inputText id="foldername" class="form-control" p:placeholder="Create playlist" value="#{playlistBean.newPlaylistName}" />
+                                                <h:inputText id="playlistname" class="form-control" p:placeholder="Create playlist" value="#{playlistBean.newPlaylistName}" />
                                                 <span class="input-group-btn">
                                                     <h:commandButton value="+" action="#{playlistBean.addPlaylist()}" class="btn btn-default" />
                                                 </span>
