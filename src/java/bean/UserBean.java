@@ -66,10 +66,10 @@ public class UserBean implements Serializable {
     public String connect() {
         currentUser = new User(0, login, password, "firstname", "lastname", "email");
 
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 10; i++) {
             Folder folder = new Folder(i, "Folder " + i);
             
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 50; j++) {
                 MusicFile musicFile = new MusicFile(j, "Sound " + j, 3.36f);
                 folder.addMusicFile(musicFile);
             }
@@ -77,10 +77,10 @@ public class UserBean implements Serializable {
             currentUser.addFolder(folder);
         }
         
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 5; i++) {
             Playlist playlist = new Playlist(i, "Playlist " + i);
             
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 40; j++) {
                 MusicFile musicFile = new MusicFile(j, "Sound " + j, 3.36f);
                 playlist.addMusicFile(musicFile);
             }
@@ -91,7 +91,7 @@ public class UserBean implements Serializable {
         login = null;
         password = null;
 
-        return "index";
+        return "index?faces-redirect=true";
     }
 
     public String disconnect() {
@@ -101,14 +101,14 @@ public class UserBean implements Serializable {
         FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
         folderBean.close();
 
-        return "index";
+        return "index?faces-redirect=true";
     }
 
     public String register() {
-        return "register";
+        return "register?faces-redirect=true";
     }
 
     public String user() {
-        return "user";
+        return "user?faces-redirect=true";
     }
 }

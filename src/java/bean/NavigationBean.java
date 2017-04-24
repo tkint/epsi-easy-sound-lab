@@ -8,6 +8,7 @@ package bean;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.io.Serializable;
 public class NavigationBean implements Serializable {
 
     private int index;
-    
+
     /**
      * Creates a new instance of NavigationBean
      */
@@ -32,5 +33,31 @@ public class NavigationBean implements Serializable {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public void updateIndex() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String page = context.getViewRoot().getViewId();
+        page = page.substring(1, page.length() - 6);
+        switch (page) {
+            case "profile":
+                index = 0;
+                break;
+            case "mailbox":
+                index = 1;
+                break;
+            case "folder":
+                index = 2;
+                break;
+            case "playlist":
+                index = 3;
+                break;
+            case "activity":
+                index = 4;
+                break;
+            default:
+                index = -1;
+                break;
+        }
     }
 }

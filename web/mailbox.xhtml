@@ -11,8 +11,18 @@
             <ui:define name="content">
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
-                        
-                        MailBox
+
+                        <c:choose>
+                            <c:when test="#{mailboxBean.display == 'new'}">
+                                New Message
+                            </c:when>
+                            <c:when test="#{mailboxBean.display == 'sent'}">
+                                Sent Messages
+                            </c:when>
+                            <c:otherwise>
+                                Inbox
+                            </c:otherwise>
+                        </c:choose>
 
                     </c:when>
                 </c:choose>

@@ -151,12 +151,12 @@ public class User {
 
         return id;
     }
-    
+
     public Folder getLastFolder() {
         Folder folder = null;
-        
+
         folder = folders.get(folders.size() - 1);
-        
+
         return folder;
     }
 
@@ -173,7 +173,20 @@ public class User {
             folder.addMusicFile(musicFile);
         }
     }
-    
+
+    public void deleteFolderById(int id) {
+        int i = 0;
+        boolean trouve = false;
+
+        while (i < folders.size() && !trouve) {
+            if (folders.get(i).getId() == id) {
+                folders.remove(i);
+                trouve = true;
+            }
+            i++;
+        }
+    }
+
     public Playlist getPlaylistById(int id) {
         int i = 0;
         Playlist playlist = null;
@@ -213,12 +226,12 @@ public class User {
 
         return id;
     }
-    
+
     public Playlist getLastPlaylist() {
         Playlist playlist = null;
-        
+
         playlist = playlists.get(playlists.size() - 1);
-        
+
         return playlist;
     }
 
@@ -233,6 +246,19 @@ public class User {
 
         if (playlist != null) {
             playlist.addMusicFile(musicFile);
+        }
+    }
+    
+    public void deletePlaylistById(int id) {
+        int i = 0;
+        boolean trouve = false;
+
+        while (i < playlists.size() && !trouve) {
+            if (playlists.get(i).getId() == id) {
+                playlists.remove(i);
+                trouve = true;
+            }
+            i++;
         }
     }
 }

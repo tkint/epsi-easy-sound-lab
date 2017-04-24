@@ -17,12 +17,14 @@
                             <!-- PROFILE -->
 
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <div class="avatar">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#profile"><img src="resources/images/Sound.jpg" alt="sound" /></a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#profile">
+                                    <div class="panel-heading">
+                                        <div class="avatar">
+                                            <img src="resources/images/Sound.jpg" alt="sound" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div id="profile" class="panel-collapse collapse">
+                                </a>
+                                <div id="profile" class="panel-collapse collapse #{navigationBean.index == 0 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:outputLabel value="#{userBean.currentUser.login}" />
                                         <h:form  class="navbar-form navbar-left">
@@ -35,22 +37,36 @@
                             <!-- MAILBOX -->
 
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <span class="glyphicon glyphicon-envelope" style="color: blue" /> <a data-toggle="collapse" data-parent="#accordion" href="#mailbox">Mailbox</a>
-                                    </h4>
-                                </div>
-                                <div id="mailbox" class="panel-collapse collapse">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#mailbox">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <span class="glyphicon glyphicon-envelope" style="color: blue" /> Mailbox
+                                        </h4>
+                                    </div>
+                                </a>
+                                <div id="mailbox" class="panel-collapse collapse #{navigationBean.index == 1 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <table class="table">
                                             <tr>
-                                                <td><a href="#">New</a></td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="New" action="#{mailboxBean.newMail()}" />
+                                                    </h:form>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td><a href="#">Inbox</a></td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Inbox" action="#{mailboxBean.inbox()}" />
+                                                    </h:form>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td><a href="#">Sent</a></td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Sent" action="#{mailboxBean.sent()}" />
+                                                    </h:form>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -60,12 +76,14 @@
                             <!-- FOLDERS -->
 
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <span class="glyphicon glyphicon-folder-close" /> <a data-toggle="collapse" data-parent="#accordion" href="#folders">Folders</a>
-                                    </h4>
-                                </div>
-                                <div id="folders" class="panel-collapse collapse  #{navigationBean.index == 2 ? 'in' : ''}">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#folders">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <span class="glyphicon glyphicon-folder-close" /> Folders
+                                        </h4>
+                                    </div>
+                                </a>
+                                <div id="folders" class="panel-collapse collapse #{navigationBean.index == 2 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:form>
                                             <div class="input-group">
@@ -90,11 +108,13 @@
                             <!-- PLAYLISTS -->
 
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <span class="glyphicon glyphicon-headphones" /> <a data-toggle="collapse" data-parent="#accordion" href="#playlists">Playlists</a>
-                                    </h4>
-                                </div>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#playlists">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <span class="glyphicon glyphicon-headphones" /> Playlists
+                                        </h4>
+                                    </div>
+                                </a>
                                 <div id="playlists" class="panel-collapse collapse #{navigationBean.index == 3 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:form>
@@ -120,12 +140,14 @@
                             <!-- ACTIVITY -->
 
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <span class="glyphicon glyphicon-eye-open" /> <a data-toggle="collapse" data-parent="#accordion" href="#activity">Activity</a>
-                                    </h4>
-                                </div>
-                                <div id="activity" class="panel-collapse collapse">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#activity">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <span class="glyphicon glyphicon-eye-open" /> Activity
+                                        </h4>
+                                    </div>
+                                </a>
+                                <div id="activity" class="panel-collapse collapse #{navigationBean.index == 4 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <table class="table">
                                             <tr>
