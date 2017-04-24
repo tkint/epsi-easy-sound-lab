@@ -10,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import model.Playlist;
+import model.User;
 
 /**
  *
@@ -19,22 +20,14 @@ import model.Playlist;
 @SessionScoped
 public class PlaylistBean implements Serializable {
 
-    private boolean browsing;
     private Playlist currentPlaylist;
+    private String currentPlaylistNewName;
     private String newPlaylistName;
 
     /**
      * Creates a new instance of PlaylistBean
      */
     public PlaylistBean() {
-    }
-
-    public boolean isBrowsing() {
-        return browsing;
-    }
-
-    public void setBrowsing(boolean browsing) {
-        this.browsing = browsing;
     }
 
     public Playlist getCurrentPlaylist() {
@@ -45,6 +38,14 @@ public class PlaylistBean implements Serializable {
         this.currentPlaylist = currentPlaylist;
     }
 
+    public String getCurrentPlaylistNewName() {
+        return currentPlaylistNewName;
+    }
+
+    public void setCurrentPlaylistNewName(String currentPlaylistNewName) {
+        this.currentPlaylistNewName = currentPlaylistNewName;
+    }
+
     public String getNewPlaylistName() {
         return newPlaylistName;
     }
@@ -53,19 +54,18 @@ public class PlaylistBean implements Serializable {
         this.newPlaylistName = newPlaylistName;
     }
 
-    public String open(Playlist currentPlaylist) {
-        this.currentPlaylist = currentPlaylist;
-        this.browsing = true;
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        NavigationBean navigationBean = context.getApplication().evaluateExpressionGet(context, "#{navigationBean}", NavigationBean.class);
-        navigationBean.setIndex(3);
+    public String open(Playlist playlist) {
+        if (playlist != null) {
+            currentPlaylist = playlist;
+            currentPlaylistNewName = playlist.getName();
 
-        return "playlist";
+            return "playlist?faces-redirect=true";
+        }
+        return "index?faces-redirect=true";
     }
 
     public void close() {
-        this.currentPlaylist = null;
+        currentPlaylist = null;
     }
 
     public String addPlaylist() {
@@ -75,6 +75,30 @@ public class PlaylistBean implements Serializable {
         Playlist playlist = new Playlist(userBean.getCurrentUser().getLastPlaylistId() + 1, newPlaylistName);
         userBean.getCurrentUser().addPlaylist(playlist);
         newPlaylistName = null;
+
+        return open(playlist);
+    }
+
+    public String rename() {
+        currentPlaylist.setName(currentPlaylistNewName);
+
+        return open(currentPlaylist);
+    }
+
+    public String delete() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+
+        User user = userBean.getCurrentUser();
+
+        Playlist playlist = null;
+
+        if (currentPlaylist.getId() < user.getLastPlaylistId()) {
+            playlist = user.getPlaylistById(currentPlaylist.getId() + 1);
+        } else {
+            playlist = user.getPlaylistById(currentPlaylist.getId() - 1);
+        }
+        user.deletePlaylistById(currentPlaylist.getId());
 
         return open(playlist);
     }

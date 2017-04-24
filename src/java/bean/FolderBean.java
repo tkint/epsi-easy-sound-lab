@@ -10,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import model.Folder;
+import model.User;
 
 /**
  *
@@ -19,22 +20,14 @@ import model.Folder;
 @SessionScoped
 public class FolderBean implements Serializable {
 
-    private boolean browsing;
     private Folder currentFolder;
+    private String currentFolderNewName;
     private String newFolderName;
 
     /**
      * Creates a new instance of FolderBean
      */
     public FolderBean() {
-    }
-    
-    public boolean isBrowsing() {
-        return browsing;
-    }
-
-    public void setBrowsing(boolean browsing) {
-        this.browsing = browsing;
     }
 
     public Folder getCurrentFolder() {
@@ -45,6 +38,14 @@ public class FolderBean implements Serializable {
         this.currentFolder = currentFolder;
     }
 
+    public String getCurrentFolderNewName() {
+        return currentFolderNewName;
+    }
+
+    public void setCurrentFolderNewName(String currentFolderNewName) {
+        this.currentFolderNewName = currentFolderNewName;
+    }
+
     public String getNewFolderName() {
         return newFolderName;
     }
@@ -53,19 +54,18 @@ public class FolderBean implements Serializable {
         this.newFolderName = newFolderName;
     }
 
-    public String open(Folder currentFolder) {
-        this.currentFolder = currentFolder;
-        this.browsing = true;
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        NavigationBean navigationBean = context.getApplication().evaluateExpressionGet(context, "#{navigationBean}", NavigationBean.class);
-        navigationBean.setIndex(2);
+    public String open(Folder folder) {
+        if (folder != null) {
+            currentFolder = folder;
+            currentFolderNewName = folder.getName();
 
-        return "folder";
+            return "folder?faces-redirect=true";
+        }
+        return "index?faces-redirect=true";
     }
 
     public void close() {
-        this.currentFolder = null;
+        currentFolder = null;
     }
 
     public String addFolder() {
@@ -75,6 +75,30 @@ public class FolderBean implements Serializable {
         Folder folder = new Folder(userBean.getCurrentUser().getLastFolderId() + 1, newFolderName);
         userBean.getCurrentUser().addFolder(folder);
         newFolderName = null;
+
+        return open(folder);
+    }
+
+    public String rename() {
+        currentFolder.setName(currentFolderNewName);
+
+        return open(currentFolder);
+    }
+
+    public String delete() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+
+        User user = userBean.getCurrentUser();
+
+        Folder folder = null;
+
+        if (currentFolder.getId() < user.getLastFolderId()) {
+            folder = user.getFolderById(currentFolder.getId() + 1);
+        } else {
+            folder = user.getFolderById(currentFolder.getId() - 1);
+        }
+        user.deleteFolderById(currentFolder.getId());
 
         return open(folder);
     }
