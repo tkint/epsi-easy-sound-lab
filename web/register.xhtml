@@ -2,7 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -14,7 +17,49 @@
                         User already connected
                     </c:when>
                     <c:otherwise>
-                        Register
+
+                        <div id="register" class="container">
+                            <h1><center>New Account</center></h1>
+
+                            <h:form role="form">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <h:inputText id="login" class="form-control input-lg" p:placeholder="Login" value="#{userBean.login}" required="true" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="login"/>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <h:inputText id="pseudo" class="form-control input-lg" p:placeholder="Pseudo" value="#{userBean.pseudo}" required="true" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="pseudo"/>
+                                    </div>
+                                </div>
+
+                                <h:inputText id="email" class="form-control input-lg" p:placeholder="E-Mail" value="#{userBean.email}" required="true" requiredMessage="Required" />
+                                <h:message showSummary="true" showDetail="false" for="email"/>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <h:inputSecret id="password" class="form-control input-lg" p:placeholder="Password" value="#{userBean.password}" required="true" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="password"/>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <h:inputSecret id="passwordConfirm" class="form-control input-lg" p:placeholder="Confirmation" value="#{userBean.passwordConfirm}" required="true" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="passwordConfirm"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <h:inputText id="firstName" class="form-control input-lg" p:placeholder="First Name" value="#{userBean.firstName}" required="true" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="firstName"/>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <h:inputText id="lastName" class="form-control input-lg" p:placeholder="Last Name" value="#{userBean.lastName}" required="true" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="lastName"/>
+                                    </div>
+                                </div>
+                                <h:commandButton class="btn btn-info btn-block btn-lg" value="Register" action="#{userBean.createUser()}" />
+                            </h:form>
+                        </div>
+
                     </c:otherwise>
                 </c:choose>
             </ui:define>

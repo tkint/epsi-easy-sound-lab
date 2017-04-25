@@ -18,9 +18,11 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private String eMail;
+    private String email;
     private ArrayList<Folder> folders;
     private ArrayList<Playlist> playlists;
+    private ArrayList<User> followers;
+    private ArrayList<User> following;
 
     public User(int id) {
         this.id = id;
@@ -28,13 +30,13 @@ public class User {
         this.playlists = new ArrayList<>();
     }
 
-    public User(int id, String login, String password, String firstName, String lastName, String eMail) {
+    public User(int id, String login, String password, String firstName, String lastName, String email) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.eMail = eMail;
+        this.email = email;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
     }
@@ -79,12 +81,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public ArrayList<Folder> getFolders() {
@@ -103,9 +105,25 @@ public class User {
         this.playlists = playlists;
     }
 
+    public ArrayList<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(ArrayList<User> followers) {
+        this.followers = followers;
+    }
+
+    public ArrayList<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(ArrayList<User> following) {
+        this.following = following;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", login=" + login + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", eMail=" + eMail + '}';
+        return "User{" + "id=" + id + ", login=" + login + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", eMail=" + email + '}';
     }
 
     public String getFullName() {
@@ -248,7 +266,7 @@ public class User {
             playlist.addMusicFile(musicFile);
         }
     }
-    
+
     public void deletePlaylistById(int id) {
         int i = 0;
         boolean trouve = false;

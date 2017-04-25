@@ -24,7 +24,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <div id="profile" class="panel-collapse collapse #{navigationBean.index == 0 ? 'in' : ''}">
+                                <div id="profile" class="panel-collapse collapse #{navigationBean.index == 0 or navigationBean.index == -1 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:outputLabel value="#{userBean.currentUser.login}" />
                                         <h:form  class="navbar-form navbar-left">

@@ -18,7 +18,16 @@
                 </div>
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#">Link</a></li>
+                    <li>
+                        <div class="navbar-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for..." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">Go!</button>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -28,7 +37,7 @@
                                 <h:form  class="navbar-form navbar-left">
                                     <div class="form-group">
                                         <h:inputText id="login" class="form-control" p:placeholder="Login" value="#{userBean.login}" />
-                                        <h:inputText id="password" class="form-control" p:placeholder="Password" value="#{userBean.password}" />
+                                        <h:inputSecret id="password" class="form-control" p:placeholder="Password" value="#{userBean.password}" />
                                         <h:commandButton class="btn btn-default" value="Connect" action="#{userBean.connect()}" />
                                         <h:commandButton class="btn btn-default" value="Register" action="#{userBean.register()}" />
                                     </div>
@@ -37,7 +46,6 @@
                         </c:when>
                     </c:choose>
                 </ul>
-
 
             </nav>
         </ui:composition>
