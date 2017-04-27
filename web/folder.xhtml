@@ -15,29 +15,25 @@
 
                         <div class="well well-sm top-panel">
                             <div id="title">
-                                <h:form id="changenameform" class="hidden">
-                                    <div class="input-group">
-                                        <h:inputText id="foldername" class="form-control" value="#{folderBean.currentFolderNewName}" />
-                                        <span class="input-group-btn">
-                                            <h:commandButton value="OK" action="#{folderBean.rename()}" class="btn btn-default" />
-                                        </span>
-                                    </div>
+                                <h:form id="changeNameForm" class="hidden">
+                                    <h:inputText id="folderNameInput" class="form-control folderNameInput" value="#{folderBean.currentFolderNewName}" />
+                                    <h:commandButton id="changeNameValid" action="#{folderBean.rename()}" />
                                 </h:form>
-                                <h1 id="foldername">
-                                    <h:outputLabel value="#{folderBean.currentFolder.name}" />
+                                <h1>
+                                    <h:outputLabel id="folderName" value="#{folderBean.currentFolder.name}"> <span id="folderNameGlyph" class="glyphicon glyphicon-pencil" /></h:outputLabel>
                                 </h1>
                             </div>
-                            <div class="btn-group">
+                            <div id="folderTools" class="btn-group">
                                 <h:form style="float: left">
                                     <h:commandLink action="#{folderBean.delete()}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash" /></h:commandLink>
                                 </h:form>
                                 <a href="#" id="grid" class="btn btn-default btn-sm active"><span class="glyphicon glyphicon-th" />Grid</a>
                                 <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list" />List</a>
-                                <h:form class="dropzone">
+<!--                                <h:form class="dropzone">
                                     <div class="fallback">
                                         <h:inputFile p:name="file" p:type="file" p:multiple="multiple" />
                                     </div>
-                                </h:form>
+                                </h:form>-->
                             </div>
                         </div>
 
@@ -61,6 +57,14 @@
                         </div>
 
                         <script>
+                            (function ($) {
+                                $.fn.focusTextToEnd = function () {
+                                    this.focus();
+                                    var $thisVal = this.val();
+                                    this.val('').val($thisVal);
+                                    return this;
+                                }
+                            }(jQuery));
                             $(document).ready(function () {
                                 $('#list').click(function (event) {
                                     event.preventDefault();
@@ -79,12 +83,13 @@
                                     $('#grid').addClass('active');
                                 });
                                 $(document).click(function (event) {
-                                    if ($(event.target).closest("#foldername").length > 0) {
-                                        $('#foldername').addClass('hidden');
-                                        $('#changenameform').removeClass('hidden');
-                                    } else if (!$(event.target).closest("#changenameform").length > 0) {
-                                        $('#changenameform').addClass('hidden');
-                                        $('#foldername').removeClass('hidden');
+                                    if ($(event.target).closest("#folderName").length > 0) {
+                                        $('#folderName').addClass('hidden');
+                                        $('#changeNameForm').removeClass('hidden');
+                                        $('#changeNameForm\\:folderNameInput').focusTextToEnd();
+                                    } else if (!$(event.target).closest("#changeNameForm\\:folderNameInput").length > 0) {
+                                        $('#changeNameForm').addClass('hidden');
+                                        $('#folderName').removeClass('hidden');
                                     }
                                 });
                             });

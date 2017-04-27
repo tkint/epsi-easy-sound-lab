@@ -25,6 +25,7 @@ import model.User;
 public class UserBean implements Serializable {
 
     private User currentUser;
+    private User profileUser;
 
     private String login;
     private String pseudo;
@@ -51,6 +52,17 @@ public class UserBean implements Serializable {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public User getProfileUser() {
+        if (profileUser != null) {
+            return profileUser;
+        }
+        return currentUser;
+    }
+
+    public void setProfileUser(User profileUser) {
+        this.profileUser = profileUser;
     }
 
     public String getLogin() {
@@ -109,7 +121,7 @@ public class UserBean implements Serializable {
         this.email = email;
     }
 
-    public String connect() {
+    public String signIn() {
         currentUser = UserDAO.getUserByLoginAndPassword(login, password);
 
         for (int i = 0; i < 10; i++) {
@@ -139,15 +151,15 @@ public class UserBean implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
         SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
-        sharedUserBean.addConnectedUser(currentUser);
+        sharedUserBean.addOnlineUser(currentUser);
 
         return "index?faces-redirect=true";
     }
 
-    public String disconnect() {
+    public String signOut() {
         FacesContext context = FacesContext.getCurrentInstance();
         SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
-        sharedUserBean.removeConnectedUser(currentUser);
+        sharedUserBean.removeOnlineUser(currentUser);
 
         currentUser = new User(-1);
 
@@ -159,7 +171,7 @@ public class UserBean implements Serializable {
 
     public String createUser() {
         if (password.equals(passwordConfirm)) {
-            currentUser = new User(0, login, password, firstName, lastName, email);
+            currentUser = new User(login, password, firstName, lastName, email);
 
             login = null;
             password = null;
@@ -169,19 +181,21 @@ public class UserBean implements Serializable {
 
             FacesContext context = FacesContext.getCurrentInstance();
             SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
-            sharedUserBean.addConnectedUser(currentUser);
+            sharedUserBean.addOnlineUser(currentUser);
 
             return "index?faces-redirect=true";
         }
 
-        return "register?faces-redirect=true";
+        return "signup?faces-redirect=true";
     }
 
-    public String register() {
-        return "register?faces-redirect=true";
+    public String signup() {
+        return "signup?faces-redirect=true";
     }
 
-    public String user() {
-        return "user?faces-redirect=true";
+    public String profile(User user) {
+        profileUser = user;
+
+        return "profile?faces-redirect=true";
     }
 }

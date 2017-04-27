@@ -27,96 +27,6 @@ body {
         transparent);
 }
 
-.brand {
-    height: 70px;
-    width: 200px;
-}
-
-#brand-img {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 0px;
-    padding: 0px;
-    height: 70px;
-    width: 200px;
-}
-
-.navbar-fixed-top {
-    height: 70px;
-    padding-top: 10px;
-    padding-right: 20px;
-}
-.navbar-fixed-top input {
-    margin-left: 2px;
-}
-
-.navbar-fixed-left {
-    width: 200px;
-    display: block;
-    position: fixed;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    border-radius: 0;
-    margin-top: 69px;
-    margin-bottom: 49px;
-    font-size: 15px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.navbar-fixed-left .navbar-nav > li {
-    float: none;
-    width: 200px;
-}
-
-.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
-    margin-top: -70px;
-    margin-left: 200px;
-}
-
-.navbar-fixed-bottom {
-    height: 50px;
-    line-height: 45px;
-    padding-right: 20px;
-}
-
-.copyright {
-    height: 50px;
-    width: 200px;
-    color: white;
-    text-shadow: 1px 1px black;
-    text-align: center;
-}
-
-.copyright h5 {
-    vertical-align: middle;
-    display: inline-block;
-}
-
-.content {
-    display: block;
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    top: 0;
-    border-radius: 0;
-    margin-left: 200px;
-    margin-top: 70px;
-    margin-bottom: 50px;
-}
-
-.visitor {
-    margin-left: 0px;
-}
-
-#accordion {
-    max-width: 200px;
-}
-
 .panel-body { 
     padding: 0px;
     margin: 0px;
@@ -201,7 +111,6 @@ body {
 
 .top-panel {
     position: fixed;
-    z-index: 999;
     width: 100%;
     height: 120px;
 }
@@ -223,21 +132,45 @@ body {
     width: auto;
 }
 
-#changenameform {
-    width: 300px;
-
-}
-
-#changenameform input {
-    margin-top: 13px;
-    margin-bottom: 11px;
+#changeNameForm input {
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    margin-top: 18px;
     height: 50px;
+    border: none;
+    background: none;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: none;
+    color: #333;
+    line-height: 1.1;
+    border-bottom: 1px solid gray;
+    border-radius: 0;
 }
 
-#foldername {
+.folderNameValid {
 }
 
-#register input {
+#folderName:hover {
+    cursor: pointer;
+}
+
+#folderNameGlyph {
+    visibility: hidden;
+}
+
+#folderName:hover>#folderNameGlyph {
+    visibility: visible;
+}
+
+#folderTools {
+    position: absolute;
+    top: 0;
+    margin-top: 80px;
+}
+
+#signup input {
     margin: 10px;
 }
 
@@ -251,7 +184,6 @@ body {
 }
 
 .feed-list {
-    width: 80%;
     height: 100%;
     padding-top: 10px;
     overflow-y: auto;
@@ -262,11 +194,84 @@ body {
     margin: auto;
 }
 
-.right-panel {
-    width: 20%;
-    height: 100%;
+.brand {
+    height: 70px;
+    width: 200px;
+}
+
+#brand-img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0px;
+    padding: 0px;
+    height: 70px;
+    width: 200px;
+}
+
+.copyright {
+    height: 50px;
+    width: 200px;
+    color: white;
+    text-shadow: 1px 1px black;
+    text-align: center;
+}
+
+.copyright h5 {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.content {
+    display: block;
     position: absolute;
     right: 0;
-    border-left: 1px solid #e7e7e7;
-    background-color: #f8f8f8;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    border-radius: 0;
+    margin-left: 200px;
+    margin-top: 70px;
+    margin-bottom: 50px;
+}
+
+.visitor {
+    margin-left: 0px;
+}
+
+#accordion {
+    max-width: 200px;
+}
+
+#panelRight {
+    margin-right: -200px;
+    transition: 0.5s;
+}
+
+#panelRight.show {
+    margin-right: 0;
+    transition: 0.5s;
+}
+
+#content {
+    transition: 0.5s;
+}
+
+#content.show {
+    margin-right: 200px;
+    transition: 0.5s;
+}
+
+#panelRightButton {
+    transition: 0.5s;
+}
+
+.glyphicon {
+    margin: auto;
+}
+
+#panelRightButton.show {
+    transform: scaleX(-1);
+    transition: 0.5s;
 }

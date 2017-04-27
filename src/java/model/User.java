@@ -13,6 +13,9 @@ import java.util.ArrayList;
  */
 public class User {
 
+    // TODO A supprimer, sert uniquement dans le cas où il n'y a pas de BDD
+    private static int index;
+    
     private int id;
     private String login;
     private String password;
@@ -24,14 +27,26 @@ public class User {
     private ArrayList<User> followers;
     private ArrayList<User> following;
 
+    // TODO A supprimer, sert uniquement dans le cas où il n'y a pas de BDD
+    public User() {
+        this.id = index;
+        this.folders = new ArrayList<>();
+        this.playlists = new ArrayList<>();
+        this.index++;
+    }
+    
+    // TODO Ajouter un constructeur User() définissant l'id à -1
+    // (servira pour les visiteurs)
+    
     public User(int id) {
         this.id = id;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
     }
 
-    public User(int id, String login, String password, String firstName, String lastName, String email) {
-        this.id = id;
+    // TODO Ajouter l'id pour que le DAO fonctionne correctement
+    public User(String login, String password, String firstName, String lastName, String email) {
+        this.id = index;
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -39,6 +54,7 @@ public class User {
         this.email = email;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
+        this.index++;
     }
 
     public int getId() {

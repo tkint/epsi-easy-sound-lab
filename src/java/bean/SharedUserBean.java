@@ -17,30 +17,30 @@ import model.User;
 @Named(value = "sharedUserBean")
 @ApplicationScoped
 public class SharedUserBean {
-    
-    private ArrayList<User> connectedUsers;
+
+    private ArrayList<User> onlineUsers;
 
     /**
      * Creates a new instance of SharedUserBean
      */
     public SharedUserBean() {
-        connectedUsers = new ArrayList<>();
+        onlineUsers = new ArrayList<>();
     }
 
-    public ArrayList<User> getConnectedUsers() {
-        return connectedUsers;
+    public ArrayList<User> getOnlineUsers() {
+        return onlineUsers;
     }
 
-    public void setConnectedUsers(ArrayList<User> connectedUsers) {
-        this.connectedUsers = connectedUsers;
+    public void setOnlineUsers(ArrayList<User> onLineUsers) {
+        this.onlineUsers = onLineUsers;
     }
-    
-    public int getConnectedUserIndex(User user) {
+
+    public int getOnlineUserIndex(User user) {
         int i = 0;
         int index = -1;
 
-        while (i < connectedUsers.size() && index == -1) {
-            if (connectedUsers.get(i).getId() == user.getId()) {
+        while (i < onlineUsers.size() && index == -1) {
+            if (onlineUsers.get(i).getId() == user.getId()) {
                 index = i;
             }
             i++;
@@ -48,32 +48,30 @@ public class SharedUserBean {
 
         return index;
     }
-    
-    public void addConnectedUser(User user) {
-        if (!isUserAlreadyConnected(user)) {
-            connectedUsers.add(user);
+
+    public void addOnlineUser(User user) {
+        if (!isUserOnline(user)) {
+            onlineUsers.add(user);
         }
     }
-    
-    public void removeConnectedUser(User user) {
-        if (isUserAlreadyConnected(user)) {
-            if (getConnectedUserIndex(user) != -1) {
-                connectedUsers.remove(getConnectedUserIndex(user));
-            }
+
+    public void removeOnlineUser(User user) {
+        if (isUserOnline(user) && getOnlineUserIndex(user) != -1) {
+            onlineUsers.remove(getOnlineUserIndex(user));
         }
     }
-    
-    private boolean isUserAlreadyConnected(User user) {
+
+    private boolean isUserOnline(User user) {
         int i = 0;
-        boolean connected = false;
-        
-        while (i < connectedUsers.size() && !connected) {
-            if (connectedUsers.get(i).getId() == user.getId()) {
-                connected = true;
+        boolean online = false;
+
+        while (i < onlineUsers.size() && !online) {
+            if (onlineUsers.get(i).getId() == user.getId()) {
+                online = true;
             }
             i++;
         }
-        
-        return connected;
+
+        return online;
     }
 }

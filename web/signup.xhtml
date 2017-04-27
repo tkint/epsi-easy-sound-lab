@@ -14,14 +14,14 @@
             <ui:define name="content">
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
-                        User already connected
+                        User already signed in
                     </c:when>
                     <c:otherwise>
 
-                        <div id="register" class="container">
+                        <div id="signup" class="container">
                             <h1><center>New Account</center></h1>
 
-                            <h:form id="registerform" role="form">
+                            <h:form id="signupform" role="form">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                         <h:inputText id="login" class="form-control input-lg" p:placeholder="Login" value="#{userBean.login}" p:required="required" requiredMessage="Required" />
@@ -56,22 +56,22 @@
                                         <h:message showSummary="true" showDetail="false" for="lastName"/>
                                     </div>
                                 </div>
-                                <h:commandButton class="btn btn-info btn-block btn-lg" value="Register" action="#{userBean.createUser()}" />
+                                <h:commandButton class="btn btn-info btn-block btn-lg" value="Sign Up" action="#{userBean.createUser()}" />
                             </h:form>
                         </div>
 
                         <script type="text/javascript">
                             window.onload = function () {
-                                document.getElementById("registerform:password").onchange = validatePassword;
-                                document.getElementById("registerform:passwordConfirm").onchange = validatePassword;
+                                document.getElementById("signupform:password").onchange = validatePassword;
+                                document.getElementById("signupform:passwordConfirm").onchange = validatePassword;
                             }
                             function validatePassword() {
-                                var password = document.getElementById("registerform:password").value;
-                                var confirm = document.getElementById("registerform:passwordConfirm").value;
+                                var password = document.getElementById("signupform:password").value;
+                                var confirm = document.getElementById("signupform:passwordConfirm").value;
                                 if (password != confirm)
-                                    document.getElementById("registerform:passwordConfirm").setCustomValidity("Les mots de passe doivent correspondre");
+                                    document.getElementById("signupform:passwordConfirm").setCustomValidity("Les mots de passe doivent correspondre");
                                 else
-                                    document.getElementById("registerform:passwordConfirm").setCustomValidity('');
+                                    document.getElementById("signupform:passwordConfirm").setCustomValidity('');
                             }
                         </script>
 

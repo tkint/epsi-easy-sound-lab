@@ -26,9 +26,11 @@
                                 </a>
                                 <div id="profile" class="panel-collapse collapse #{navigationBean.index == 0 or navigationBean.index == -1 ? 'in' : ''}">
                                     <div class="panel-body">
-                                        <h:outputLabel value="#{userBean.currentUser.login}" />
+                                        <h:form>
+                                            <h:commandLink value="#{userBean.currentUser.login}" action="#{userBean.profile(null)}" />
+                                        </h:form>
                                         <h:form  class="navbar-form navbar-left">
-                                            <h:commandButton class="btn btn-default" value="Disconnect" action="#{userBean.disconnect()}" />
+                                            <h:commandButton class="btn btn-default" value="Sign Out" action="#{userBean.signOut()}" />
                                         </h:form>
                                     </div>
                                 </div>

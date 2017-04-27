@@ -14,7 +14,9 @@
         <h:outputScript name="js/jquery-3.2.0.min.js" />
         <h:outputScript name="bootstrap/js/bootstrap.js" />
 
-        <h:outputStylesheet name="css/default.css" />
+        <h:outputStylesheet name="css/main.css" />
+        <h:outputStylesheet name="css/navbar.css" />
+        <h:outputStylesheet name="css/profile.css" />
         
         <h:outputScript name="js/dropzone.js" />
 
@@ -47,6 +49,16 @@
                     <ui:include src="index.xhtml" />
                 </ui:insert>
             </div>
+            
+            <c:choose>
+                <c:when test="#{userBean.currentUser.id != -1}">
+                    <div id="right">
+                        <ui:insert name="right">
+                            <ui:include src="panelRight.xhtml" />
+                        </ui:insert>
+                    </div>
+                </c:when>
+            </c:choose>
         </div>
 
         <div id="bottom">

@@ -19,12 +19,14 @@ import javax.faces.context.FacesContext;
 public class NavigationBean implements Serializable {
 
     private int index;
+    private boolean panelRight;
 
     /**
      * Creates a new instance of NavigationBean
      */
     public NavigationBean() {
         this.index = -1;
+        this.panelRight = true;
     }
 
     public int getIndex() {
@@ -33,6 +35,14 @@ public class NavigationBean implements Serializable {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public boolean isPanelRight() {
+        return panelRight;
+    }
+
+    public void setPanelRight(boolean panelRight) {
+        this.panelRight = panelRight;
     }
 
     public void updateIndex() {
@@ -59,5 +69,9 @@ public class NavigationBean implements Serializable {
                 index = -1;
                 break;
         }
+    }
+    
+    public void switchPanelRight() {
+        panelRight = !panelRight;
     }
 }

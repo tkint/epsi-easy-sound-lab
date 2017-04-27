@@ -81,7 +81,7 @@ public class FolderBean implements Serializable {
 
     public String rename() {
         currentFolder.setName(currentFolderNewName);
-
+        
         return open(currentFolder);
     }
 

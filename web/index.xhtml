@@ -31,18 +31,11 @@
                                     </ui:repeat>
                                 </div>
                             </div>
-                            <div class="right-panel">
-                                Connected Users
-                                <ul>
-                                    <ui:repeat value="#{sharedUserBean.connectedUsers}" var="u">
-                                        <li><h:outputLabel value="#{u.login}" /></li>
-                                    </ui:repeat>
-                                </ul>
-                            </div>
                         </div>
 
                     </c:when>
                     <c:otherwise>
+                        <!--Page d'accueil-->
                         Visitor
                     </c:otherwise>
                 </c:choose>

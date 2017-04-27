@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+        <ui:composition>
+            <c:choose>
+                <c:when test="#{userBean.currentUser.id != -1}">
+                    <nav id="panelRight" class="navbar navbar-default navbar-fixed-right">
+                        Online Users
+                        <ul>
+                            <ui:repeat value="#{sharedUserBean.onlineUsers}" var="u">
+                                <li>
+                                    <h:form>
+                                        <h:commandLink value="#{u.login}" action="#{userBean.profile(u)}" />
+                                    </h:form>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </nav>
+
+                    <script>
+                        $(document).ready(function () {
+                            $('#panelRightButton').click(function (event) {
+                                event.preventDefault();
+                                if ($('#panelRight').hasClass('show')) {
+                                    $('#panelRight').removeClass('show');
+                                    $('#content').removeClass('show');
+                                    $('#panelRightButton').removeClass('show');
+                                } else {
+                                    $('#panelRight').addClass('show');
+                                    $('#content').addClass('show');
+                                    $('#panelRightButton').addClass('show');
+                                }
+                            });
+                        });
+                    </script>
+                </c:when>
+            </c:choose>
+        </ui:composition>
+    </body>
+</html>

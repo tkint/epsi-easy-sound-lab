@@ -23,7 +23,9 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search for..." />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">Go!</button>
+                                    <button class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-search" />
+                                    </button>
                                 </span>
                             </div>
                         </div>
@@ -32,18 +34,25 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <c:choose>
-                        <c:when test="#{userBean.currentUser.id == -1}">
+                        <c:when test="#{userBean.currentUser.id != -1}">
+                            <li>
+                                <button id="panelRightButton" class="btn btn-default" type="button">
+                                    <span id="panelRightBurger" class="glyphicon glyphicon-comment" />
+                                </button>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
                             <li>
                                 <h:form  class="navbar-form navbar-left">
                                     <div class="form-group">
                                         <h:inputText id="login" class="form-control" p:placeholder="Login" value="#{userBean.login}" />
                                         <h:inputSecret id="password" class="form-control" p:placeholder="Password" value="#{userBean.password}" />
-                                        <h:commandButton class="btn btn-default" value="Connect" action="#{userBean.connect()}" />
-                                        <h:commandButton class="btn btn-default" value="Register" action="#{userBean.register()}" />
+                                        <h:commandButton class="btn btn-default" value="Sign In" action="#{userBean.signIn()}" />
+                                        <h:commandButton class="btn btn-default" value="Sign Up" action="#{userBean.signup()}" />
                                     </div>
                                 </h:form>
                             </li>
-                        </c:when>
+                        </c:otherwise>
                     </c:choose>
                 </ul>
 
