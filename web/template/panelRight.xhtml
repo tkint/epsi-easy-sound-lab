@@ -26,14 +26,14 @@
                         $(document).ready(function () {
                             $('#panelRightButton').click(function (event) {
                                 event.preventDefault();
-                                if ($('#panelRight').hasClass('show')) {
-                                    $('#panelRight').removeClass('show');
-                                    $('#content').removeClass('show');
-                                    $('#panelRightButton').removeClass('show');
+                                if ($('#panelRight').hasClass('switch')) {
+                                    $('#panelRight').removeClass('switch');
+                                    $('#content').removeClass('switch');
+                                    $('#panelRightButton').removeClass('switch');
                                 } else {
-                                    $('#panelRight').addClass('show');
-                                    $('#content').addClass('show');
-                                    $('#panelRightButton').addClass('show');
+                                    $('#panelRight').addClass('switch');
+                                    $('#content').addClass('switch');
+                                    $('#panelRightButton').addClass('switch');
                                 }
                             });
                         });

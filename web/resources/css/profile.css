@@ -82,6 +82,8 @@ and open the template in the editor.
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    color: white;
+    text-shadow: 1px 1px black;
 }
 
 .card.hovercard .card-info {
@@ -100,5 +102,3 @@ and open the template in the editor.
 .btn-pref .btn {
     -webkit-border-radius:0 !important;
 }
-
-

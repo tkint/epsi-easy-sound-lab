@@ -149,9 +149,6 @@ body {
     border-radius: 0;
 }
 
-.folderNameValid {
-}
-
 #folderName:hover {
     cursor: pointer;
 }
@@ -223,55 +220,7 @@ body {
     display: inline-block;
 }
 
-.content {
-    display: block;
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    top: 0;
-    border-radius: 0;
-    margin-left: 200px;
-    margin-top: 70px;
-    margin-bottom: 50px;
-}
-
-.visitor {
-    margin-left: 0px;
-}
-
-#accordion {
-    max-width: 200px;
-}
-
-#panelRight {
-    margin-right: -200px;
-    transition: 0.5s;
-}
-
-#panelRight.show {
-    margin-right: 0;
-    transition: 0.5s;
-}
-
-#content {
-    transition: 0.5s;
-}
-
-#content.show {
-    margin-right: 200px;
-    transition: 0.5s;
-}
-
-#panelRightButton {
-    transition: 0.5s;
-}
-
 .glyphicon {
     margin: auto;
 }
 
-#panelRightButton.show {
-    transform: scaleX(-1);
-    transition: 0.5s;
-}

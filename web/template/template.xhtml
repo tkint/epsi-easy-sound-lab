@@ -15,7 +15,7 @@
         <h:outputScript name="bootstrap/js/bootstrap.js" />
 
         <h:outputStylesheet name="css/main.css" />
-        <h:outputStylesheet name="css/navbar.css" />
+        <h:outputStylesheet name="css/template.css" />
         <h:outputStylesheet name="css/profile.css" />
         
         <h:outputScript name="js/dropzone.js" />
@@ -44,7 +44,7 @@
                 </c:when>
             </c:choose>
             
-            <div id="content" class="content #{userBean.currentUser.id == -1 ? 'visitor' : ''}">
+            <div id="content" class="#{userBean.currentUser.id == -1 ? 'visitor' : ''}">
                 <ui:insert name="content">
                     <ui:include src="index.xhtml" />
                 </ui:insert>
