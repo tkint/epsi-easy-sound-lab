@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
     <body>
 
@@ -32,6 +33,11 @@
                                 </h:form>
                                 <a href="#" id="grid" class="btn btn-default btn-sm active"><span class="glyphicon glyphicon-th" />Grid</a>
                                 <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list" />List</a>
+                                <h:form class="dropzone">
+                                    <div class="fallback">
+                                        <h:inputFile p:name="file" p:type="file" p:multiple="multiple" />
+                                    </div>
+                                </h:form>
                             </div>
                         </div>
 

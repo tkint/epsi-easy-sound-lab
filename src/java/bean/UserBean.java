@@ -23,7 +23,7 @@ import model.User;
 @Named(value = "userBean")
 @SessionScoped
 public class UserBean implements Serializable {
-    
+
     private User currentUser;
 
     private String login;
@@ -136,7 +136,7 @@ public class UserBean implements Serializable {
 
         login = null;
         password = null;
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
         sharedUserBean.addConnectedUser(currentUser);
@@ -148,22 +148,32 @@ public class UserBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
         sharedUserBean.removeConnectedUser(currentUser);
-        
+
         currentUser = new User(-1);
-        
+
         FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
         folderBean.close();
 
         return "index?faces-redirect=true";
     }
-    
+
     public String createUser() {
         if (password.equals(passwordConfirm)) {
             currentUser = new User(0, login, password, firstName, lastName, email);
-            
+
+            login = null;
+            password = null;
+            firstName = null;
+            lastName = null;
+            email = null;
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
+            sharedUserBean.addConnectedUser(currentUser);
+
             return "index?faces-redirect=true";
         }
-        
+
         return "register?faces-redirect=true";
     }
 
