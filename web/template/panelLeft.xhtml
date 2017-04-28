@@ -8,44 +8,64 @@
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <body>
         <ui:composition>
+
             <c:choose>
                 <c:when test="#{userBean.currentUser.id != -1}">
-                    <nav class="navbar navbar-default navbar-fixed-left">
+
+                    <div id="panelLeft">
 
                         <div class="panel-group" id="accordion">
 
                             <!-- PROFILE -->
 
                             <div class="panel panel-default">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#profile">
-                                    <div class="panel-heading">
+
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#profile">
                                         <div class="avatar">
-                                            <img src="resources/images/Sound.jpg" alt="sound" />
+                                            <img src="resources/images/Sound.jpg" alt="avatar" />
                                         </div>
-                                    </div>
-                                </a>
+                                        <div class="userName">
+                                            #{userBean.currentUser.login.toUpperCase()}
+                                        </div>
+                                    </a>
+                                </div>
+
                                 <div id="profile" class="panel-collapse collapse #{navigationBean.index == 0 or navigationBean.index == -1 ? 'in' : ''}">
                                     <div class="panel-body">
-                                        <h:form>
-                                            <h:commandLink value="#{userBean.currentUser.login}" action="#{userBean.profile(null)}" />
-                                        </h:form>
-                                        <h:form  class="navbar-form navbar-left">
-                                            <h:commandButton class="btn btn-default" value="Sign Out" action="#{userBean.signOut()}" />
-                                        </h:form>
+                                        <table class="table">
+                                            <tr>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Profile" action="#{userBean.profile(null)}" />
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h:form >
+                                                        <h:commandLink value="Sign Out" action="#{userBean.signOut()}" />
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
+
                             </div>
 
                             <!-- MAILBOX -->
 
                             <div class="panel panel-default">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#mailbox">
-                                    <div class="panel-heading">
+
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#mailbox">
                                         <h4 class="panel-title">
-                                            <span class="glyphicon glyphicon-envelope" style="color: blue" /> Mailbox
+                                            <span class="glyphicon glyphicon-envelope" /> Mailbox
                                         </h4>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+
                                 <div id="mailbox" class="panel-collapse collapse #{navigationBean.index == 1 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <table class="table">
@@ -73,18 +93,21 @@
                                         </table>
                                     </div>
                                 </div>
+
                             </div>
 
                             <!-- FOLDERS -->
 
                             <div class="panel panel-default">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#folders">
-                                    <div class="panel-heading">
+
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#folders">
                                         <h4 class="panel-title">
                                             <span class="glyphicon glyphicon-folder-close" /> Folders
                                         </h4>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+
                                 <div id="folders" class="panel-collapse collapse #{navigationBean.index == 2 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:form>
@@ -105,18 +128,21 @@
                                         </h:dataTable>
                                     </div>
                                 </div>
+
                             </div>
 
                             <!-- PLAYLISTS -->
 
                             <div class="panel panel-default">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#playlists">
-                                    <div class="panel-heading">
+
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#playlists">
                                         <h4 class="panel-title">
                                             <span class="glyphicon glyphicon-headphones" /> Playlists
                                         </h4>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+
                                 <div id="playlists" class="panel-collapse collapse #{navigationBean.index == 3 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <h:form>
@@ -137,18 +163,21 @@
                                         </h:dataTable>
                                     </div>
                                 </div>
+
                             </div>
 
                             <!-- ACTIVITY -->
 
                             <div class="panel panel-default">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#activity">
-                                    <div class="panel-heading">
+
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#activity">
                                         <h4 class="panel-title">
                                             <span class="glyphicon glyphicon-eye-open" /> Activity
                                         </h4>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+
                                 <div id="activity" class="panel-collapse collapse #{navigationBean.index == 4 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <table class="table">
@@ -161,12 +190,15 @@
                                         </table>
                                     </div>
                                 </div>
+
                             </div>
 
                         </div>
-                    </nav>
+                    </div>
+
                 </c:when>
             </c:choose>
+
         </ui:composition>
     </body>
 </html>

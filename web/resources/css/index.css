@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 28, 2017, 2:00:41 PM
+    Author     : t.kint
+*/
+
+#feed {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+#feed .feed-list {
+    height: 100%;
+    padding-top: 10px;
+    overflow-y: auto;
+}
+
+#feed .feed-list .feed-list-item {
+    width: 60%;
+    margin: auto;
+}

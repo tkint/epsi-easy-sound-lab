@@ -14,7 +14,7 @@
                     <c:when test="#{userBean.currentUser.id != -1}">
 
                         <div class="container">
-                            <div class="feed">
+                            <div id="feed">
                                 <div class="feed-list">
                                     <ui:repeat value="#{userBean.currentUser}" var="u">
                                         <ui:repeat value="#{u.playlists}" var="p">

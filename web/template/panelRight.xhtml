@@ -7,9 +7,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <body>
         <ui:composition>
+            
             <c:choose>
                 <c:when test="#{userBean.currentUser.id != -1}">
-                    <nav id="panelRight" class="navbar navbar-default navbar-fixed-right">
+                    
+                    <div id="panelRight">
+                        
                         Online Users
                         <ul>
                             <ui:repeat value="#{sharedUserBean.onlineUsers}" var="u">
@@ -20,7 +23,8 @@
                                 </li>
                             </ui:repeat>
                         </ul>
-                    </nav>
+                        
+                    </div>
 
                     <script>
                         $(document).ready(function () {
@@ -38,8 +42,10 @@
                             });
                         });
                     </script>
+                    
                 </c:when>
             </c:choose>
+            
         </ui:composition>
     </body>
 </html>

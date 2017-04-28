@@ -51,7 +51,7 @@ public class UserDAO {
     // l'utilisateur possédant les identifiants demandés
     // OU Récupère directement l'utilisateur demandé depuis la BDD (plus rapide)
     public static User getUserByLoginAndPassword(String login, String password) {
-        User user = new User(login, password, " Easy Sound Lab", "", "email");
+        User user = new User(login, password, "Firstname", "Lastname", "Email");
 
         return user;
     }
