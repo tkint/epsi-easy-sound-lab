@@ -20,7 +20,11 @@ and open the template in the editor.
     margin: 5px auto;
 }
 
-#panelTop .brand img {
+#panelTop .brand a {
+    display: inline-block;
+}
+
+#panelTop .brand a #brand-image {
     width: 75px;
     height: 75px;
     max-width: 75px;
@@ -29,31 +33,33 @@ and open the template in the editor.
     -moz-border-radius: 50%;
     border-radius: 50%;
     border: 5px solid rgba(255, 255, 255, 0.5);
-    margin: auto;
-    transition: 1s;
+    transition: transform 1s;
 }
 
-#panelTop .brand img:hover {
+#panelTop .brand a:hover #brand-image {
     transform: scaleX(-1);
     border: 5px solid #339966;
 }
 
-#panelTop .brand-info {
-    overflow: hidden;
-    font-size: 12px;
-    line-height: 20px;
-    text-overflow: ellipsis;
+#panelTop .brand a:hover,
+#panelTop .brand a:hover #brand-title {
+    text-decoration: none;
+    color: #339966;
+    text-shadow: none;
 }
 
-#panelTop .brand-info .brand-title {
+#panelTop .brand a #brand-title {
+    display: block;
+    overflow: hidden;
+    font-size: 12px;
     font-size: 20px;
-    line-height: 1;
     background-color: rgba(255, 255, 255, 0.1);
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     color: white;
     text-shadow: 1px 1px black;
+    padding: 0 5px;
 }
 
 #panelTop .left {
@@ -67,7 +73,8 @@ and open the template in the editor.
 }
 
 #panelTop .left .input-group {
-    width: 200px;
+    min-width: 150px;
+    width: 40%;
 }
 
 #panelTop .right {
@@ -88,13 +95,18 @@ and open the template in the editor.
 
 #panelTop .right .form-group input {
     display: inline-block;
+    width: 30%;
+    margin-right: 2px;
+}
+
+#panelTop .right .form-group input[type="submit"] {
+    margin-top: -2px;
     width: auto;
-    margin: auto;
 }
 
 #panelTop .right #panelRightButton {
     margin-right: 0px;
-    transition: 0.5s;
+    transition: transform 0.5s;
     background: none;
     border: none;
     color: white;

@@ -8,6 +8,7 @@ package bean;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import javax.faces.context.FacesContext;
 
 /**
@@ -26,7 +27,7 @@ public class NavigationBean implements Serializable {
      */
     public NavigationBean() {
         this.index = -1;
-        this.panelRight = true;
+        this.panelRight = false;
     }
 
     public int getIndex() {
@@ -56,7 +57,7 @@ public class NavigationBean implements Serializable {
             case "mailbox":
                 index = 1;
                 break;
-            case "folder":
+            case "folder": case "editor":
                 index = 2;
                 break;
             case "playlist":
@@ -71,6 +72,24 @@ public class NavigationBean implements Serializable {
         }
     }
     
+    public String getCssFile() throws MalformedURLException {
+        String cssPath;
+        FacesContext context = FacesContext.getCurrentInstance();
+        String page = context.getViewRoot().getViewId();
+        page = page.substring(1, page.length() - 6);
+        
+        switch (page) {
+            case "folder": case "playlist":
+                cssPath = "folder";
+                break;
+            default:
+                cssPath = page;
+                break;
+        }
+        
+        return cssPath;
+    }
+
     public void switchPanelRight() {
         panelRight = !panelRight;
     }

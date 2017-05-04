@@ -10,17 +10,14 @@
         <ui:composition>
 
             <div id="panelTop">
-                
+
                 <div class="brand">
                     <h:link outcome="index">
-                        <img alt="" src="resources/images/Sound.jpg" />
+                        <img id="brand-image" alt="" src="resources/images/Sound.jpg" />
+                        <span id="brand-title">Easy Sound Lab</span>
                     </h:link>
                 </div>
-                
-                <div class="brand-info">
-                    <span class="brand-title">Easy Sound Lab</span>
-                </div>
-                
+
                 <div class="left">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for..." />
@@ -31,12 +28,12 @@
                         </span>
                     </div>
                 </div>
-                
+
                 <div class="right">
                     <c:choose>
                         <c:when test="#{userBean.currentUser.id != -1}">
-                            <button id="panelRightButton" class="btn btn-lg" type="button">
-                                <span id="panelRightBurger" class="glyphicon glyphicon-comment" />
+                            <button id="panelRightButton" class="btn btn-lg #{navigationBean.panelRight ? 'switch' : ''}" type="button">
+                                <span class="glyphicon glyphicon-comment" />
                             </button>
                         </c:when>
                         <c:otherwise>
@@ -49,9 +46,9 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                
+
             </div>
-            
+
         </ui:composition>
     </body> 
 </html>
