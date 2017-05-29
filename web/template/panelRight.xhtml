@@ -18,7 +18,7 @@
                             <ui:repeat value="#{sharedUserBean.onlineUsers}" var="u">
                                 <li>
                                     <h:form>
-                                        <h:commandLink value="#{u.login}" action="#{userBean.profile(u)}" />
+                                        <h:commandLink value="#{u.pseudo}" action="#{userBean.profile(u)}" />
                                     </h:form>
                                 </li>
                             </ui:repeat>

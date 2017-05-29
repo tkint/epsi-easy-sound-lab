@@ -38,7 +38,7 @@
                         </c:when>
                         <c:otherwise>
                             <h:form class="form-group">
-                                <h:inputText id="login" class="form-control" p:placeholder="Login" value="#{userBean.login}" />
+                                <h:inputText id="email" class="form-control" p:placeholder="Email" value="#{userBean.email}" />
                                 <h:inputSecret id="password" class="form-control" p:placeholder="Password" value="#{userBean.password}" />
                                 <h:commandButton class="btn btn-default" value="Sign In" action="#{userBean.signIn()}" />
                                 <h:commandButton class="btn btn-default" value="Sign Up" action="#{userBean.signup()}" />

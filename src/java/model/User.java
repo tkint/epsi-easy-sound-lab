@@ -13,48 +13,43 @@ import java.util.ArrayList;
  */
 public class User {
 
-    // TODO A supprimer, sert uniquement dans le cas où il n'y a pas de BDD
-    private static int index;
-    
     private int id;
-    private String login;
+    private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private String email;
+    private String pseudo;
     private ArrayList<Folder> folders;
     private ArrayList<Playlist> playlists;
     private ArrayList<User> followers;
     private ArrayList<User> following;
 
-    // TODO A supprimer, sert uniquement dans le cas où il n'y a pas de BDD
     public User() {
-        this.id = index;
-        this.folders = new ArrayList<>();
-        this.playlists = new ArrayList<>();
-        this.index++;
-    }
-    
-    // TODO Ajouter un constructeur User() définissant l'id à -1
-    // (servira pour les visiteurs)
-    
-    public User(int id) {
-        this.id = id;
+        this.id = -1;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
     }
 
-    // TODO Ajouter l'id pour que le DAO fonctionne correctement
-    public User(String login, String password, String firstName, String lastName, String email) {
-        this.id = index;
-        this.login = login;
+    public User(String email, String password, String firstName, String lastName, String pseudo) {
+        this.id = -1;
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.pseudo = pseudo;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
-        this.index++;
+    }
+
+    public User(int id, String email, String password, String firstName, String lastName, String pseudo) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pseudo = pseudo;
+        this.folders = new ArrayList<>();
+        this.playlists = new ArrayList<>();
     }
 
     public int getId() {
@@ -65,12 +60,12 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -97,12 +92,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPseudo() {
+        return pseudo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public ArrayList<Folder> getFolders() {
@@ -139,7 +134,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", login=" + login + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", eMail=" + email + '}';
+        return "User{" + "id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", pseudo=" + pseudo + '}';
     }
 
     public String getFullName() {

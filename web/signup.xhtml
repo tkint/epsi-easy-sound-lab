@@ -23,17 +23,14 @@
                             <h:form id="signupform" role="form">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                        <h:inputText id="login" class="form-control input-lg" p:placeholder="Login" value="#{userBean.login}" p:required="required" requiredMessage="Required" />
-                                        <h:message showSummary="true" showDetail="false" for="login"/>
+                                        <h:inputText id="email" class="form-control input-lg" p:placeholder="E-Mail" value="#{userBean.email}" p:required="required" requiredMessage="Required" />
+                                        <h:message showSummary="true" showDetail="false" for="email"/>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                         <h:inputText id="pseudo" class="form-control input-lg" p:placeholder="Pseudo" value="#{userBean.pseudo}" p:required="required" requiredMessage="Required" />
                                         <h:message showSummary="true" showDetail="false" for="pseudo"/>
                                     </div>
                                 </div>
-
-                                <h:inputText id="email" class="form-control input-lg" p:placeholder="E-Mail" p:type="email" value="#{userBean.email}" p:required="required" requiredMessage="Required" />
-                                <h:message showSummary="true" showDetail="false" for="email"/>
 
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6">

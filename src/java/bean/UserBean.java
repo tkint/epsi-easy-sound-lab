@@ -27,7 +27,6 @@ public class UserBean implements Serializable {
     private User currentUser;
     private User profileUser;
 
-    private String login;
     private String pseudo;
     private String password;
     private String passwordConfirm;
@@ -43,7 +42,7 @@ public class UserBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        currentUser = new User(-1);
+        currentUser = new User();
     }
 
     public User getCurrentUser() {
@@ -63,14 +62,6 @@ public class UserBean implements Serializable {
 
     public void setProfileUser(User profileUser) {
         this.profileUser = profileUser;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPseudo() {
@@ -122,37 +113,41 @@ public class UserBean implements Serializable {
     }
 
     public String signIn() {
-        currentUser = UserDAO.getUserByLoginAndPassword(login, password);
+        User user = UserDAO.getUserByEmailAndPassword(email, password);
 
-        for (int i = 0; i < 10; i++) {
-            Folder folder = new Folder(i, "Folder " + i);
+        if (user != null) {
 
-            for (int j = 0; j < 50; j++) {
-                MusicFile musicFile = new MusicFile(j, "Sound " + j, 3.36f);
-                folder.addMusicFile(musicFile);
+            currentUser = user;
+
+            for (int i = 0; i < 10; i++) {
+                Folder folder = new Folder(i, "Folder " + i);
+
+                for (int j = 0; j < 50; j++) {
+                    MusicFile musicFile = new MusicFile(j, "Sound " + j, 3.36f);
+                    folder.addMusicFile(musicFile);
+                }
+
+                currentUser.addFolder(folder);
             }
 
-            currentUser.addFolder(folder);
-        }
+            for (int i = 0; i < 5; i++) {
+                Playlist playlist = new Playlist(i, "Playlist " + i);
 
-        for (int i = 0; i < 5; i++) {
-            Playlist playlist = new Playlist(i, "Playlist " + i);
+                for (int j = 0; j < 40; j++) {
+                    MusicFile musicFile = new MusicFile(j, "Sound " + j, 3.36f);
+                    playlist.addMusicFile(musicFile);
+                }
 
-            for (int j = 0; j < 40; j++) {
-                MusicFile musicFile = new MusicFile(j, "Sound " + j, 3.36f);
-                playlist.addMusicFile(musicFile);
+                currentUser.addPlaylist(playlist);
             }
 
-            currentUser.addPlaylist(playlist);
+            email = null;
+            password = null;
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
+            sharedUserBean.addOnlineUser(currentUser);
         }
-
-        login = null;
-        password = null;
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
-        sharedUserBean.addOnlineUser(currentUser);
-
         return "index?faces-redirect=true";
     }
 
@@ -161,7 +156,7 @@ public class UserBean implements Serializable {
         SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
         sharedUserBean.removeOnlineUser(currentUser);
 
-        currentUser = new User(-1);
+        currentUser = new User();
 
         FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
         folderBean.close();
@@ -171,17 +166,23 @@ public class UserBean implements Serializable {
 
     public String createUser() {
         if (password.equals(passwordConfirm)) {
-            currentUser = new User(login, password, firstName, lastName, email);
+            User user = new User(email, password, firstName, lastName, pseudo);
 
-            login = null;
-            password = null;
-            firstName = null;
-            lastName = null;
-            email = null;
+            user = UserDAO.createUser(user);
 
-            FacesContext context = FacesContext.getCurrentInstance();
-            SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
-            sharedUserBean.addOnlineUser(currentUser);
+            if (user.getId() != -1) {
+                currentUser = user;
+                
+                email = null;
+                password = null;
+                firstName = null;
+                lastName = null;
+                pseudo = null;
+
+                FacesContext context = FacesContext.getCurrentInstance();
+                SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
+                sharedUserBean.addOnlineUser(currentUser);
+            }
 
             return "index?faces-redirect=true";
         }

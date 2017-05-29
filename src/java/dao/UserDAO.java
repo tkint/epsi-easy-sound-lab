@@ -5,7 +5,11 @@
  */
 package dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 
 /**
@@ -14,30 +18,63 @@ import model.User;
  */
 public class UserDAO {
 
-    // TODO Remonter la liste des utilisateurs depuis la base de donnée
+    private static String table = "user";
+    private static String[] fields = {"id", "email", "password", "pseudo"};
+
+    /**
+     * Remonte la liste des utilisateurs depuis la base de données
+     *
+     * @return ArrayList<User>
+     */
     public static ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();
+        try {
+            ResultSet rs = Connexion.getInstance().executeQuery("SELECT " + getFields(true) + " FROM " + table);
 
-        users.add(new User());
-        users.add(new User());
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
 
-        return users;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            return users;
+        }
     }
 
-    // TODO Récupère la liste des utilisateurs grâce à getUsers et remonte 
-    // l'utilisateur possédant l'id demandé
-    // OU Récupère directement l'utilisateur demandé depuis la BDD (plus rapide)
+    /**
+     * Remonte l'utilisateur correspondant à l'id spécifié
+     *
+     * @param id
+     * @return User
+     */
     public static User getUserById(int id) {
-        User user = getUsers().get(id);
+        User user = null;
 
-        user.setLogin("Login " + id);
+        try {
+            ResultSet rs = Connexion.getInstance().executeQuery(
+                    "SELECT " + getFields(true) + " FROM " + table
+                    + " WHERE id = " + id);
+
+            if (rs.first()) {
+                user = mapUser(rs);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
 
         return user;
     }
 
-    // TODO Supprimer le -1 quand le constructeur de visiteur est créé
+    /**
+     * Remonte l'utilisateur à l'index spécifié
+     *
+     * @param index
+     * @return User
+     */
     public static User getUserByIndex(int index) {
-        User user = new User(-1);
+        User user = new User();
         ArrayList<User> users = getUsers();
 
         if (users.size() > index) {
@@ -47,12 +84,132 @@ public class UserDAO {
         return user;
     }
 
-    // TODO Récupère la liste des utilisateurs grâce à getUsers et remonte 
-    // l'utilisateur possédant les identifiants demandés
-    // OU Récupère directement l'utilisateur demandé depuis la BDD (plus rapide)
-    public static User getUserByLoginAndPassword(String login, String password) {
-        User user = new User(login, password, "Firstname", "Lastname", "Email");
+    /**
+     * Remonte le dernier utilisateur créé
+     *
+     * @return int
+     */
+    public static int getLastUserId() {
+        int id = -1;
+
+        try {
+            ResultSet rs = Connexion.getInstance().executeQuery("SELECT MAX(id) FROM " + table);
+
+            if (rs.first()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return id;
+    }
+
+    /**
+     * Remonte un utilisateur correspondant à l'email spécifié
+     *
+     * @param email
+     * @return User
+     */
+    public static User getUserByEmail(String email) {
+        User user = null;
+
+        try {
+            ResultSet rs = Connexion.getInstance().executeQuery(
+                    "SELECT " + getFields(true) + " FROM " + table
+                    + " WHERE email = '" + email + "'");
+
+            if (rs.first()) {
+                user = mapUser(rs);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
 
         return user;
+    }
+
+    /**
+     * Remonte un utilisateur correspondant à l'email et au password spécifiés
+     *
+     * @param email
+     * @param password
+     * @return User
+     */
+    public static User getUserByEmailAndPassword(String email, String password) {
+        User user = null;
+
+        try {
+            ResultSet rs = Connexion.getInstance().executeQuery(
+                    "SELECT " + getFields(true) + " FROM " + table
+                    + " WHERE email = '" + email + "' AND password = '" + password + "'");
+
+            if (rs.first()) {
+                user = mapUser(rs);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return user;
+    }
+
+    public static User createUser(User user) {
+        try {
+            int nb = Connexion.getInstance().executeUpdate(
+                    "INSERT INTO " + table + "(" + getFields(false) + ") VALUES("
+                    + "'" + user.getEmail() + "', "
+                    + "'" + user.getPassword() + "', "
+                    + "'" + user.getPseudo() + "'"
+                    + ")"
+            );
+
+            if (nb > 0) {
+                user = getUserByEmail(user.getEmail());
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return user;
+    }
+
+    /**
+     * Mape un resultset avec un objet User
+     *
+     * @param rs
+     * @return User
+     */
+    private static User mapUser(ResultSet rs) {
+        User user = new User();
+        try {
+            user.setId(rs.getInt("id"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+            user.setPseudo(rs.getString("pseudo"));
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
+
+    private static String getFields(boolean id) {
+        String f = "";
+
+        if (id) {
+            f += fields[0] + ", ";
+        }
+
+        for (int i = 1; i < fields.length; i++) {
+            f += fields[i];
+            if (i < fields.length - 1) {
+                f += ", ";
+            }
+        }
+
+        return f;
     }
 }
