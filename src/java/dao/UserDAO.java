@@ -56,7 +56,7 @@ public class UserDAO {
                     "SELECT " + getFields(true) + " FROM " + table
                     + " WHERE id = " + id);
 
-            if (rs.first()) {
+            if (rs.next()) {
                 user = mapUser(rs);
             }
 
@@ -93,9 +93,9 @@ public class UserDAO {
         int id = -1;
 
         try {
-            ResultSet rs = Connexion.getInstance().executeQuery("SELECT MAX(id) FROM " + table);
+            ResultSet rs = Connexion.getInstance().executeQuery("SELECT MAX(id) AS id FROM " + table);
 
-            if (rs.first()) {
+            if (rs.next()) {
                 id = rs.getInt("id");
             }
 
@@ -120,7 +120,7 @@ public class UserDAO {
                     "SELECT " + getFields(true) + " FROM " + table
                     + " WHERE email = '" + email + "'");
 
-            if (rs.first()) {
+            if (rs.next()) {
                 user = mapUser(rs);
             }
 
@@ -146,7 +146,7 @@ public class UserDAO {
                     "SELECT " + getFields(true) + " FROM " + table
                     + " WHERE email = '" + email + "' AND password = '" + password + "'");
 
-            if (rs.first()) {
+            if (rs.next()) {
                 user = mapUser(rs);
             }
 
@@ -159,7 +159,8 @@ public class UserDAO {
 
     public static User createUser(User user) {
         try {
-            int nb = Connexion.getInstance().executeUpdate(
+            Connexion connexion = Connexion.getInstance();
+            int nb = connexion.executeUpdate(
                     "INSERT INTO " + table + "(" + getFields(false) + ") VALUES("
                     + "'" + user.getEmail() + "', "
                     + "'" + user.getPassword() + "', "
@@ -168,7 +169,9 @@ public class UserDAO {
             );
 
             if (nb > 0) {
-                user = getUserByEmail(user.getEmail());
+                ResultSet rs = connexion.getStatement().getGeneratedKeys();
+                rs.next();
+                user.setId(rs.getInt(1));
             }
 
         } catch (SQLException ex) {
