@@ -16,48 +16,41 @@ import model.User;
  *
  * @author t.kint
  */
-public class UserDAO {
+public class UserDAO extends MainDAO<User> {
 
-    private static String table = "user";
-    private static String[] fields = {"id", "email", "password", "pseudo"};
+    public UserDAO() {
+        super(UserDAO.class);
+    }
 
-    /**
-     * Remonte la liste des utilisateurs depuis la base de données
-     *
-     * @return ArrayList<User>
-     */
-    public static ArrayList<User> getUsers() {
+    @Override
+    public ArrayList<User> getEntities() {
         ArrayList<User> users = new ArrayList<>();
+
         try {
-            ResultSet rs = Connexion.getInstance().executeQuery("SELECT " + getFields(true) + " FROM " + table);
+            ResultSet rs = Connexion.getInstance().executeQuery("SELECT id, email, password, pseudo FROM " + table);
 
             while (rs.next()) {
-                users.add(mapUser(rs));
+                users.add(mapEntity(rs));
             }
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        } finally {
-            return users;
         }
+
+        return users;
     }
 
-    /**
-     * Remonte l'utilisateur correspondant à l'id spécifié
-     *
-     * @param id
-     * @return User
-     */
-    public static User getUserById(int id) {
+    @Override
+    public User getEntityById(int id) {
         User user = null;
 
         try {
             ResultSet rs = Connexion.getInstance().executeQuery(
-                    "SELECT " + getFields(true) + " FROM " + table
+                    "SELECT id, email, password, pseudo FROM " + table
                     + " WHERE id = " + id);
 
             if (rs.next()) {
-                user = mapUser(rs);
+                user = mapEntity(rs);
             }
 
         } catch (SQLException ex) {
@@ -67,15 +60,10 @@ public class UserDAO {
         return user;
     }
 
-    /**
-     * Remonte l'utilisateur à l'index spécifié
-     *
-     * @param index
-     * @return User
-     */
-    public static User getUserByIndex(int index) {
+    @Override
+    public User getEntityByIndex(int index) {
         User user = new User();
-        ArrayList<User> users = getUsers();
+        ArrayList<User> users = getEntities();
 
         if (users.size() > index) {
             user = users.get(index);
@@ -84,12 +72,13 @@ public class UserDAO {
         return user;
     }
 
-    /**
-     * Remonte le dernier utilisateur créé
-     *
-     * @return int
-     */
-    public static int getLastUserId() {
+    @Override
+    public User getLastEntity() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getLastEntityId() {
         int id = -1;
 
         try {
@@ -106,22 +95,71 @@ public class UserDAO {
         return id;
     }
 
+    @Override
+    public User createEntity(User entity) {
+        try {
+            Connexion connexion = Connexion.getInstance();
+            int nb = connexion.executeUpdate(
+                    "INSERT INTO " + table + "(email, password, pseudo) VALUES("
+                    + "'" + entity.getEmail() + "', "
+                    + "'" + entity.getPassword() + "', "
+                    + "'" + entity.getPseudo() + "'"
+                    + ")"
+            );
+
+            if (nb > 0) {
+                ResultSet rs = connexion.getStatement().getGeneratedKeys();
+                rs.next();
+                entity.setId(rs.getInt(1));
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return entity;
+    }
+
+    @Override
+    public int deleteEntity(User entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * Mape un resultset avec un objet User
+     *
+     * @param rs
+     * @return User
+     */
+    @Override
+    protected User mapEntity(ResultSet rs) {
+        User user = new User();
+        try {
+            user.setId(rs.getInt("id"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+            user.setPseudo(rs.getString("pseudo"));
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
+
     /**
      * Remonte un utilisateur correspondant à l'email spécifié
      *
      * @param email
      * @return User
      */
-    public static User getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         User user = null;
 
         try {
             ResultSet rs = Connexion.getInstance().executeQuery(
-                    "SELECT " + getFields(true) + " FROM " + table
+                    "SELECT id, email, password, pseudo FROM " + table
                     + " WHERE email = '" + email + "'");
 
             if (rs.next()) {
-                user = mapUser(rs);
+                user = mapEntity(rs);
             }
 
         } catch (SQLException ex) {
@@ -138,16 +176,16 @@ public class UserDAO {
      * @param password
      * @return User
      */
-    public static User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByEmailAndPassword(String email, String password) {
         User user = null;
 
         try {
             ResultSet rs = Connexion.getInstance().executeQuery(
-                    "SELECT " + getFields(true) + " FROM " + table
+                    "SELECT id, email, password, pseudo FROM " + table
                     + " WHERE email = '" + email + "' AND password = '" + password + "'");
 
             if (rs.next()) {
-                user = mapUser(rs);
+                user = mapEntity(rs);
             }
 
         } catch (SQLException ex) {
@@ -155,64 +193,5 @@ public class UserDAO {
         }
 
         return user;
-    }
-
-    public static User createUser(User user) {
-        try {
-            Connexion connexion = Connexion.getInstance();
-            int nb = connexion.executeUpdate(
-                    "INSERT INTO " + table + "(" + getFields(false) + ") VALUES("
-                    + "'" + user.getEmail() + "', "
-                    + "'" + user.getPassword() + "', "
-                    + "'" + user.getPseudo() + "'"
-                    + ")"
-            );
-
-            if (nb > 0) {
-                ResultSet rs = connexion.getStatement().getGeneratedKeys();
-                rs.next();
-                user.setId(rs.getInt(1));
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return user;
-    }
-
-    /**
-     * Mape un resultset avec un objet User
-     *
-     * @param rs
-     * @return User
-     */
-    private static User mapUser(ResultSet rs) {
-        User user = new User();
-        try {
-            user.setId(rs.getInt("id"));
-            user.setEmail(rs.getString("email"));
-            user.setPassword(rs.getString("password"));
-            user.setPseudo(rs.getString("pseudo"));
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return user;
-    }
-
-    private static String getFields(boolean id) {
-        String f = "";
-
-        if (id) {
-            f += fields[0] + ", ";
-        }
-
-        for (int i = 1; i < fields.length; i++) {
-            f += fields[i];
-            if (i < fields.length - 1) {
-                f += ", ";
-            }
-        }
-
-        return f;
     }
 }

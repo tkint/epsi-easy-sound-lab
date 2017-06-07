@@ -17,6 +17,10 @@ public class Folder {
     private String name;
     private ArrayList<MusicFile> musicFiles;
 
+    public Folder() {
+        this.musicFiles = new ArrayList<>();
+    }
+
     public Folder(int id, String name) {
         this.id = id;
         this.name = name;

@@ -5,22 +5,47 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Thomas
  */
-public class Playlist extends Folder {
-    
+public class Playlist {
+
+    private int id;
+    private String name;
     private boolean shared;
-    
+    private ArrayList<MusicFile> musicFiles;
+
     public Playlist(int id, String name) {
-        super(id, name);
+        this.id = id;
+        this.name = name;
         this.shared = false;
+        this.musicFiles = new ArrayList<>();
     }
-    
+
     public Playlist(int id, String name, boolean shared) {
-        super(id, name);
+        this.id = id;
+        this.name = name;
         this.shared = shared;
+        this.musicFiles = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isShared() {
@@ -29,5 +54,34 @@ public class Playlist extends Folder {
 
     public void setShared(boolean shared) {
         this.shared = shared;
+    }
+
+    public ArrayList<MusicFile> getMusicFiles() {
+        return musicFiles;
+    }
+
+    public void setMusicFiles(ArrayList<MusicFile> musicFiles) {
+        this.musicFiles = musicFiles;
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" + "id=" + id + ", name=" + name + ", shared=" + shared + ", musicFiles=" + musicFiles + '}';
+    }
+
+    public int getLastMusicFileId() {
+        int id = 0;
+
+        for (MusicFile musicFile : musicFiles) {
+            if (musicFile.getId() > id) {
+                id = musicFile.getId();
+            }
+        }
+
+        return id;
+    }
+
+    public void addMusicFile(MusicFile musicFile) {
+        musicFiles.add(musicFile);
     }
 }

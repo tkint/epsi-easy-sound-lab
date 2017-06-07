@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import model.ConnexionConfig;
+import model.DatabaseConfig;
 
 /**
  *
@@ -42,7 +45,7 @@ public class Connexion {
             connection = DriverManager.getConnection(jdbcUrl, login, password);
 
             statement = connection.createStatement();
-            
+
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         } catch (SQLException ex) {
@@ -74,6 +77,23 @@ public class Connexion {
 
     public int executeUpdate(String sql) throws SQLException {
         return statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+    }
+
+    public static String getTableName(Class c) {
+        String tableName = null;
+        try {
+            DatabaseConfig config = DatabaseConfig.getInstance();
+            
+            String methodName = "get" + c.getSimpleName().substring(0, c.getSimpleName().length() - 3);
+            
+            Method method = config.getClass().getMethod(methodName);
+            
+            tableName = method.invoke(config).toString();
+
+        } catch (Exception ex) {
+            Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tableName;
     }
 
     public static Connexion getInstance() {

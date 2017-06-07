@@ -33,11 +33,14 @@ public class UserBean implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
+    
+    private UserDAO userDAO;
 
     /**
      * Creates a new instance of UserBean
      */
     public UserBean() {
+        userDAO = new UserDAO();
     }
 
     @PostConstruct
@@ -113,7 +116,7 @@ public class UserBean implements Serializable {
     }
 
     public String signIn() {
-        User user = UserDAO.getUserByEmailAndPassword(email, password);
+        User user = userDAO.getUserByEmailAndPassword(email, password);
 
         if (user != null) {
 
@@ -168,7 +171,7 @@ public class UserBean implements Serializable {
         if (password.equals(passwordConfirm)) {
             User user = new User(email, password, firstName, lastName, pseudo);
 
-            user = UserDAO.createUser(user);
+            user = userDAO.createEntity(user);
 
             if (user.getId() != -1) {
                 currentUser = user;
