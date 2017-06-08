@@ -1,8 +1,9 @@
 # EasySoundLab
 Editeur de fichiers son en ligne dans le cadre du projet Java du second semestre à l'EPSI
 
-# Serveur utilisé
+# Serveurs utilisés
 GlassFish Server 4.1
+MySQL (WAMP fait l'affaire)
 
 # JNDI
 Un JNDI est un objet de paramètres disponible sous GlassFish Server. Il permet, par exemple, de configurer le chemin de fichiers d'images, les données d'un driver SQL, etc.
