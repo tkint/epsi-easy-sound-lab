@@ -5,24 +5,43 @@
  */
 package model;
 
+import annotations.ESLEntity;
+import annotations.ESLField;
+import annotations.ESLId;
 import java.util.ArrayList;
 
 /**
  *
  * @author tkint
  */
+@ESLEntity(name = "folder")
 public class Folder {
 
-    private int id;
-    private String name;
-    private ArrayList<MusicFile> musicFiles;
+    @ESLId
+    @ESLField(name = "id_folder")
+    public int id;
+
+    @ESLField(name = "id_user")
+    public int idUser;
+
+    @ESLField(name = "name")
+    public String name;
+
+    public ArrayList<MusicFile> musicFiles;
 
     public Folder() {
         this.musicFiles = new ArrayList<>();
     }
 
-    public Folder(int id, String name) {
+    public Folder(int idUser, String name) {
+        this.idUser = idUser;
+        this.name = name;
+        this.musicFiles = new ArrayList<>();
+    }
+
+    public Folder(int id, int idUser, String name) {
         this.id = id;
+        this.idUser = idUser;
         this.name = name;
         this.musicFiles = new ArrayList<>();
     }
@@ -33,6 +52,14 @@ public class Folder {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getName() {
@@ -53,18 +80,18 @@ public class Folder {
 
     @Override
     public String toString() {
-        return "Folder{" + "id=" + id + ", name=" + name + ", musicFiles=" + musicFiles + '}';
+        return "Folder{" + "id=" + id + "id_user=" + idUser + ", name=" + name + ", musicFiles=" + musicFiles + '}';
     }
-    
+
     public int getLastMusicFileId() {
         int id = 0;
-        
+
         for (MusicFile musicFile : musicFiles) {
-            if (musicFile.getId() > id) {
-                id = musicFile.getId();
+            if (musicFile.id > id) {
+                id = musicFile.id;
             }
         }
-        
+
         return id;
     }
 

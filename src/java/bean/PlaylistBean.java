@@ -5,6 +5,7 @@
  */
 package bean;
 
+import dao.PlaylistDAO;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -24,10 +25,13 @@ public class PlaylistBean implements Serializable {
     private String currentPlaylistNewName;
     private String newPlaylistName;
 
+    private PlaylistDAO playlistDAO;
+
     /**
      * Creates a new instance of PlaylistBean
      */
     public PlaylistBean() {
+        playlistDAO = new PlaylistDAO();
     }
 
     public Playlist getCurrentPlaylist() {
@@ -57,7 +61,7 @@ public class PlaylistBean implements Serializable {
     public String open(Playlist playlist) {
         if (playlist != null) {
             currentPlaylist = playlist;
-            currentPlaylistNewName = playlist.getName();
+            currentPlaylistNewName = playlist.name;
 
             return "playlist?faces-redirect=true";
         }
@@ -72,15 +76,21 @@ public class PlaylistBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
 
-        Playlist playlist = new Playlist(userBean.getCurrentUser().getLastPlaylistId() + 1, newPlaylistName);
+        Playlist playlist = new Playlist(userBean.getCurrentUser().id, newPlaylistName);
+
+        playlist = playlistDAO.createEntity(playlist);
+
         userBean.getCurrentUser().addPlaylist(playlist);
+
         newPlaylistName = null;
 
         return open(playlist);
     }
 
     public String rename() {
-        currentPlaylist.setName(currentPlaylistNewName);
+        currentPlaylist.name = currentPlaylistNewName;
+
+        playlistDAO.updateEntity(currentPlaylist);
 
         return open(currentPlaylist);
     }
@@ -93,12 +103,16 @@ public class PlaylistBean implements Serializable {
 
         Playlist playlist = null;
 
-        if (currentPlaylist.getId() < user.getLastPlaylistId()) {
-            playlist = user.getPlaylistById(currentPlaylist.getId() + 1);
+        // TODO Modifier le fonctionnement avec l'index des folders plutôt que les IDs
+        if (currentPlaylist.id < user.getLastPlaylistId()) {
+            playlist = user.getPlaylistById(currentPlaylist.id + 1);
         } else {
-            playlist = user.getPlaylistById(currentPlaylist.getId() - 1);
+            playlist = user.getPlaylistById(currentPlaylist.id - 1);
         }
-        user.deletePlaylistById(currentPlaylist.getId());
+
+        user.deletePlaylistById(currentPlaylist.id);
+
+        playlistDAO.deleteEntity(currentPlaylist);
 
         return open(playlist);
     }

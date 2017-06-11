@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
     <body>
 
@@ -56,7 +58,42 @@
                             <div class="well">
                                 <div class="tab-content">
                                     <div class="tab-pane fade in active" id="tab1">
-                                        <h3>This is tab 1</h3>
+                                        <c:when test="#{userBean.currentUser.id = userBean.profileUser.id}">
+                                            
+                                            <h:form id="signupform" role="form">
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <h:inputText id="email" class="form-control input-lg" p:placeholder="E-Mail" value="#{userBean.email}" />
+                                                        <h:message showSummary="true" showDetail="false" for="email"/>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <h:inputText id="pseudo" class="form-control input-lg" p:placeholder="Pseudo" value="#{userBean.pseudo}" />
+                                                        <h:message showSummary="true" showDetail="false" for="pseudo"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <h:inputSecret id="password" class="form-control input-lg" p:placeholder="Password" value="#{userBean.password}" />
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <h:inputSecret id="passwordConfirm" class="form-control input-lg" p:placeholder="Confirmation" value="#{userBean.passwordConfirm}" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <h:inputText id="firstName" class="form-control input-lg" p:placeholder="First Name" value="#{userBean.firstName}" />
+                                                        <h:message showSummary="true" showDetail="false" for="firstName"/>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <h:inputText id="lastName" class="form-control input-lg" p:placeholder="Last Name" value="#{userBean.lastName}" />
+                                                        <h:message showSummary="true" showDetail="false" for="lastName"/>
+                                                    </div>
+                                                </div>
+                                                <h:commandButton class="btn btn-info btn-block btn-lg" value="Update" action="#{userBean.updateUser()}" />
+                                            </h:form>
+                                            
+                                        </c:when>
                                     </div>
                                     <div class="tab-pane fade in" id="tab2">
                                         <h3>This is tab 2</h3>

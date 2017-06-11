@@ -40,7 +40,7 @@ public class SharedUserBean {
         int index = -1;
 
         while (i < onlineUsers.size() && index == -1) {
-            if (onlineUsers.get(i).getId() == user.getId()) {
+            if (onlineUsers.get(i).id == user.id) {
                 index = i;
             }
             i++;
@@ -66,7 +66,7 @@ public class SharedUserBean {
         boolean online = false;
 
         while (i < onlineUsers.size() && !online) {
-            if (onlineUsers.get(i).getId() == user.getId()) {
+            if (onlineUsers.get(i).id == user.id) {
                 online = true;
             }
             i++;

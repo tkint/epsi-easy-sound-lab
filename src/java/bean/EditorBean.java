@@ -55,7 +55,7 @@ public class EditorBean implements Serializable {
     public String open(MusicFile musicFile) {
         if (musicFile != null) {
             currentMusicFile = musicFile;
-            currentMusicFileNewName = musicFile.getName();
+            currentMusicFileNewName = musicFile.name;
 
             return "editor?faces-redirect=true";
         }
@@ -67,7 +67,7 @@ public class EditorBean implements Serializable {
     }
 
     public String rename() {
-        currentMusicFile.setName(currentMusicFileNewName);
+        currentMusicFile.name = currentMusicFileNewName;
         
         return open(currentMusicFile);
     }

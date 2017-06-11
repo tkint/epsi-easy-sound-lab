@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,8 +14,9 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
-import model.ConnexionConfig;
-import model.DatabaseConfig;
+import model.config.ConnexionConfig;
+import model.config.DatabaseConfig;
+import utils.StringUtils;
 
 /**
  *
@@ -87,6 +87,23 @@ public class Connexion {
             String methodName = "get" + c.getSimpleName().substring(0, c.getSimpleName().length() - 3);
             
             Method method = config.getClass().getMethod(methodName);
+            
+            //Method method = config.getClass().getMethod("get" + StringUtils.toUpperFirst(table));
+            
+            tableName = method.invoke(config).toString();
+
+        } catch (Exception ex) {
+            Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tableName;
+    }
+    
+    public static String getTableName(String table) {
+        String tableName = null;
+        try {
+            DatabaseConfig config = DatabaseConfig.getInstance();
+            
+            Method method = config.getClass().getMethod("get" + StringUtils.toUpperFirst(table));
             
             tableName = method.invoke(config).toString();
 

@@ -5,6 +5,7 @@
  */
 package bean;
 
+import dao.FolderDAO;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -23,11 +24,14 @@ public class FolderBean implements Serializable {
     private Folder currentFolder;
     private String currentFolderNewName;
     private String newFolderName;
+    
+    private FolderDAO folderDAO;
 
     /**
      * Creates a new instance of FolderBean
      */
     public FolderBean() {
+        folderDAO = new FolderDAO();
     }
 
     public Folder getCurrentFolder() {
@@ -57,7 +61,7 @@ public class FolderBean implements Serializable {
     public String open(Folder folder) {
         if (folder != null) {
             currentFolder = folder;
-            currentFolderNewName = folder.getName();
+            currentFolderNewName = folder.name;
 
             return "folder?faces-redirect=true";
         }
@@ -71,16 +75,22 @@ public class FolderBean implements Serializable {
     public String addFolder() {
         FacesContext context = FacesContext.getCurrentInstance();
         UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
-
-        Folder folder = new Folder(userBean.getCurrentUser().getLastFolderId() + 1, newFolderName);
+        
+        Folder folder = new Folder(userBean.getCurrentUser().id, newFolderName);
+        
+        folder = folderDAO.createEntity(folder);
+        
         userBean.getCurrentUser().addFolder(folder);
+        
         newFolderName = null;
 
         return open(folder);
     }
 
     public String rename() {
-        currentFolder.setName(currentFolderNewName);
+        currentFolder.name = currentFolderNewName;
+        
+        folderDAO.updateEntity(currentFolder);
         
         return open(currentFolder);
     }
@@ -93,12 +103,16 @@ public class FolderBean implements Serializable {
 
         Folder folder = null;
 
-        if (currentFolder.getId() < user.getLastFolderId()) {
-            folder = user.getFolderById(currentFolder.getId() + 1);
+        // TODO Modifier le fonctionnement avec l'index des folders plutôt que les IDs
+        if (currentFolder.id < user.getLastFolderId()) {
+            folder = user.getFolderById(currentFolder.id + 1);
         } else {
-            folder = user.getFolderById(currentFolder.getId() - 1);
+            folder = user.getFolderById(currentFolder.id - 1);
         }
-        user.deleteFolderById(currentFolder.getId());
+        
+        user.deleteFolderById(currentFolder.id);
+        
+        folderDAO.deleteEntity(currentFolder);
 
         return open(folder);
     }

@@ -5,15 +5,24 @@
  */
 package model;
 
+import annotations.*;
+
 /**
  *
  * @author tkint
  */
+@ESLEntity(name = "musicfile")
 public class MusicFile {
 
-    private int id;
-    private String name;
-    private float duration;
+    @ESLId
+    @ESLField(name = "id_musicfile")
+    public int id;
+
+    @ESLField(name = "name")
+    public String name;
+
+    @ESLField(name = "duration")
+    public float duration;
 
     public MusicFile(int id, String name, float duration) {
         this.id = id;

@@ -5,15 +5,90 @@
  */
 package model;
 
+import annotations.ESLEntity;
+import annotations.ESLField;
+import annotations.ESLId;
+
 /**
  *
  * @author Thomas
  */
+@ESLEntity(name = "mail")
 public class Mail {
 
-    private int authorId;
-    private int targetId;
-    private String title;
-    private String content;
-    private String datetime;
+    @ESLId
+    @ESLField(name = "id_mail")
+    public int id;
+
+    @ESLField(name = "id_author")
+    public int idAuthor;
+
+    @ESLField(name = "id_target")
+    public int idTarget;
+
+    @ESLField(name = "title")
+    public String title;
+
+    @ESLField(name = "content")
+    public String content;
+
+    @ESLField(name = "datetime")
+    public String datetime;
+
+    public Mail(int id, int idAuthor, int idTarget, String title, String content, String datetime) {
+        this.id = id;
+        this.idAuthor = idAuthor;
+        this.idTarget = idTarget;
+        this.title = title;
+        this.content = content;
+        this.datetime = datetime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdAuthor() {
+        return idAuthor;
+    }
+
+    public void setIdAuthor(int idAuthor) {
+        this.idAuthor = idAuthor;
+    }
+
+    public int getIdTarget() {
+        return idTarget;
+    }
+
+    public void setIdTarget(int idTarget) {
+        this.idTarget = idTarget;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
 }

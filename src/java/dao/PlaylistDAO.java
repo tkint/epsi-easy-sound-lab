@@ -14,14 +14,14 @@ import model.*;
  *
  * @author tkint
  */
-public class FolderDAO extends MainDAO<Folder> {
+public class PlaylistDAO extends MainDAO<Playlist> {
 
-    public FolderDAO() {
-        super(Folder.class);
+    public PlaylistDAO() {
+        super(Playlist.class);
     }
 
-    public List<Folder> getFoldersByIdUser(int id) {
-        List<Folder> folders = new ArrayList<>();
+    public List<Playlist> getPlaylistsByIdUser(int id) {
+        List<Playlist> playlists = new ArrayList<>();
 
         try {
             String query = "SELECT " + fullFields + " FROM " + table + " WHERE id_user = " + id + "";
@@ -29,13 +29,13 @@ public class FolderDAO extends MainDAO<Folder> {
             ResultSet rs = Connexion.getInstance().executeQuery(query);
 
             while (rs.next()) {
-                folders.add(mapEntity(rs));
+                playlists.add(mapEntity(rs));
             }
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
-        return folders;
+        return playlists;
     }
 }

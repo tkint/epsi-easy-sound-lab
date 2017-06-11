@@ -5,28 +5,43 @@
  */
 package model;
 
+import annotations.ESLEntity;
+import annotations.ESLField;
+import annotations.ESLId;
 import java.util.ArrayList;
 
 /**
  *
  * @author Thomas
  */
+@ESLEntity(name = "playlist")
 public class Playlist {
 
-    private int id;
-    private String name;
-    private boolean shared;
-    private ArrayList<MusicFile> musicFiles;
+    @ESLId
+    @ESLField(name = "id_playlist")
+    public int id;
 
-    public Playlist(int id, String name) {
-        this.id = id;
+    @ESLField(name = "id_user")
+    public int idUser;
+    
+    @ESLField(name = "name")
+    public String name;
+
+    @ESLField(name = "shared")
+    public boolean shared;
+
+    public ArrayList<MusicFile> musicFiles;
+
+    public Playlist(int idUser, String name) {
+        this.idUser = idUser;
         this.name = name;
         this.shared = false;
         this.musicFiles = new ArrayList<>();
     }
 
-    public Playlist(int id, String name, boolean shared) {
+    public Playlist(int id, int idUser, String name, boolean shared) {
         this.id = id;
+        this.idUser = idUser;
         this.name = name;
         this.shared = shared;
         this.musicFiles = new ArrayList<>();
@@ -73,8 +88,8 @@ public class Playlist {
         int id = 0;
 
         for (MusicFile musicFile : musicFiles) {
-            if (musicFile.getId() > id) {
-                id = musicFile.getId();
+            if (musicFile.id > id) {
+                id = musicFile.id;
             }
         }
 
