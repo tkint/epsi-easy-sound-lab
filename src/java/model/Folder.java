@@ -5,10 +5,9 @@
  */
 package model;
 
-import annotations.ESLEntity;
-import annotations.ESLField;
-import annotations.ESLId;
+import annotations.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,12 +21,13 @@ public class Folder {
     public int id;
 
     @ESLField(name = "id_user")
+    @ESLReference(entity = User.class)
     public int idUser;
 
     @ESLField(name = "name")
     public String name;
 
-    public ArrayList<MusicFile> musicFiles;
+    public List<MusicFile> musicFiles;
 
     public Folder() {
         this.musicFiles = new ArrayList<>();
@@ -70,11 +70,11 @@ public class Folder {
         this.name = name;
     }
 
-    public ArrayList<MusicFile> getMusicFiles() {
+    public List<MusicFile> getMusicFiles() {
         return musicFiles;
     }
 
-    public void setMusicFiles(ArrayList<MusicFile> musicFiles) {
+    public void setMusicFiles(List<MusicFile> musicFiles) {
         this.musicFiles = musicFiles;
     }
 

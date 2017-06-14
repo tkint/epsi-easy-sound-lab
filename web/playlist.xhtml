@@ -41,7 +41,7 @@
                                 <ui:repeat value="#{playlistBean.currentPlaylist.musicFiles}" var="m">
                                     <div class="grid-item col-xs-3 col-lg-3">
                                         <h:form>
-                                            <h:commandLink action="#{editorBean.open(m)}">
+                                            <h:commandLink action="#{musicFileBean.open(m)}">
                                                 <div class="thumbnail">
                                                     <img src="resources/images/Sound.jpg" alt="sound" />
 

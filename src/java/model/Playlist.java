@@ -5,10 +5,9 @@
  */
 package model;
 
-import annotations.ESLEntity;
-import annotations.ESLField;
-import annotations.ESLId;
+import annotations.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,16 +21,21 @@ public class Playlist {
     public int id;
 
     @ESLField(name = "id_user")
+    @ESLReference(entity = User.class)
     public int idUser;
-    
+
     @ESLField(name = "name")
     public String name;
 
     @ESLField(name = "shared")
     public boolean shared;
 
-    public ArrayList<MusicFile> musicFiles;
+    public List<MusicFile> musicFiles;
 
+    public Playlist() {
+        this.musicFiles = new ArrayList<>();
+    }
+    
     public Playlist(int idUser, String name) {
         this.idUser = idUser;
         this.name = name;
@@ -71,11 +75,11 @@ public class Playlist {
         this.shared = shared;
     }
 
-    public ArrayList<MusicFile> getMusicFiles() {
+    public List<MusicFile> getMusicFiles() {
         return musicFiles;
     }
 
-    public void setMusicFiles(ArrayList<MusicFile> musicFiles) {
+    public void setMusicFiles(List<MusicFile> musicFiles) {
         this.musicFiles = musicFiles;
     }
 

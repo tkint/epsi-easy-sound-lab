@@ -5,9 +5,7 @@
  */
 package model;
 
-import annotations.ESLEntity;
-import annotations.ESLField;
-import annotations.ESLId;
+import annotations.*;
 
 /**
  *
@@ -21,9 +19,11 @@ public class Mail {
     public int id;
 
     @ESLField(name = "id_author")
+    @ESLReference(entity = User.class)
     public int idAuthor;
 
     @ESLField(name = "id_target")
+    @ESLReference(entity = User.class)
     public int idTarget;
 
     @ESLField(name = "title")
@@ -34,6 +34,16 @@ public class Mail {
 
     @ESLField(name = "datetime")
     public String datetime;
+
+    public Mail() {
+    }
+
+    public Mail(int idAuthor, int idTarget, String title, String content) {
+        this.idAuthor = idAuthor;
+        this.idTarget = idTarget;
+        this.title = title;
+        this.content = content;
+    }
 
     public Mail(int id, int idAuthor, int idTarget, String title, String content, String datetime) {
         this.id = id;

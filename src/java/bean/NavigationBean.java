@@ -63,7 +63,7 @@ public class NavigationBean implements Serializable {
             case "playlist":
                 index = 3;
                 break;
-            case "activity":
+            case "users":
                 index = 4;
                 break;
             default:

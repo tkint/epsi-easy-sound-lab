@@ -166,14 +166,14 @@
 
                             </div>
 
-                            <!-- ACTIVITY -->
+                            <!-- COMMUNITY -->
 
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#activity">
                                         <h4 class="panel-title">
-                                            <span class="glyphicon glyphicon-eye-open" /> Activity
+                                            <span class="glyphicon glyphicon-eye-open" /> Community
                                         </h4>
                                     </a>
                                 </div>
@@ -181,6 +181,13 @@
                                 <div id="activity" class="panel-collapse collapse #{navigationBean.index == 4 ? 'in' : ''}">
                                     <div class="panel-body">
                                         <table class="table">
+                                            <tr>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Users" action="#{userBean.users()}" />
+                                                    </h:form>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td><a href="#">Following</a></td>
                                             </tr>

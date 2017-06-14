@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.*;
+import servlet.MusicFileServlet;
 
 /**
  *
@@ -34,6 +35,7 @@ public class UserBean implements Serializable {
     private UserDAO userDAO;
     private FolderDAO folderDAO;
     private PlaylistDAO playlistDAO;
+    private MusicFileDAO musicFileDAO;
 
     /**
      * Creates a new instance of UserBean
@@ -42,6 +44,7 @@ public class UserBean implements Serializable {
         userDAO = new UserDAO();
         folderDAO = new FolderDAO();
         playlistDAO = new PlaylistDAO();
+        musicFileDAO = new MusicFileDAO();
     }
 
     @PostConstruct
@@ -116,6 +119,38 @@ public class UserBean implements Serializable {
         this.email = email;
     }
 
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public FolderDAO getFolderDAO() {
+        return folderDAO;
+    }
+
+    public void setFolderDAO(FolderDAO folderDAO) {
+        this.folderDAO = folderDAO;
+    }
+
+    public PlaylistDAO getPlaylistDAO() {
+        return playlistDAO;
+    }
+
+    public void setPlaylistDAO(PlaylistDAO playlistDAO) {
+        this.playlistDAO = playlistDAO;
+    }
+
+    public MusicFileDAO getMusicFileDAO() {
+        return musicFileDAO;
+    }
+
+    public void setMusicFileDAO(MusicFileDAO musicFileDAO) {
+        this.musicFileDAO = musicFileDAO;
+    }
+
     public String signIn() {
         User user = userDAO.getUserByEmailAndPassword(email, password);
 
@@ -155,7 +190,7 @@ public class UserBean implements Serializable {
     }
 
     public String createUser() {
-        if (password != null && password.equals(passwordConfirm)) {
+        if (password != null && !password.equals("") && password.equals(passwordConfirm)) {
             User user = new User(email, password, firstName, lastName, pseudo);
 
             user = userDAO.createEntity(user);
@@ -173,6 +208,8 @@ public class UserBean implements Serializable {
                 FacesContext context = FacesContext.getCurrentInstance();
                 SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
                 sharedUserBean.addOnlineUser(currentUser);
+                
+                MusicFileServlet.createDir(String.valueOf(currentUser.id));
             }
 
             return "index?faces-redirect=true";
@@ -183,14 +220,26 @@ public class UserBean implements Serializable {
 
     public String updateUser() {
 
-        if (email != null) {
+        if (email != null && !email.equals("")) {
             currentUser.email = email;
         }
 
-        if (password != null && password.equals(passwordConfirm)) {
-            //currentUser.password = password;
+        if (password != null && !password.equals("") && password.equals(passwordConfirm)) {
+            currentUser.password = password;
         }
-        
+
+        if (firstName != null && !firstName.equals("")) {
+            currentUser.firstName = firstName;
+        }
+
+        if (lastName != null && !lastName.equals("")) {
+            currentUser.lastName = lastName;
+        }
+
+        if (pseudo != null && !pseudo.equals("")) {
+            currentUser.pseudo = pseudo;
+        }
+
         userDAO.updateEntity(currentUser);
 
         return "profile?faces-redirect=true";
@@ -204,5 +253,9 @@ public class UserBean implements Serializable {
         profileUser = user;
 
         return "profile?faces-redirect=true";
+    }
+
+    public String users() {
+        return "users?faces-redirect=true";
     }
 }

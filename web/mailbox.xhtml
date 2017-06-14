@@ -2,7 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -13,13 +16,55 @@
 
                         <c:choose>
                             <c:when test="#{mailboxBean.display == 'new'}">
-                                New Message
+
+                                <div id="newmail" class="container">
+                                    <h1><center>New Mail</center></h1>
+
+                                    <h:form id="signupform" role="form">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                <h:selectOneMenu id="mailtarget" class="form-control input-lg" value="#{mailboxBean.target}" p:required="required" requiredMessage="Required">
+                                                    <f:selectItems value="#{userBean.userDAO.entities}" var="u" itemValue="#{u.id}" itemLabel="#{u.pseudo}" />
+                                                </h:selectOneMenu>
+                                                <h:message showSummary="true" showDetail="false" for="mailtarget"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                <h:inputText id="mailtitle" class="form-control input-lg" p:placeholder="Title" value="#{mailboxBean.title}" p:required="required" requiredMessage="Required" />
+                                                <h:message showSummary="true" showDetail="false" for="mailtitle"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                <h:inputTextarea id="mailcontent" class="form-control input-lg" p:placeholder="Content" value="#{mailboxBean.content}" p:required="required" requiredMessage="Required" />
+                                                <h:message showSummary="true" showDetail="false" for="mailcontent"/>
+                                            </div>
+                                        </div>
+
+                                        <h:commandButton class="btn btn-info btn-block btn-lg" value="Send" action="#{mailboxBean.send()}" />
+
+                                    </h:form>
+                                </div>
+
                             </c:when>
                             <c:when test="#{mailboxBean.display == 'sent'}">
-                                Sent Messages
+
+
+
                             </c:when>
                             <c:otherwise>
-                                Inbox
+
+                                <div class="left">
+                                    LOL
+                                </div>
+
+                                <div class="right">
+                                    ESSAI
+                                </div>
+
                             </c:otherwise>
                         </c:choose>
 

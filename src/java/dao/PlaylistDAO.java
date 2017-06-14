@@ -5,8 +5,6 @@
  */
 package dao;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import model.*;
 
@@ -21,21 +19,6 @@ public class PlaylistDAO extends MainDAO<Playlist> {
     }
 
     public List<Playlist> getPlaylistsByIdUser(int id) {
-        List<Playlist> playlists = new ArrayList<>();
-
-        try {
-            String query = "SELECT " + fullFields + " FROM " + table + " WHERE id_user = " + id + "";
-
-            ResultSet rs = Connexion.getInstance().executeQuery(query);
-
-            while (rs.next()) {
-                playlists.add(mapEntity(rs));
-            }
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        return playlists;
+        return getEntitiesByEntityReferenceId(User.class, id);
     }
 }

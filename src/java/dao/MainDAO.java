@@ -28,7 +28,7 @@ public abstract class MainDAO<T> {
 
     public MainDAO(Class<T> entity) {
         this.entity = entity;
-        this.table = Connexion.getTableName(getESLEntityName());
+        this.table = Connexion.getTableName(getESLEntityName(entity));
         this.idField = getESLFieldNameByField(getESLIdField());
         this.fields = getFieldsAsString();
         this.fullFields = idField + ", " + fields;
@@ -301,13 +301,13 @@ public abstract class MainDAO<T> {
      *
      * @return
      */
-    private String getESLEntityName() {
+    private String getESLEntityName(Class c) {
         String reference = null;
 
         try {
-            Annotation annotation = entity.getAnnotation(ESLEntity.class);
+            Annotation annotation = c.getAnnotation(ESLEntity.class);
 
-            if (annotation instanceof ESLEntity) {
+            if (annotation != null) {
 
                 ESLEntity entity = (ESLEntity) annotation;
 
@@ -346,6 +346,45 @@ public abstract class MainDAO<T> {
         }
 
         return idField;
+    }
+
+    protected String getESLFieldNameByESLReferenceEntity(Class c) {
+        String name = null;
+
+        try {
+
+            Field field = getFieldByESLReferenceEntity(c);
+
+            if (field != null) {
+                name = getESLFieldNameByField(field);
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return name;
+    }
+
+    private Field getFieldByESLReferenceEntity(Class c) {
+        Field field = null;
+
+        List<Field> fields = getFields(false);
+
+        int i = 0;
+
+        while (i < fields.size() && field == null) {
+            Annotation annotation = fields.get(i).getAnnotation(ESLReference.class);
+            if (annotation != null) {
+                ESLReference reference = (ESLReference) annotation;
+                if (reference.entity().equals(c)) {
+                    field = fields.get(i);
+                }
+            }
+            i++;
+        }
+
+        return field;
     }
 
     /**
@@ -431,5 +470,24 @@ public abstract class MainDAO<T> {
         }
 
         return need;
+    }
+    
+    protected List<T> getEntitiesByEntityReferenceId(Class c, int id) {
+        List<T> entities = new ArrayList<>();
+
+        try {
+            String query = "SELECT " + fullFields + " FROM " + table + " WHERE " + getESLFieldNameByESLReferenceEntity(c) + " = " + id;
+
+            ResultSet rs = Connexion.getInstance().executeQuery(query);
+
+            while (rs.next()) {
+                entities.add(mapEntity(rs));
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return entities;
     }
 }

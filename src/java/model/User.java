@@ -44,6 +44,8 @@ public class User {
         this.id = -1;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
     }
 
     public User(String email, String password, String firstName, String lastName, String pseudo) {
@@ -55,6 +57,8 @@ public class User {
         this.pseudo = pseudo;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
     }
 
     public User(int id, String email, String password, String firstName, String lastName, String pseudo) {
@@ -66,6 +70,8 @@ public class User {
         this.pseudo = pseudo;
         this.folders = new ArrayList<>();
         this.playlists = new ArrayList<>();
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
     }
 
     public int getId() {

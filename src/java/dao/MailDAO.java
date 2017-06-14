@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.*;
 
@@ -12,13 +13,15 @@ import model.*;
  *
  * @author tkint
  */
-public class FolderDAO extends MainDAO<Folder> {
+public class MailDAO extends MainDAO<Mail> {
 
-    public FolderDAO() {
-        super(Folder.class);
+    private FolderDAO folderDAO;
+    
+    public MailDAO() {
+        super(Mail.class);
     }
 
-    public List<Folder> getFoldersByIdUser(int id) {
+    public List<Mail> getMailByIdUser(int id) {
         return getEntitiesByEntityReferenceId(User.class, id);
     }
 }

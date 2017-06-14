@@ -23,7 +23,7 @@
                                     <img alt="" src="resources/images/Sound.jpg" />
                                 </div>
                                 <div class="card-info">
-                                    <span class="card-title">#{userBean.profileUser.fullName}</span>
+                                    <span class="card-title">#{userBean.profileUser.pseudo}</span>
                                 </div>
                             </div>
 
@@ -58,45 +58,113 @@
                             <div class="well">
                                 <div class="tab-content">
                                     <div class="tab-pane fade in active" id="tab1">
-                                        <c:when test="#{userBean.currentUser.id = userBean.profileUser.id}">
-                                            
-                                            <h:form id="signupform" role="form">
+                                        <c:choose>
+
+                                            <c:when test="#{userBean.currentUser.id eq userBean.profileUser.id}">
+
+                                                <h:form id="updateform" role="form">
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <h:inputText id="email" class="form-control input-lg" p:placeholder="E-Mail" value="#{userBean.email}" />
+                                                            <h:message showSummary="true" showDetail="false" for="email"/>
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <h:inputText id="pseudo" class="form-control input-lg" p:placeholder="Pseudo" value="#{userBean.pseudo}" />
+                                                            <h:message showSummary="true" showDetail="false" for="pseudo"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <h:inputSecret id="password" class="form-control input-lg" p:placeholder="Password" value="#{userBean.password}" />
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <h:inputSecret id="passwordConfirm" class="form-control input-lg" p:placeholder="Confirmation" value="#{userBean.passwordConfirm}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <h:inputText id="firstName" class="form-control input-lg" p:placeholder="First Name" value="#{userBean.firstName}" />
+                                                            <h:message showSummary="true" showDetail="false" for="firstName"/>
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <h:inputText id="lastName" class="form-control input-lg" p:placeholder="Last Name" value="#{userBean.lastName}" />
+                                                            <h:message showSummary="true" showDetail="false" for="lastName"/>
+                                                        </div>
+                                                    </div>
+                                                    <h:commandButton class="btn btn-info btn-block btn-lg" value="Update" action="#{userBean.updateUser()}" />
+                                                </h:form>
+
+                                            </c:when>
+
+                                            <c:otherwise>
+
                                                 <div class="row">
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                                        <h:inputText id="email" class="form-control input-lg" p:placeholder="E-Mail" value="#{userBean.email}" />
-                                                        <h:message showSummary="true" showDetail="false" for="email"/>
+                                                        #{userBean.profileUser.email}
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                                        <h:inputText id="pseudo" class="form-control input-lg" p:placeholder="Pseudo" value="#{userBean.pseudo}" />
-                                                        <h:message showSummary="true" showDetail="false" for="pseudo"/>
+                                                        #{userBean.profileUser.pseudo}
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                                        <h:inputSecret id="password" class="form-control input-lg" p:placeholder="Password" value="#{userBean.password}" />
+                                                        #{userBean.profileUser.firstName}
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                                        <h:inputSecret id="passwordConfirm" class="form-control input-lg" p:placeholder="Confirmation" value="#{userBean.passwordConfirm}" />
+                                                        #{userBean.profileUser.lastName}
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-xs-6 col-sm-6 col-md-6">
-                                                        <h:inputText id="firstName" class="form-control input-lg" p:placeholder="First Name" value="#{userBean.firstName}" />
-                                                        <h:message showSummary="true" showDetail="false" for="firstName"/>
-                                                    </div>
-                                                    <div class="col-xs-6 col-sm-6 col-md-6">
-                                                        <h:inputText id="lastName" class="form-control input-lg" p:placeholder="Last Name" value="#{userBean.lastName}" />
-                                                        <h:message showSummary="true" showDetail="false" for="lastName"/>
-                                                    </div>
-                                                </div>
-                                                <h:commandButton class="btn btn-info btn-block btn-lg" value="Update" action="#{userBean.updateUser()}" />
-                                            </h:form>
-                                            
-                                        </c:when>
+
+                                            </c:otherwise>
+
+                                        </c:choose>
                                     </div>
                                     <div class="tab-pane fade in" id="tab2">
-                                        <h3>This is tab 2</h3>
+                                        <div id="musicfile-list">
+                                            <div id="musicfile-list-items" class="row">
+                                                <c:choose>
+                                                    <c:when test="#{userBean.currentUser.id eq userBean.profileUser.id}">
+
+                                                        <ui:repeat value="#{userBean.musicFileDAO.getMusicFilesByIdUser(userBean.currentUser.id)}" var="m">
+                                                            <div class="grid-item col-xs-3 col-lg-3">
+                                                                <h:form>
+                                                                    <h:commandLink action="#{musicFileBean.open(m)}">
+                                                                        <div class="thumbnail">
+                                                                            <img src="resources/images/Sound.jpg" alt="sound" />
+
+                                                                            <div class="caption">
+                                                                                <h3><h:outputLabel value="#{m.name}" /></h3>
+                                                                                <h6><h:outputLabel value="#{m.duration}" /></h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </h:commandLink>
+                                                                </h:form>
+                                                            </div>
+                                                        </ui:repeat>
+
+                                                    </c:when>
+
+                                                    <c:otherwise>
+
+                                                        <ui:repeat value="#{userBean.musicFileDAO.getSharedMusicFilesByIdUser(userBean.profileUser.id)}" var="m">
+                                                            <div class="grid-item col-xs-3 col-lg-3">
+                                                                <div class="thumbnail">
+                                                                    <img src="resources/images/Sound.jpg" alt="sound" />
+
+                                                                    <div class="caption">
+                                                                        <h3>#{m.name}</h3>
+                                                                        <h6>#{m.duration}</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ui:repeat>
+
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane fade in" id="tab3">
                                         <h3>This is tab 3</h3>

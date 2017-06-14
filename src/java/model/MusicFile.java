@@ -6,6 +6,7 @@
 package model;
 
 import annotations.*;
+import java.io.File;
 
 /**
  *
@@ -18,16 +19,41 @@ public class MusicFile {
     @ESLField(name = "id_musicfile")
     public int id;
 
+    @ESLField(name = "id_folder")
+    @ESLReference(entity = Folder.class)
+    public int idFolder;
+
     @ESLField(name = "name")
     public String name;
 
-    @ESLField(name = "duration")
-    public float duration;
+    @ESLField(name = "extension")
+    public String extension;
 
-    public MusicFile(int id, String name, float duration) {
-        this.id = id;
+    @ESLField(name = "duration")
+    public int duration;
+
+    @ESLField(name = "shared")
+    public boolean shared;
+
+    @ESLField(name = "absolutepath")
+    public String absolutePath;
+
+    @ESLField(name = "path")
+    public String path;
+
+    public File file;
+
+    public MusicFile() {
+    }
+
+    public MusicFile(int idFolder, String name, String extension, int duration, boolean shared) {
+        this.idFolder = idFolder;
         this.name = name;
+        this.extension = extension;
         this.duration = duration;
+        this.shared = shared;
+        this.absolutePath = "";
+        this.path = "";
     }
 
     public int getId() {
@@ -38,6 +64,14 @@ public class MusicFile {
         this.id = id;
     }
 
+    public int getIdFolder() {
+        return idFolder;
+    }
+
+    public void setIdFolder(int idFolder) {
+        this.idFolder = idFolder;
+    }
+
     public String getName() {
         return name;
     }
@@ -46,12 +80,52 @@ public class MusicFile {
         this.name = name;
     }
 
-    public float getDuration() {
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     @Override

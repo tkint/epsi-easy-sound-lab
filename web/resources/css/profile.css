@@ -101,3 +101,36 @@ and open the template in the editor.
 .btn-pref .btn {
     -webkit-border-radius:0 !important;
 }
+
+#updateform input {
+    margin: 10px;
+}
+
+#musicfile-list {
+    padding: 10px 20px;
+    margin-bottom: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#musicfile-list a {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#musicfile-list label {
+    cursor: pointer;
+}
+
+#musicfile-list a .thumbnail {
+    margin: 0;
+}
+
+#musicfile-list a:hover .thumbnail {
+    background: #339966;
+}
+
+#musicfile-list .grid-item {
+    padding: 5px;
+}
