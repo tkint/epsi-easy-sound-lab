@@ -29,12 +29,14 @@ public class DatabaseConfigFactory implements ObjectFactory {
         String playlist = (String)reference.get("playlist").getContent();
         String musicfile = (String)reference.get("musicfile").getContent();
         String mail = (String)reference.get("mail").getContent();
+        String follow = (String)reference.get("follow").getContent();
         
         config.setUser(user);
         config.setFolder(folder);
         config.setPlaylist(playlist);
         config.setMusicfile(musicfile);
         config.setMail(mail);
+        config.setFollow(follow);
         
         return config;
     }

@@ -20,7 +20,7 @@ public class MusicFile {
     public int id;
 
     @ESLField(name = "id_folder")
-    @ESLReference(entity = Folder.class)
+    @ESLOneToMany(entity = Folder.class)
     public int idFolder;
 
     @ESLField(name = "name")

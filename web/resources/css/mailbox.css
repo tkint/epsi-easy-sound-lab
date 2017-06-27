@@ -8,3 +8,73 @@ and open the template in the editor.
     Author     : tkint
 */
 
+#user-search-result {
+    display: block;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+}
+
+#user-search-result ul {
+    padding: 0;
+    border: 1px black solid;
+}
+
+#user-search-result ul li {
+    display: block;
+    padding: 5px;
+    margin: 0;
+    height: 25px;
+    cursor: pointer;
+    border-bottom: 1px gray solid;
+}
+
+#user-search-result ul li:hover {
+    background-color: #EEE;
+}
+
+#clear-cross {
+    cursor: pointer;
+}
+
+.email-page {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.email-page h2 {
+    margin: 0;
+}
+
+.email-left {
+    float: left;
+    min-width: 20%;
+    max-width: 20%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-top: 50px;
+    border-right: 1px solid black;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.email-left .btn-pref {
+    width: 100%;
+}
+
+.email-right {
+    float: left;
+    min-width: 80%;
+    max-width: 80%;
+    height: 100%;
+    padding: 10px;
+    margin-left: 20%;
+}
+
+.email-right #email-content {
+    visibility: hidden;
+    margin-top: 10px;
+}

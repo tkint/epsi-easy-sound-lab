@@ -31,7 +31,7 @@ public class PlaylistBean implements Serializable {
      * Creates a new instance of PlaylistBean
      */
     public PlaylistBean() {
-        playlistDAO = new PlaylistDAO();
+        playlistDAO = PlaylistDAO.getInstance();
     }
 
     public Playlist getCurrentPlaylist() {

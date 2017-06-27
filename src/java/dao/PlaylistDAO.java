@@ -14,11 +14,26 @@ import model.*;
  */
 public class PlaylistDAO extends MainDAO<Playlist> {
 
-    public PlaylistDAO() {
+    private static PlaylistDAO instance;
+
+    private PlaylistDAO() {
         super(Playlist.class);
+    }
+
+    public static PlaylistDAO getInstance() {
+        if (instance == null) {
+            instance = new PlaylistDAO();
+        }
+        return instance;
     }
 
     public List<Playlist> getPlaylistsByIdUser(int id) {
         return getEntitiesByEntityReferenceId(User.class, id);
+    }
+
+    public List<Playlist> getSharedPlaylistsByIdUser(int id) {
+        List<Playlist> playList = getPlaylistsByIdUser(id);
+        playList.removeIf(p -> !p.shared);
+        return playList;
     }
 }

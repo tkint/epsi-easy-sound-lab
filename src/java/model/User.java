@@ -14,7 +14,7 @@ import java.util.List;
  * @author tkint
  */
 @ESLEntity(name = "user")
-public class User {
+public class User extends JSONAble {
 
     @ESLId
     @ESLField(name = "id_user")
@@ -34,6 +34,12 @@ public class User {
 
     @ESLField(name = "pseudo")
     public String pseudo;
+
+    @ESLField(name = "public_email")
+    public boolean publicEmail;
+
+    @ESLField(name = "public_name")
+    public boolean publicName;
 
     public List<Folder> folders;
     public List<Playlist> playlists;
@@ -152,6 +158,22 @@ public class User {
 
     public void setFollowing(List<User> following) {
         this.following = following;
+    }
+
+    public boolean isPublicEmail() {
+        return publicEmail;
+    }
+
+    public void setPublicEmail(boolean publicEmail) {
+        this.publicEmail = publicEmail;
+    }
+
+    public boolean isPublicName() {
+        return publicName;
+    }
+
+    public void setPublicName(boolean publicName) {
+        this.publicName = publicName;
     }
 
     @Override
@@ -307,6 +329,60 @@ public class User {
         while (i < playlists.size() && !trouve) {
             if (playlists.get(i).id == id) {
                 playlists.remove(i);
+                trouve = true;
+            }
+            i++;
+        }
+    }
+
+    public User getFollowerById(int id) {
+        int i = 0;
+        User user = null;
+
+        while (i < followers.size() && user == null) {
+            if (followers.get(i).id == id) {
+                user = followers.get(i);
+            }
+            i++;
+        }
+
+        return user;
+    }
+
+    public boolean isFollowedByUser(User user) {
+        boolean followed = false;
+        int i = 0;
+
+        while (i < followers.size() && !followed) {
+            if (followers.get(i).id == user.id) {
+                followed = true;
+            }
+            i++;
+        }
+
+        return followed;
+    }
+
+    public void deleteFollower(User user) {
+        int i = 0;
+        boolean trouve = false;
+
+        while (i < followers.size() && !trouve) {
+            if (followers.get(i).id == user.id) {
+                followers.remove(i);
+                trouve = true;
+            }
+            i++;
+        }
+    }
+
+    public void deleteFollowing(User user) {
+        int i = 0;
+        boolean trouve = false;
+
+        while (i < following.size() && !trouve) {
+            if (following.get(i).id == user.id) {
+                following.remove(i);
                 trouve = true;
             }
             i++;

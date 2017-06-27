@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import model.*;
 
@@ -15,13 +14,32 @@ import model.*;
  */
 public class MailDAO extends MainDAO<Mail> {
 
-    private FolderDAO folderDAO;
-    
-    public MailDAO() {
+    private static MailDAO instance;
+
+    private MailDAO() {
         super(Mail.class);
     }
 
-    public List<Mail> getMailByIdUser(int id) {
-        return getEntitiesByEntityReferenceId(User.class, id);
+    public static MailDAO getInstance() {
+        if (instance == null) {
+            instance = new MailDAO();
+        }
+        return instance;
+    }
+
+    public List<Mail> getMailsByIdAuthor(int id) {
+        return getEntitiesByEntityReferenceId(User.class, id, 0);
+    }
+    
+    public List<Mail> getMailsByIdTarget(int id) {
+        return getEntitiesByEntityReferenceId(User.class, id, 1);
+    }
+    
+    public List<Integer> getMailsIdByIdAuthor(int id) {
+        return getEntitiesIdByEntityReferenceId(User.class, id, 0);
+    }
+    
+    public List<Integer> getMailsIdByIdTarget(int id) {
+        return getEntitiesIdByEntityReferenceId(User.class, id, 1);
     }
 }

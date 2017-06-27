@@ -14,18 +14,35 @@
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
 
+                        <div class="email-page">
+                            <h2>
+                                <c:choose>
+                                    <c:when test="#{mailboxBean.display == 'new'}">
+                                        New message
+                                    </c:when>
+                                    <c:when test="#{mailboxBean.display == 'sent'}">
+                                        Sentbox
+                                    </c:when>
+                                    <c:otherwise>
+                                        Inbox
+                                    </c:otherwise>
+                                </c:choose>
+                            </h2>
+                        </div>
+
                         <c:choose>
                             <c:when test="#{mailboxBean.display == 'new'}">
 
                                 <div id="newmail" class="container">
-                                    <h1><center>New Mail</center></h1>
-
                                     <h:form id="signupform" role="form">
                                         <div class="row">
                                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                                <h:selectOneMenu id="mailtarget" class="form-control input-lg" value="#{mailboxBean.target}" p:required="required" requiredMessage="Required">
-                                                    <f:selectItems value="#{userBean.userDAO.entities}" var="u" itemValue="#{u.id}" itemLabel="#{u.pseudo}" />
-                                                </h:selectOneMenu>
+                                                <div class="input-group">
+                                                    <h:inputText id="user-search-input" class="form-control input-lg" p:placeholder="To" p:autocomplete="off" onkeyup="sendInfo(); return false" p:aria-describedby="clear-cross"/>
+                                                    <span id="clear-cross" class="input-group-addon" onClick="clearField()"><span class="glyphicon glyphicon-remove"></span></span>
+                                                </div>
+                                                <span id="user-search-result"></span>
+                                                <h:inputHidden id="mailtarget" value="#{mailboxBean.idTarget}" />
                                                 <h:message showSummary="true" showDetail="false" for="mailtarget"/>
                                             </div>
                                         </div>
@@ -52,20 +69,62 @@
                             </c:when>
                             <c:when test="#{mailboxBean.display == 'sent'}">
 
+                                <div class="email-left">
+                                    <div class="btn-pref btn-group btn-group-vertical btn-group-lg" role="group" aria-label="...">
+                                        <ui:repeat value="#{mailboxBean.mailDAO.getMailsByIdAuthor(userBean.currentUser.id)}" var="m">
 
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-default btn-xs" onclick="displayEmail(#{m.toJSON()})">
+                                                    <div align="left">
+                                                        <h4>#{m.title}</h4>
+                                                        #{userBean.userDAO.getEntityById(m.idTarget).pseudo}
+                                                    </div>
+                                                </button>
+                                            </div>
+
+                                        </ui:repeat>
+                                    </div>
+                                </div>
 
                             </c:when>
                             <c:otherwise>
 
-                                <div class="left">
-                                    LOL
-                                </div>
+                                <div class="email-left">
+                                    <div class="btn-pref btn-group btn-group-vertical btn-group-lg" role="group" aria-label="...">
+                                        <ui:repeat value="#{mailboxBean.mailDAO.getMailsByIdTarget(userBean.currentUser.id)}" var="m">
 
-                                <div class="right">
-                                    ESSAI
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-default btn-xs" onclick="displayEmail(#{m.toJSON()})">
+                                                    <div align="left">
+                                                        <h4>#{m.title}</h4>
+                                                        #{userBean.userDAO.getEntityById(m.idTarget).pseudo}
+                                                    </div>
+                                                </button>
+                                            </div>
+
+                                        </ui:repeat>
+                                    </div>
                                 </div>
 
                             </c:otherwise>
+                        </c:choose>
+
+                        <c:choose>
+                            <c:when test="#{mailboxBean.display != 'new'}">
+                                <div class="email-right">
+                                    <div id="email-author" class="author">
+
+                                    </div>
+
+                                    <div id="email-target" class="target">
+
+                                    </div>
+
+                                    <div id="email-content" class="content">
+
+                                    </div>
+                                </div>
+                            </c:when>
                         </c:choose>
 
                     </c:when>

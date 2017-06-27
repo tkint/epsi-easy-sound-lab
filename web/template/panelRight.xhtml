@@ -25,23 +25,6 @@
                         </ul>
                         
                     </div>
-
-                    <script>
-                        $(document).ready(function () {
-                            $('#panelRightButton').click(function (event) {
-                                event.preventDefault();
-                                if ($('#panelRight').hasClass('switch')) {
-                                    $('#panelRight').removeClass('switch');
-                                    $('#content').removeClass('switch');
-                                    $('#panelRightButton').removeClass('switch');
-                                } else {
-                                    $('#panelRight').addClass('switch');
-                                    $('#content').addClass('switch');
-                                    $('#panelRightButton').addClass('switch');
-                                }
-                            });
-                        });
-                    </script>
                     
                 </c:when>
             </c:choose>

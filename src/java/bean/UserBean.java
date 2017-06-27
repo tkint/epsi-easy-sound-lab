@@ -36,15 +36,17 @@ public class UserBean implements Serializable {
     private FolderDAO folderDAO;
     private PlaylistDAO playlistDAO;
     private MusicFileDAO musicFileDAO;
+    private FollowDAO followDAO;
 
     /**
      * Creates a new instance of UserBean
      */
     public UserBean() {
-        userDAO = new UserDAO();
-        folderDAO = new FolderDAO();
-        playlistDAO = new PlaylistDAO();
-        musicFileDAO = new MusicFileDAO();
+        userDAO = UserDAO.getInstance();
+        folderDAO = FolderDAO.getInstance();
+        playlistDAO = PlaylistDAO.getInstance();
+        musicFileDAO = MusicFileDAO.getInstance();
+        followDAO = FollowDAO.getInstance();
     }
 
     @PostConstruct
@@ -162,6 +164,9 @@ public class UserBean implements Serializable {
 
             currentUser.playlists = playlistDAO.getPlaylistsByIdUser(user.id);
 
+            currentUser.followers = userDAO.getFollowersByIdUser(user.id);
+            currentUser.following = userDAO.getFollowersByIdUser(user.id);
+
             email = currentUser.email;
             password = null;
             passwordConfirm = null;
@@ -208,7 +213,7 @@ public class UserBean implements Serializable {
                 FacesContext context = FacesContext.getCurrentInstance();
                 SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
                 sharedUserBean.addOnlineUser(currentUser);
-                
+
                 MusicFileServlet.createDir(String.valueOf(currentUser.id));
             }
 
@@ -245,6 +250,28 @@ public class UserBean implements Serializable {
         return "profile?faces-redirect=true";
     }
 
+    public String follow(User user) {
+        if (currentUser.id != user.id) {
+            Follow follow = new Follow(currentUser.id, user.id);
+
+            if (!user.isFollowedByUser(currentUser)) {
+                followDAO.createEntity(follow);
+
+                currentUser.following.add(user);
+                user.followers.add(currentUser);
+
+                profileUser = user;
+            } else {
+                followDAO.deleteEntity(follow);
+
+                currentUser.deleteFollowing(user);
+                user.deleteFollower(currentUser);
+            }
+        }
+
+        return "";
+    }
+
     public String signup() {
         return "signup?faces-redirect=true";
     }
@@ -252,10 +279,24 @@ public class UserBean implements Serializable {
     public String profile(User user) {
         profileUser = user;
 
+        if (user != null) {
+            profileUser.followers = userDAO.getFollowersByIdUser(profileUser.id);
+            profileUser.following = userDAO.getFollowingsByIdUser(profileUser.id);
+        }
+
         return "profile?faces-redirect=true";
     }
 
     public String users() {
         return "users?faces-redirect=true";
+    }
+
+    public String followers() {
+        return "users?faces-redirect=true";
+    }
+
+    public String following() {
+        return "users?faces-redirect=true";
+
     }
 }

@@ -18,7 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.faces.context.FacesContext;
 
@@ -55,7 +54,7 @@ public class MusicFileServlet extends HttpServlet {
     // Actions ------------------------------------------------------------------------------------
     public void init() throws ServletException {
 
-        this.musicFileDAO = new MusicFileDAO();
+        this.musicFileDAO = MusicFileDAO.getInstance();
 
         // In a Windows environment with the Applicationserver running on the
         // c: volume, the above path is exactly the same as "c:\files".

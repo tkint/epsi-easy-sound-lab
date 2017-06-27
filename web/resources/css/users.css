@@ -1,0 +1,69 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15 juin 2017, 16:51:28
+    Author     : tkint
+*/
+
+#user-list {
+    display: block;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    padding: 10px 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#user-list a {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#user-list label {
+    cursor: pointer;
+}
+
+#user-list a .thumbnail {
+    margin: 0;
+}
+
+#user-list a:hover .thumbnail {
+    background: #339966;
+}
+
+#user-list .grid-item {
+    padding: 5px;
+}
+
+#user-list .list-item {
+    display: inline-block;
+    width: 50%;
+    padding: 5px;
+}
+
+#user-list .list-item .thumbnail {
+    display: inline-block;
+    width: 100%;
+    height: 100px;
+}
+
+#user-list .list-item .thumbnail img {
+    width: 100px;
+    height: 100%;
+    float: left;
+    margin: 0;
+}
+
+#user-list .list-item .thumbnail .caption {
+    padding: 0;
+    margin: 0;
+    padding-left: 110px;
+}

@@ -35,8 +35,8 @@ public class FolderBean implements Serializable {
      * Creates a new instance of FolderBean
      */
     public FolderBean() {
-        folderDAO = new FolderDAO();
-        musicFileDAO = new MusicFileDAO();
+        folderDAO = FolderDAO.getInstance();
+        musicFileDAO = MusicFileDAO.getInstance();
     }
 
     public Folder getCurrentFolder() {

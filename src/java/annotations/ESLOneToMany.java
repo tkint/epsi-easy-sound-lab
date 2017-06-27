@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ESLReference {
+public @interface ESLOneToMany {
 
     public Class entity();
 

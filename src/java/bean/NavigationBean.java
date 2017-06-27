@@ -72,7 +72,7 @@ public class NavigationBean implements Serializable {
         }
     }
     
-    public String getCssFile() throws MalformedURLException {
+    public String getResourceFile() throws MalformedURLException {
         String cssPath;
         FacesContext context = FacesContext.getCurrentInstance();
         String page = context.getViewRoot().getViewId();

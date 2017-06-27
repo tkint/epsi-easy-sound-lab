@@ -13,8 +13,8 @@
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
 
-                        <div id="folder-list">
-                            <div id="folder-list-items" class="row">
+                        <div id="user-list">
+                            <div id="user-list-items" class="row">
                                 <ui:repeat value="#{userBean.userDAO.entities}" var="u">
                                     <div class="grid-item col-xs-3 col-lg-3">
                                         <h:form>
@@ -24,6 +24,16 @@
 
                                                     <div class="caption">
                                                         <h3><h:outputLabel value="#{u.pseudo}" /></h3>
+                                                        <ui:fragment rendered="#{userBean.currentUser.id != u.id}" transient="true">
+                                                            <h:commandLink class="btn btn-default" action="#{userBean.follow(u)}">
+                                                                <ui:fragment rendered="#{!userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true" /> Follow
+                                                                </ui:fragment>
+                                                                <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                    <span class="glyphicon glyphicon-minus" aria-hidden="true" /> Unfollow
+                                                                </ui:fragment>
+                                                            </h:commandLink>
+                                                        </ui:fragment>
                                                     </div>
                                                 </div>
                                             </h:commandLink>

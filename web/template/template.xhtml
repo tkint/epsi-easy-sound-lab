@@ -16,7 +16,7 @@
 
         <h:outputStylesheet name="css/main.css" />
         <h:outputStylesheet name="css/template.css" />
-        <h:outputStylesheet name="css/#{navigationBean.cssFile}.css" />
+        <h:outputStylesheet name="css/#{navigationBean.resourceFile}.css" />
 
         <h:outputScript name="js/dropzone.js" />
 
@@ -66,6 +66,9 @@
                 <ui:include src="panelBottom.xhtml" />
             </ui:insert>
         </div>
+
+        <h:outputScript name="js/script.js" />
+        <h:outputScript name="js/#{navigationBean.resourceFile}.js" />
 
     </h:body>
 

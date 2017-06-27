@@ -16,12 +16,12 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ESLField {
+public @interface ESLManyToMany {
 
     public String name();
     
-    public boolean select() default true;
+    public String table();
     
-    public boolean insert() default true;
+    public Class entity();
 
 }

@@ -21,7 +21,7 @@ public class Folder {
     public int id;
 
     @ESLField(name = "id_user")
-    @ESLReference(entity = User.class)
+    @ESLOneToMany(entity = User.class)
     public int idUser;
 
     @ESLField(name = "name")

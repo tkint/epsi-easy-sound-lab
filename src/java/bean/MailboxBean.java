@@ -11,6 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import model.Mail;
+import model.User;
 
 /**
  *
@@ -20,27 +21,29 @@ import model.Mail;
 @SessionScoped
 public class MailboxBean implements Serializable {
 
-    private int target;
+    private int idTarget;
     private String title;
     private String content;
 
+    private User target;
+
     private String display;
-    
+
     private MailDAO mailDAO;
 
     /**
      * Creates a new instance of FolderBean
      */
     public MailboxBean() {
-        mailDAO = new MailDAO();
+        mailDAO = MailDAO.getInstance();
     }
 
-    public int getTarget() {
-        return target;
+    public int getIdTarget() {
+        return idTarget;
     }
 
-    public void setTarget(int target) {
-        this.target = target;
+    public void setIdTarget(int idTarget) {
+        this.idTarget = idTarget;
     }
 
     public String getTitle() {
@@ -59,6 +62,14 @@ public class MailboxBean implements Serializable {
         this.content = content;
     }
 
+    public User getTarget() {
+        return target;
+    }
+
+    public void setTarget(User target) {
+        this.target = target;
+    }
+
     public String getDisplay() {
         return display;
     }
@@ -66,18 +77,32 @@ public class MailboxBean implements Serializable {
     public void setDisplay(String display) {
         this.display = display;
     }
-    
+
+    public MailDAO getMailDAO() {
+        return mailDAO;
+    }
+
+    public void setMailDAO(MailDAO mailDAO) {
+        this.mailDAO = mailDAO;
+    }
+
     public String send() {
         FacesContext context = FacesContext.getCurrentInstance();
         UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
-        
-        display = "inbox";
-        
-        Mail mail = new Mail(userBean.getCurrentUser().id, target, title, content);
-        
-        mailDAO.createEntity(mail);
 
-        return "mailbox?faces-redirect=true";
+        Mail mail = new Mail(userBean.getCurrentUser().id, idTarget, title, content);
+
+        mail = mailDAO.createEntity(mail);
+
+        if (mail.id != -1) {
+            idTarget = -1;
+            title = null;
+            content = null;
+            
+            display = "inbox";
+        }
+
+        return sent();
     }
 
     public String newMail() {

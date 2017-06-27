@@ -35,7 +35,7 @@ public class MusicFileBean implements Serializable {
      * Creates a new instance of MusicFileBean
      */
     public MusicFileBean() {
-        musicFileDAO = new MusicFileDAO();
+        musicFileDAO = MusicFileDAO.getInstance();
     }
 
     public MusicFile getCurrentMusicFile() {
@@ -67,7 +67,7 @@ public class MusicFileBean implements Serializable {
             currentMusicFile = musicFile;
             currentMusicFileNewName = musicFile.name;
 
-            currentMusicFile.file = new File("file/" + getFilePath(null));
+            currentMusicFile.file = new File("musicfiles/" + getFilePath(null));
 
             return "editor?faces-redirect=true";
         }

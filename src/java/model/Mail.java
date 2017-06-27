@@ -12,18 +12,18 @@ import annotations.*;
  * @author Thomas
  */
 @ESLEntity(name = "mail")
-public class Mail {
+public class Mail extends JSONAble {
 
     @ESLId
     @ESLField(name = "id_mail")
     public int id;
 
     @ESLField(name = "id_author")
-    @ESLReference(entity = User.class)
+    @ESLOneToMany(entity = User.class)
     public int idAuthor;
 
     @ESLField(name = "id_target")
-    @ESLReference(entity = User.class)
+    @ESLOneToMany(entity = User.class)
     public int idTarget;
 
     @ESLField(name = "title")
@@ -32,7 +32,7 @@ public class Mail {
     @ESLField(name = "content")
     public String content;
 
-    @ESLField(name = "datetime")
+    @ESLField(name = "datetime", insert = false)
     public String datetime;
 
     public Mail() {

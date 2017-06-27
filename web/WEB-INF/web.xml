@@ -19,7 +19,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>musicFileServlet</servlet-name>
-        <url-pattern>/file/*</url-pattern>
+        <url-pattern>/musicfiles/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

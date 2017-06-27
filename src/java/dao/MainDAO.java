@@ -23,15 +23,22 @@ public abstract class MainDAO<T> {
     private Class<T> entity;
     protected String table;
     protected String idField;
-    protected String fields;
+    protected String selectFields;
+    protected String insertFields;
     protected String fullFields;
 
-    public MainDAO(Class<T> entity) {
+    protected MainDAO(Class<T> entity) {
         this.entity = entity;
         this.table = Connexion.getTableName(getESLEntityName(entity));
         this.idField = getESLFieldNameByField(getESLIdField());
-        this.fields = getFieldsAsString();
-        this.fullFields = idField + ", " + fields;
+        this.selectFields = getFieldsAsString(true);
+        this.insertFields = getFieldsAsString(false);
+
+        if (idField != null) {
+            this.fullFields = idField + ", " + selectFields;
+        } else {
+            this.fullFields = selectFields;
+        }
     }
 
     /**
@@ -93,9 +100,9 @@ public abstract class MainDAO<T> {
         try {
             Connexion connexion = Connexion.getInstance();
 
-            String query = "INSERT INTO " + table + "(" + fields + ") VALUES(";
+            String query = "INSERT INTO " + table + "(" + insertFields + ") VALUES(";
 
-            List<Field> fields = getFields(false);
+            List<Field> fields = getFields(false, false);
 
             for (int i = 0; i < fields.size(); i++) {
                 Field field = fields.get(i);
@@ -140,7 +147,24 @@ public abstract class MainDAO<T> {
         try {
             Connexion connexion = Connexion.getInstance();
 
-            String query = "DELETE FROM " + table + " WHERE " + idField + " = " + getESLIdField().get(entity);
+            String query = "DELETE FROM " + table + " WHERE ";
+
+            if (idField != null) {
+                query += idField + " = " + getESLIdField().get(entity);
+            } else {
+                List<Field> fields = getFields(false, true);
+                for (int i = 0; i < fields.size(); i++) {
+                    Field field = fields.get(i);
+
+                    String fieldName = getESLFieldNameByField(field);
+
+                    query += fieldName + " = " + field.get(entity);
+
+                    if (i < fields.size() - 1) {
+                        query += " AND ";
+                    }
+                }
+            }
 
             nb = connexion.executeUpdate(query);
 
@@ -163,7 +187,7 @@ public abstract class MainDAO<T> {
 
             String query = "UPDATE " + table + " SET ";
 
-            List<Field> fields = getFields(false);
+            List<Field> fields = getFields(false, true);
 
             for (int i = 0; i < fields.size(); i++) {
                 Field field = fields.get(i);
@@ -208,11 +232,14 @@ public abstract class MainDAO<T> {
         T instance = entity.newInstance();
 
         try {
-            Field id = getESLIdField();
-            Object o = rs.getObject(getESLFieldNameByField(getESLIdField()));
-            id.set(instance, o);
+            Object o;
+            if (idField != null) {
+                Field id = getESLIdField();
+                o = rs.getObject(getESLFieldNameByField(getESLIdField()));
+                id.set(instance, o);
+            }
 
-            for (Field field : getFields(false)) {
+            for (Field field : getFields(false, true)) {
                 if (checkIfESLField(field)) {;
                     o = rs.getObject(getESLFieldNameByField(field));
                     field.set(instance, o);
@@ -348,12 +375,12 @@ public abstract class MainDAO<T> {
         return idField;
     }
 
-    protected String getESLFieldNameByESLReferenceEntity(Class c) {
+    protected String getESLFieldNameByESLReferenceEntity(Class c, int n) {
         String name = null;
 
         try {
 
-            Field field = getFieldByESLReferenceEntity(c);
+            Field field = getFieldByESLReferenceEntity(c, n);
 
             if (field != null) {
                 name = getESLFieldNameByField(field);
@@ -366,19 +393,23 @@ public abstract class MainDAO<T> {
         return name;
     }
 
-    private Field getFieldByESLReferenceEntity(Class c) {
+    private Field getFieldByESLReferenceEntity(Class c, int n) {
         Field field = null;
 
-        List<Field> fields = getFields(false);
+        List<Field> fields = getFields(false, true);
 
         int i = 0;
+        int j = 0;
 
         while (i < fields.size() && field == null) {
-            Annotation annotation = fields.get(i).getAnnotation(ESLReference.class);
+            Annotation annotation = fields.get(i).getAnnotation(ESLOneToMany.class);
             if (annotation != null) {
-                ESLReference reference = (ESLReference) annotation;
+                ESLOneToMany reference = (ESLOneToMany) annotation;
                 if (reference.entity().equals(c)) {
-                    field = fields.get(i);
+                    if (j == n) {
+                        field = fields.get(i);
+                    }
+                    j++;
                 }
             }
             i++;
@@ -394,7 +425,7 @@ public abstract class MainDAO<T> {
      * @param idField
      * @return
      */
-    private List<Field> getFields(boolean idField) {
+    private List<Field> getFields(boolean idField, boolean sens) {
         List<Field> fields = new ArrayList<>();
 
         try {
@@ -402,7 +433,10 @@ public abstract class MainDAO<T> {
             for (Field field : entity.getFields()) {
                 if (field.getDeclaredAnnotation(ESLField.class) != null
                         && ((idField && field.equals(getESLIdField())) || !field.equals(getESLIdField()))) {
-                    fields.add(field);
+                    ESLField eslf = (ESLField) field.getDeclaredAnnotation(ESLField.class);
+                    if ((sens && eslf.select()) || (!sens && eslf.insert())) {
+                        fields.add(field);
+                    }
                 }
             }
 
@@ -418,10 +452,10 @@ public abstract class MainDAO<T> {
      *
      * @return
      */
-    private String getFieldsAsString() {
+    private String getFieldsAsString(boolean sens) {
         String s = "";
 
-        List<Field> fields = getFields(false);
+        List<Field> fields = getFields(false, sens);
 
         for (int i = 0; i < fields.size(); i++) {
             s += getESLFieldNameByField(fields.get(i));
@@ -471,12 +505,16 @@ public abstract class MainDAO<T> {
 
         return need;
     }
-    
+
     protected List<T> getEntitiesByEntityReferenceId(Class c, int id) {
+        return getEntitiesByEntityReferenceId(c, id, 0);
+    }
+
+    protected List<T> getEntitiesByEntityReferenceId(Class c, int id, int n) {
         List<T> entities = new ArrayList<>();
 
         try {
-            String query = "SELECT " + fullFields + " FROM " + table + " WHERE " + getESLFieldNameByESLReferenceEntity(c) + " = " + id;
+            String query = "SELECT " + fullFields + " FROM " + table + " WHERE " + getESLFieldNameByESLReferenceEntity(c, n) + " = " + id;
 
             ResultSet rs = Connexion.getInstance().executeQuery(query);
 
@@ -489,5 +527,24 @@ public abstract class MainDAO<T> {
         }
 
         return entities;
+    }
+
+    protected List<Integer> getEntitiesIdByEntityReferenceId(Class c, int id, int n) {
+        List<Integer> ids = new ArrayList<>();
+
+        try {
+            String query = "SELECT " + idField + " FROM " + table + " WHERE " + getESLFieldNameByESLReferenceEntity(c, n) + " = " + id;
+
+            ResultSet rs = Connexion.getInstance().executeQuery(query);
+
+            while (rs.next()) {
+                ids.add(rs.getInt(1));
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return ids;
     }
 }

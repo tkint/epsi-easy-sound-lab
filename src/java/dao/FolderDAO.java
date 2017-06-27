@@ -14,8 +14,17 @@ import model.*;
  */
 public class FolderDAO extends MainDAO<Folder> {
 
-    public FolderDAO() {
+    private static FolderDAO instance;
+    
+    private FolderDAO() {
         super(Folder.class);
+    }
+
+    public static FolderDAO getInstance() {
+        if (instance == null) {
+            instance = new FolderDAO();
+        }
+        return instance;
     }
 
     public List<Folder> getFoldersByIdUser(int id) {
