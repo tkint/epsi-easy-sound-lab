@@ -17,10 +17,12 @@ public class MusicFileDAO extends MainDAO<MusicFile> {
 
     private static MusicFileDAO instance;
     private FolderDAO folderDAO;
+    private PlaylistMusicFileDAO playlistMusicFileDAO;
 
     private MusicFileDAO() {
         super(MusicFile.class);
         folderDAO = FolderDAO.getInstance();
+        playlistMusicFileDAO = PlaylistMusicFileDAO.getInstance();
     }
 
     public static MusicFileDAO getInstance() {
@@ -48,5 +50,21 @@ public class MusicFileDAO extends MainDAO<MusicFile> {
         List<MusicFile> musicFiles = getMusicFilesByIdUser(id);
         musicFiles.removeIf(mf -> !mf.shared);
         return musicFiles;
+    }
+
+    public List<MusicFile> getMusicFilesByIdPlaylist(int idUser, int id) {
+        List<MusicFile> musicFiles = getMusicFilesByIdUser(idUser);
+        List<PlaylistMusicFile> playlistMusicFiles = playlistMusicFileDAO.getMusicFilesByIdPlaylist(id);
+        List<MusicFile> mf = new ArrayList<>();
+
+        for (PlaylistMusicFile playlistMusicFile : playlistMusicFiles) {
+            for (MusicFile musicFile : musicFiles) {
+                if (musicFile.id == playlistMusicFile.idMusicFile) {
+                    mf.add(musicFile);
+                }
+            }
+        }
+
+        return mf;
     }
 }

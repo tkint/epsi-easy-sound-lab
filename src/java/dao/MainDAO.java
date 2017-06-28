@@ -328,7 +328,7 @@ public abstract class MainDAO<T> {
      *
      * @return
      */
-    private String getESLEntityName(Class c) {
+    private <C> String getESLEntityName(Class<C> c) {
         String reference = null;
 
         try {

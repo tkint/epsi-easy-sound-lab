@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
     <body>
 
@@ -46,9 +47,17 @@
 
                         <div id="folder-list">
                             <div id="folder-list-items" class="row">
-                                <ui:repeat value="#{folderBean.currentFolder.musicFiles}" var="m">
-                                    <div class="grid-item col-xs-2 col-lg-2">
-                                        <h:form>
+                                <h:form id="playlistform">
+                                    <div class="input-group">
+                                        <h:inputText id="playlist-search-input" class="form-control input-lg" p:placeholder="Playlist" p:autocomplete="off" onkeyup="sendInfo(#{userBean.currentUser.id}); return false" p:aria-describedby="clear-cross"/>
+                                        <span id="clear-cross" class="input-group-addon" onClick="clearField()"><span class="glyphicon glyphicon-remove"></span></span>
+                                    </div>
+                                    <span id="playlist-search-result"></span>
+                                    <h:inputHidden id="playlisttarget" value="#{playlistBean.idTarget}" />
+                                    <h:commandButton action="#{playlistBean.addMusicFiles()}" />
+                                    
+                                    <ui:repeat value="#{folderBean.currentFolder.musicFiles}" var="m">
+                                        <div class="grid-item col-xs-2 col-lg-2">
                                             <h:commandLink action="#{musicFileBean.open(m)}">
                                                 <div class="thumbnail">
                                                     <img src="resources/images/Sound.jpg" alt="sound" />
@@ -59,9 +68,10 @@
                                                     </div>
                                                 </div>
                                             </h:commandLink>
-                                        </h:form>
-                                    </div>
-                                </ui:repeat>
+                                            <h:selectBooleanCheckbox value="#{playlistBean.selectedMusicFiles[m.id]}" style="position: absolute; z-index: 999; margin-top: -25px; margin-left: 15px;"/>
+                                        </div>
+                                    </ui:repeat>
+                                </h:form>
                             </div>
                         </div>
 

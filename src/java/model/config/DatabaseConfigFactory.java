@@ -19,25 +19,27 @@ public class DatabaseConfigFactory implements ObjectFactory {
 
     @Override
     public Object getObjectInstance(Object obj, Name name, Context nameCtx, Hashtable<?, ?> environment) throws Exception {
-        
+
         DatabaseConfig config = new DatabaseConfig();
-        
-        Reference reference = (Reference)obj;
-        
-        String user = (String)reference.get("user").getContent();
-        String folder = (String)reference.get("folder").getContent();
-        String playlist = (String)reference.get("playlist").getContent();
-        String musicfile = (String)reference.get("musicfile").getContent();
-        String mail = (String)reference.get("mail").getContent();
-        String follow = (String)reference.get("follow").getContent();
-        
+
+        Reference reference = (Reference) obj;
+
+        String user = (String) reference.get("user").getContent();
+        String folder = (String) reference.get("folder").getContent();
+        String playlist = (String) reference.get("playlist").getContent();
+        String musicfile = (String) reference.get("musicfile").getContent();
+        String mail = (String) reference.get("mail").getContent();
+        String follow = (String) reference.get("follow").getContent();
+        String playlistMusicFile = (String) reference.get("playlistmusicfile").getContent();
+
         config.setUser(user);
         config.setFolder(folder);
         config.setPlaylist(playlist);
         config.setMusicfile(musicfile);
         config.setMail(mail);
         config.setFollow(follow);
-        
+        config.setPlaylistmusicfile(playlistMusicFile);
+
         return config;
     }
 

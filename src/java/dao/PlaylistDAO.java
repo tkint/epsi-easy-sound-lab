@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import model.*;
 
@@ -35,5 +37,17 @@ public class PlaylistDAO extends MainDAO<Playlist> {
         List<Playlist> playList = getPlaylistsByIdUser(id);
         playList.removeIf(p -> !p.shared);
         return playList;
+    }
+    
+    public List<Playlist> getPlaylistsByName(int idUser, String value) {
+        List<Playlist> playlists = getPlaylistsByIdUser(idUser);
+        
+        for (Playlist playlist : playlists) {
+            if (!playlist.name.toLowerCase().contains(value.toLowerCase())) {
+                playlists.remove(playlist);
+            }
+        }
+        
+        return playlists;
     }
 }

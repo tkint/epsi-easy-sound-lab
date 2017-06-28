@@ -5,12 +5,18 @@
  */
 package bean;
 
+import dao.MusicFileDAO;
 import dao.PlaylistDAO;
+import dao.PlaylistMusicFileDAO;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.context.FacesContext;
+import model.MusicFile;
 import model.Playlist;
+import model.PlaylistMusicFile;
 import model.User;
 
 /**
@@ -25,13 +31,21 @@ public class PlaylistBean implements Serializable {
     private String currentPlaylistNewName;
     private String newPlaylistName;
 
+    private Map<Integer, Boolean> selectedMusicFiles;
+    private int idTarget;
+
     private PlaylistDAO playlistDAO;
+    private MusicFileDAO musicFileDAO;
+    private PlaylistMusicFileDAO playlistMusicFileDAO;
 
     /**
      * Creates a new instance of PlaylistBean
      */
     public PlaylistBean() {
+        selectedMusicFiles = new HashMap<>();
         playlistDAO = PlaylistDAO.getInstance();
+        musicFileDAO = MusicFileDAO.getInstance();
+        playlistMusicFileDAO = PlaylistMusicFileDAO.getInstance();
     }
 
     public Playlist getCurrentPlaylist() {
@@ -58,10 +72,51 @@ public class PlaylistBean implements Serializable {
         this.newPlaylistName = newPlaylistName;
     }
 
+    public Map<Integer, Boolean> getSelectedMusicFiles() {
+        return selectedMusicFiles;
+    }
+
+    public void setSelectedMusicFiles(Map<Integer, Boolean> selectedMusicFiles) {
+        this.selectedMusicFiles = selectedMusicFiles;
+    }
+
+    public int getIdTarget() {
+        return idTarget;
+    }
+
+    public void setIdTarget(int idTarget) {
+        this.idTarget = idTarget;
+    }
+
+    public String addMusicFiles() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
+
+        Playlist playlist = playlistDAO.getEntityById(idTarget);
+
+        if (playlist != null) {
+            for (MusicFile musicFile : folderBean.getCurrentFolder().musicFiles) {
+                if (selectedMusicFiles.get(musicFile.id)) {
+                    PlaylistMusicFile playlistMusicFile = new PlaylistMusicFile(playlist.id, musicFile.id);
+                    playlistMusicFileDAO.createEntity(playlistMusicFile);
+
+                    playlist.addMusicFile(musicFile);
+                }
+            }
+        }
+
+        return open(playlist);
+    }
+
     public String open(Playlist playlist) {
         if (playlist != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+
             currentPlaylist = playlist;
             currentPlaylistNewName = playlist.name;
+
+            currentPlaylist.musicFiles = musicFileDAO.getMusicFilesByIdPlaylist(userBean.getCurrentUser().id, currentPlaylist.id);
 
             return "playlist?faces-redirect=true";
         }

@@ -29,6 +29,7 @@ public class DatabaseConfig {
     private String musicfile;
     private String mail;
     private String follow;
+    private String playlistmusicfile;
 
     public String getUser() {
         return user;
@@ -76,5 +77,13 @@ public class DatabaseConfig {
 
     public void setFollow(String follow) {
         this.follow = follow;
+    }
+
+    public String getPlaylistmusicfile() {
+        return playlistmusicfile;
+    }
+
+    public void setPlaylistmusicfile(String playlistmusicfile) {
+        this.playlistmusicfile = playlistmusicfile;
     }
 }

@@ -36,3 +36,58 @@ $(document).ready(function () {
         }
     });
 });
+
+var request;
+function sendInfo(idUser)
+{
+    var v = document.getElementById('playlistform:playlist-search-input').value;
+    var url = "jsp/playlistsearch.jsp?idUser=" + idUser + "&value=" + v;
+
+    if (window.XMLHttpRequest) {
+        request = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    try {
+        request.onreadystatechange = getInfo;
+        request.open("GET", url, true);
+        request.send();
+    } catch (e) {
+        alert("Unable to connect to server");
+    }
+    document.getElementById('clear-cross').style.color = "red";
+}
+
+function getInfo() {
+    if (request.readyState == 4) {
+        var val = request.responseText;
+        var playlists = JSON.parse(val);
+
+        if (playlists.length > 0) {
+            html = "<ul>";
+
+            playlists.forEach(function (playlist) {
+                html += `<li class="playlist-search-choice" onclick="setIdTarget(${playlist.id}, '${playlist.name}')">${playlist.name}</ul>`;
+            });
+
+            html += "</ul>";
+
+            document.getElementById('playlist-search-result').innerHTML = html;
+        }
+    }
+}
+
+function setIdTarget(id, value) {
+    document.getElementById('playlistform:playlisttarget').value = id;
+    document.getElementById('playlistform:playlist-search-input').value = value;
+    document.getElementById('playlistform:playlist-search-input').readOnly = true;
+    document.getElementById('playlist-search-result').innerHTML = "";
+}
+
+function clearField() {
+    document.getElementById('playlistform:playlist-search-input').value = "";
+    document.getElementById('playlistform:playlist-search-input').readOnly = false;
+    document.getElementById('playlist-search-result').innerHTML = "";
+    document.getElementById('clear-cross').style.color = "";
+}
