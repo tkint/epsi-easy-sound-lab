@@ -109,6 +109,22 @@
                                                     <h:inputText id="lastName" class="form-control input-lg" p:placeholder="Last Name" value="#{userBean.lastName}" />
                                                     <h:message showSummary="true" showDetail="false" for="lastName"/>
                                                 </div>
+
+                                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                                    <label class="btn btn-default btn-block">
+                                                        <h:selectBooleanCheckbox id="publicEmail" value="#{userBean.publicEmail}" />
+                                                        Public Email
+                                                        <h:message showSummary="true" showDetail="false" for="publicEmail"/>
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                                    <label class="btn btn-default btn-block">
+                                                        <h:selectBooleanCheckbox id="publicName" value="#{userBean.publicName}" />
+                                                        Public Name
+                                                        <h:message showSummary="true" showDetail="false" for="publicName"/>
+                                                    </label>
+                                                </div>
+
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                                     <h:commandButton class="btn btn-info btn-block btn-lg" value="Update" action="#{userBean.updateUser()}" />
                                                 </div>

@@ -48,14 +48,16 @@
                         <div id="folder-list">
                             <div id="folder-list-items" class="row">
                                 <h:form id="playlistform">
-                                    <div class="input-group">
-                                        <h:inputText id="playlist-search-input" class="form-control input-lg" p:placeholder="Playlist" p:autocomplete="off" onkeyup="sendInfo(#{userBean.currentUser.id}); return false" p:aria-describedby="clear-cross"/>
-                                        <span id="clear-cross" class="input-group-addon" onClick="clearField()"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <div id="playlistformaction" class="form-inline">
+                                        <div class="input-group">
+                                            <h:inputText id="playlist-search-input" class="form-control input-lg" p:placeholder="Playlist" p:autocomplete="off" onkeyup="sendInfo(#{userBean.currentUser.id}); return false" p:aria-describedby="clear-cross"/>
+                                            <span id="clear-cross" class="input-group-addon" onClick="clearField()"><span class="glyphicon glyphicon-remove"></span></span>
+                                        </div>
+                                        <h:inputHidden id="playlisttarget" value="#{playlistBean.idTarget}" />
+                                        <h:commandButton action="#{playlistBean.addMusicFiles()}" value="Add" class="btn btn-info btn-lg"  />
+                                        <span id="playlist-search-result"></span>
                                     </div>
-                                    <span id="playlist-search-result"></span>
-                                    <h:inputHidden id="playlisttarget" value="#{playlistBean.idTarget}" />
-                                    <h:commandButton action="#{playlistBean.addMusicFiles()}" />
-                                    
+
                                     <ui:repeat value="#{folderBean.currentFolder.musicFiles}" var="m">
                                         <div class="grid-item col-xs-2 col-lg-2">
                                             <h:commandLink action="#{musicFileBean.open(m)}">
@@ -68,7 +70,10 @@
                                                     </div>
                                                 </div>
                                             </h:commandLink>
-                                            <h:selectBooleanCheckbox value="#{playlistBean.selectedMusicFiles[m.id]}" style="position: absolute; z-index: 999; margin-top: -25px; margin-left: 15px;"/>
+                                            <label class="btn btn-success checkmusicfile" style="position: absolute; right: 0; margin-right: 20px; z-index: 999; margin-top: -50px">
+                                                <h:selectBooleanCheckbox value="#{playlistBean.selectedMusicFiles[m.id]}" />
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </label>
                                         </div>
                                     </ui:repeat>
                                 </h:form>

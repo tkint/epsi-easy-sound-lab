@@ -31,6 +31,8 @@ public class UserBean implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
+    private Boolean publicEmail;
+    private Boolean publicName;
 
     private UserDAO userDAO;
     private FolderDAO folderDAO;
@@ -121,6 +123,22 @@ public class UserBean implements Serializable {
         this.email = email;
     }
 
+    public Boolean getPublicEmail() {
+        return publicEmail;
+    }
+
+    public void setPublicEmail(Boolean publicEmail) {
+        this.publicEmail = publicEmail;
+    }
+
+    public Boolean getPublicName() {
+        return publicName;
+    }
+
+    public void setPublicName(Boolean publicName) {
+        this.publicName = publicName;
+    }
+
     public UserDAO getUserDAO() {
         return userDAO;
     }
@@ -173,6 +191,8 @@ public class UserBean implements Serializable {
             firstName = currentUser.firstName;
             lastName = currentUser.lastName;
             pseudo = currentUser.pseudo;
+            publicEmail = currentUser.publicEmail;
+            publicName = currentUser.publicName;
 
             FacesContext context = FacesContext.getCurrentInstance();
             SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
@@ -209,6 +229,8 @@ public class UserBean implements Serializable {
                 firstName = currentUser.firstName;
                 lastName = currentUser.lastName;
                 pseudo = currentUser.pseudo;
+                publicEmail = currentUser.publicEmail;
+                publicName = currentUser.publicName;
 
                 FacesContext context = FacesContext.getCurrentInstance();
                 SharedUserBean sharedUserBean = context.getApplication().evaluateExpressionGet(context, "#{sharedUserBean}", SharedUserBean.class);
@@ -241,8 +263,16 @@ public class UserBean implements Serializable {
             currentUser.lastName = lastName;
         }
 
+        if (publicEmail != null && !publicEmail.equals("")) {
+            currentUser.publicEmail = publicEmail;
+        }
+        
         if (pseudo != null && !pseudo.equals("")) {
             currentUser.pseudo = pseudo;
+        }
+        
+        if (publicName != null && !publicName.equals("")) {
+            currentUser.publicName = publicName;
         }
 
         userDAO.updateEntity(currentUser);

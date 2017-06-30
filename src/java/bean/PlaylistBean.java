@@ -103,9 +103,21 @@ public class PlaylistBean implements Serializable {
                     playlist.addMusicFile(musicFile);
                 }
             }
+
+            selectedMusicFiles = new HashMap<>();
+            idTarget = 0;
         }
 
         return open(playlist);
+    }
+
+    public String removeusicFiles(MusicFile musicFile) {
+        currentPlaylist.deleteMusicFile(musicFile);
+
+        PlaylistMusicFile playlistMusicFile = new PlaylistMusicFile(currentPlaylist.id, musicFile.id);
+        playlistMusicFileDAO.deleteEntity(playlistMusicFile);
+
+        return "";
     }
 
     public String open(Playlist playlist) {

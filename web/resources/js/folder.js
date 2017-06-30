@@ -64,17 +64,19 @@ function getInfo() {
         var val = request.responseText;
         var playlists = JSON.parse(val);
 
+        html = "";
+
         if (playlists.length > 0) {
-            html = "<ul>";
+            html += "<ul>";
 
             playlists.forEach(function (playlist) {
                 html += `<li class="playlist-search-choice" onclick="setIdTarget(${playlist.id}, '${playlist.name}')">${playlist.name}</ul>`;
             });
 
             html += "</ul>";
-
-            document.getElementById('playlist-search-result').innerHTML = html;
         }
+
+        document.getElementById('playlist-search-result').innerHTML = html;
     }
 }
 

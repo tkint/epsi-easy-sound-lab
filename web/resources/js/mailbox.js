@@ -25,8 +25,10 @@ function getInfo() {
         var val = request.responseText;
         var users = JSON.parse(val);
 
+        html = "";
+
         if (users.length > 0) {
-            html = "<ul>";
+            html += "<ul>";
 
             users.forEach(function (user) {
                 html += `<li class="user-search-choice" onclick="setIdTarget(${user.id}, '${user.pseudo}`;
@@ -41,9 +43,9 @@ function getInfo() {
             });
 
             html += "</ul>";
-
-            document.getElementById('user-search-result').innerHTML = html;
         }
+
+        document.getElementById('user-search-result').innerHTML = html;
     }
 }
 

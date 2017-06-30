@@ -103,4 +103,22 @@ public class Playlist {
     public void addMusicFile(MusicFile musicFile) {
         musicFiles.add(musicFile);
     }
+    
+    public void deleteMusicFile(MusicFile musicFile) {
+        musicFiles.remove(getMusicFileById(musicFile.id));
+    }
+    
+    public MusicFile getMusicFileById(int id) {
+        int i = 0;
+        MusicFile musicFile = null;
+
+        while (i < musicFiles.size() && musicFile == null) {
+            if (musicFiles.get(i).id == id) {
+                musicFile = musicFiles.get(i);
+            }
+            i++;
+        }
+
+        return musicFile;
+    }
 }

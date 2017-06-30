@@ -30,10 +30,10 @@ public class PlaylistMusicFileDAO extends MainDAO<PlaylistMusicFile> {
     }
     
     public List<PlaylistMusicFile> getMusicFilesByIdPlaylist(int id) {
-        return getEntitiesByEntityReferenceId(MusicFile.class, id);
+        return getEntitiesByEntityReferenceId(Playlist.class, id);
     }
     
     public List<PlaylistMusicFile> getPlaylistsByIdMusicFile(int id) {
-        return getEntitiesByEntityReferenceId(Playlist.class, id);
+        return getEntitiesByEntityReferenceId(MusicFile.class, id);
     }
 }
