@@ -30,6 +30,7 @@ public class MusicFileBean implements Serializable {
     private MusicFile currentMusicFile;
     private String currentMusicFileNewName;
     private String newMusicFileName;
+    private int version;
 
     private MusicFileDAO musicFileDAO;
 
@@ -62,6 +63,14 @@ public class MusicFileBean implements Serializable {
 
     public void setNewMusicFileName(String newMusicFileName) {
         this.newMusicFileName = newMusicFileName;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public String open(MusicFile musicFile) {
@@ -128,8 +137,24 @@ public class MusicFileBean implements Serializable {
         return redirect;
     }
 
+    /**
+     * Sauvegarde le fichier courrant du MusicFile dans une nouvelle version
+     *
+     * @return
+     */
     public String save() {
-        MusicFileServlet.saveVersion(currentMusicFile);
+        MusicFileServlet.save(currentMusicFile);
+
+        return open(currentMusicFile);
+    }
+
+    /**
+     * Sauvegarde la version actuelle du fichier courrant du MusicFile
+     *
+     * @return
+     */
+    public String saveVersion() {
+        MusicFileServlet.saveVersion(currentMusicFile, version);
 
         return open(currentMusicFile);
     }
@@ -148,6 +173,7 @@ public class MusicFileBean implements Serializable {
     }
 
     public String loadVersion(int version) {
+        this.version = version;
         File file = MusicFileServlet.getFile(currentMusicFile, version);
         currentMusicFile.file = file;
         currentMusicFile.absolutePath = file.getAbsolutePath().replaceAll("\\\\", "/");

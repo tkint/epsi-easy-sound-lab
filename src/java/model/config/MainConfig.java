@@ -24,6 +24,7 @@ public class MainConfig {
     }
 
     private String filesPath;
+    private String disk;
 
     public String getFilesPath() {
         return filesPath;
@@ -31,5 +32,13 @@ public class MainConfig {
 
     public void setFilesPath(String path) {
         this.filesPath = path;
+    }
+
+    public String getDisk() {
+        return disk;
+    }
+
+    public void setDisk(String disk) {
+        this.disk = disk;
     }
 }

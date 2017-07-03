@@ -30,15 +30,19 @@
                         #{musicFileBean.currentMusicFile.name}
 
                         <audio controls="x">
-                            <source src="#{musicFileBean.currentMusicFile.file}" type="audio/wav" /> 
+                            <source src="#{musicFileBean.currentMusicFile.file}" type="audio/wav" />
                         </audio>
 
                         <h:form>
                             <h:commandButton value="Delete" action="#{musicFileBean.delete()}" />
                         </h:form>
+                        
+                        <h:form>
+                            <h:commandButton value="Save" action="#{musicFileBean.saveVersion()}" />
+                        </h:form>
 
                         <h:form>
-                            <h:commandButton value="Save" action="#{musicFileBean.save()}" />
+                            <h:commandButton value="Save Version" action="#{musicFileBean.save()}" />
                         </h:form>
 
                     </c:when>

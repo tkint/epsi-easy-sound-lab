@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.naming.NamingException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -40,6 +41,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import model.MusicFile;
+import model.config.MainConfig;
 
 /**
  * The File servlet for serving from absolute path.
@@ -56,6 +58,7 @@ public class MusicFileServlet extends HttpServlet {
     // Properties ---------------------------------------------------------------------------------
     private static String parentFilePath = "/easysoundlab";
     private static String subFilePath = "musicfiles";
+    private static String disk = "c:";
 
     private MusicFileDAO musicFileDAO;
 
@@ -63,10 +66,12 @@ public class MusicFileServlet extends HttpServlet {
     public void init() throws ServletException {
 
         this.musicFileDAO = MusicFileDAO.getInstance();
-
-        // In a Windows environment with the Applicationserver running on the
-        // c: volume, the above path is exactly the same as "c:\files".
-        // In UNIX, it is just straightforward "/files".
+        
+        try {
+            this.disk = MainConfig.getInstance().getDisk();
+        } catch (NamingException ex) {
+            Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -161,8 +166,8 @@ public class MusicFileServlet extends HttpServlet {
             String fileDir = createDir(folderDir, String.valueOf(musicFile.id));
             String filePath = fileDir + "/" + musicFile.id + "_" + musicFile.version + musicFile.extension;
 
-            musicFile.absolutePath = "c:" + filePath;
-            musicFile.path = "c:" + fileDir;
+            musicFile.absolutePath = disk + filePath;
+            musicFile.path = disk + fileDir;
 
             File file = new File(filePath);
 
@@ -250,7 +255,7 @@ public class MusicFileServlet extends HttpServlet {
         UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
         FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
 
-        File file = new File("c:" + parentFilePath + "/" + subFilePath + "/" + userBean.getCurrentUser().id + "/" + folderBean.getCurrentFolder().id);
+        File file = new File(disk + parentFilePath + "/" + subFilePath + "/" + userBean.getCurrentUser().id + "/" + folderBean.getCurrentFolder().id);
 
         if (file.exists()) {
             deleted = file.delete();
@@ -258,18 +263,17 @@ public class MusicFileServlet extends HttpServlet {
 
         return deleted;
     }
-
-    public static void saveVersion(MusicFile musicFile) {
+    
+    public static void saveVersion(MusicFile musicFile, int version) {
         OutputStream outputStream = null;
         try {
             MusicFileDAO musicFileDAO = MusicFileDAO.getInstance();
-            musicFile.version++;
 
             File file = new File(musicFile.absolutePath);
 
             byte[] buffer = Files.readAllBytes(file.toPath());
 
-            File fichier = new File(musicFile.getPath() + "/" + musicFile.id + "_" + musicFile.version + musicFile.extension);
+            File fichier = new File(musicFile.getPath() + "/" + musicFile.id + "_" + version + musicFile.extension);
             outputStream = new FileOutputStream(fichier);
             outputStream.write(buffer);
 
@@ -286,6 +290,11 @@ public class MusicFileServlet extends HttpServlet {
                 Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public static void save(MusicFile musicFile) {
+        musicFile.version++;
+        saveVersion(musicFile, musicFile.version);
     }
 
     public static List<File> getFiles(MusicFile musicFile) {

@@ -19,15 +19,17 @@ public class MainConfigFactory implements ObjectFactory {
 
     @Override
     public Object getObjectInstance(Object obj, Name name, Context nameCtx, Hashtable<?, ?> environment) throws Exception {
-        
+
         MainConfig config = new MainConfig();
-        
-        Reference reference = (Reference)obj;
-        
-        String filesPath = (String)reference.get("filespath").getContent();
-        
+
+        Reference reference = (Reference) obj;
+
+        String filesPath = (String) reference.get("filespath").getContent();
+        String disk = (String) reference.get("disk").getContent();
+
         config.setFilesPath(filesPath);
-        
+        config.setDisk(disk);
+
         return config;
     }
 

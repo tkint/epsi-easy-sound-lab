@@ -8,6 +8,7 @@ package bean;
 import dao.MusicFileDAO;
 import dao.PlaylistDAO;
 import dao.PlaylistMusicFileDAO;
+import java.io.File;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -33,6 +34,8 @@ public class PlaylistBean implements Serializable {
 
     private Map<Integer, Boolean> selectedMusicFiles;
     private int idTarget;
+    
+    private int index;
 
     private PlaylistDAO playlistDAO;
     private MusicFileDAO musicFileDAO;
@@ -86,6 +89,24 @@ public class PlaylistBean implements Serializable {
 
     public void setIdTarget(int idTarget) {
         this.idTarget = idTarget;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    
+    public MusicFile getCurrentIndexMusicFile() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        MusicFileBean musicFileBean = context.getApplication().evaluateExpressionGet(context, "#{musicFileBean}", MusicFileBean.class);
+        
+        MusicFile musicFile = currentPlaylist.musicFiles.get(index);
+        musicFile.file = new File("musicfiles/" + musicFileBean.getFilePath(musicFile));
+        
+        return musicFile;
     }
 
     public String addMusicFiles() {
