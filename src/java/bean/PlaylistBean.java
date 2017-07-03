@@ -34,7 +34,7 @@ public class PlaylistBean implements Serializable {
 
     private Map<Integer, Boolean> selectedMusicFiles;
     private int idTarget;
-    
+
     private int index;
 
     private PlaylistDAO playlistDAO;
@@ -98,20 +98,25 @@ public class PlaylistBean implements Serializable {
     public void setIndex(int index) {
         this.index = index;
     }
-    
+
     public MusicFile getCurrentIndexMusicFile() {
         FacesContext context = FacesContext.getCurrentInstance();
         MusicFileBean musicFileBean = context.getApplication().evaluateExpressionGet(context, "#{musicFileBean}", MusicFileBean.class);
+
+        MusicFile musicFile = null;
         
-        MusicFile musicFile = currentPlaylist.musicFiles.get(index);
-        musicFile.file = new File("musicfiles/" + musicFileBean.getFilePath(musicFile));
-        
+        if (currentPlaylist.musicFiles.size() > 0) {
+            musicFile = currentPlaylist.musicFiles.get(index);
+            musicFile.file = new File("musicfiles/" + musicFileBean.getFilePath(musicFile));
+        }
+
         return musicFile;
     }
 
     public String addMusicFiles() {
         FacesContext context = FacesContext.getCurrentInstance();
-        FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class);
+        FolderBean folderBean = context.getApplication().evaluateExpressionGet(context, "#{folderBean}", FolderBean.class
+        );
 
         Playlist playlist = playlistDAO.getEntityById(idTarget);
 
@@ -144,7 +149,8 @@ public class PlaylistBean implements Serializable {
     public String open(Playlist playlist) {
         if (playlist != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+            UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class
+            );
 
             currentPlaylist = playlist;
             currentPlaylistNewName = playlist.name;
@@ -162,7 +168,8 @@ public class PlaylistBean implements Serializable {
 
     public String addPlaylist() {
         FacesContext context = FacesContext.getCurrentInstance();
-        UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+        UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class
+        );
 
         Playlist playlist = new Playlist(userBean.getCurrentUser().id, newPlaylistName);
 
@@ -185,7 +192,8 @@ public class PlaylistBean implements Serializable {
 
     public String delete() {
         FacesContext context = FacesContext.getCurrentInstance();
-        UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+        UserBean userBean = context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class
+        );
 
         User user = userBean.getCurrentUser();
 
