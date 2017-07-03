@@ -14,11 +14,19 @@ import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 
 import javax.servlet.ServletException;
@@ -151,7 +159,7 @@ public class MusicFileServlet extends HttpServlet {
             String userDir = createDir(String.valueOf(userBean.getCurrentUser().id));
             String folderDir = createDir(userDir, String.valueOf(folderBean.getCurrentFolder().id));
             String fileDir = createDir(folderDir, String.valueOf(musicFile.id));
-            String filePath = fileDir + "/" + musicFile.id + musicFile.extension;
+            String filePath = fileDir + "/" + musicFile.id + "_" + musicFile.version + musicFile.extension;
 
             musicFile.absolutePath = "c:" + filePath;
             musicFile.path = "c:" + fileDir;
@@ -220,12 +228,14 @@ public class MusicFileServlet extends HttpServlet {
         FacesContext context = FacesContext.getCurrentInstance();
         MusicFileBean musicFileBean = context.getApplication().evaluateExpressionGet(context, "#{musicFileBean}", MusicFileBean.class);
 
-        File file = new File(musicFileBean.getCurrentMusicFile().absolutePath);
+        List<File> files = getFiles(musicFileBean.getCurrentMusicFile());
 
-        if (file.exists()) {
-            deleted = file.delete();
+        for (File file : files) {
+            if (file.exists()) {
+                deleted = file.delete();
+            }
         }
-        
+
         File fileDir = new File(musicFileBean.getCurrentMusicFile().path);
         if (fileDir.exists()) {
             deleted = fileDir.delete();
@@ -233,7 +243,7 @@ public class MusicFileServlet extends HttpServlet {
 
         return deleted;
     }
-    
+
     public static boolean deleteFolder() {
         boolean deleted = false;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -247,5 +257,52 @@ public class MusicFileServlet extends HttpServlet {
         }
 
         return deleted;
+    }
+
+    public static void saveVersion(MusicFile musicFile) {
+        OutputStream outputStream = null;
+        try {
+            MusicFileDAO musicFileDAO = MusicFileDAO.getInstance();
+            musicFile.version++;
+
+            File file = new File(musicFile.absolutePath);
+
+            byte[] buffer = Files.readAllBytes(file.toPath());
+
+            File fichier = new File(musicFile.getPath() + "/" + musicFile.id + "_" + musicFile.version + musicFile.extension);
+            outputStream = new FileOutputStream(fichier);
+            outputStream.write(buffer);
+
+            musicFileDAO.updateEntity(musicFile);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public static List<File> getFiles(MusicFile musicFile) {
+        File[] files = new File(musicFile.path).listFiles();
+
+        return Arrays.asList(files);
+    }
+
+    public static File getFile(MusicFile musicFile, int version) {
+        File file = new File(musicFile.getPath() + "/" + musicFile.id + "_" + version + musicFile.extension);
+
+        return file;
+    }
+
+    public static File getFirstFile(MusicFile musicFile) {
+        File file = new File(musicFile.getPath() + "/" + musicFile.id + "_" + 1 + musicFile.extension);
+
+        return file;
     }
 }

@@ -10,6 +10,8 @@ import java.io.File;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import model.MusicFile;
@@ -100,7 +102,7 @@ public class MusicFileBean implements Serializable {
 
             User user = userBean.getCurrentUser();
 
-            path = user.id + "/" + musicFile.idFolder + "/" + musicFile.id + "/" + musicFile.id + musicFile.extension;
+            path = user.id + "/" + musicFile.idFolder + "/" + musicFile.id + "/" + musicFile.id + "_" + musicFile.version + musicFile.extension;
 
         } catch (NamingException ex) {
             System.out.println(ex.getMessage());
@@ -119,10 +121,39 @@ public class MusicFileBean implements Serializable {
 
             currentMusicFile = null;
             currentMusicFileNewName = null;
-            
+
             redirect = folderBean.open(folderBean.getCurrentFolder());
         }
 
         return redirect;
+    }
+
+    public String save() {
+        MusicFileServlet.saveVersion(currentMusicFile);
+
+        return open(currentMusicFile);
+    }
+
+    public List<Integer> getVersions() {
+        List<File> files = MusicFileServlet.getFiles(currentMusicFile);
+        List<Integer> versions = new ArrayList<>();
+
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
+            String filename = file.getName();
+            versions.add(Integer.valueOf(filename.substring(2, filename.length() - 4)));
+        }
+
+        return versions;
+    }
+
+    public String loadVersion(int version) {
+        File file = MusicFileServlet.getFile(currentMusicFile, version);
+        currentMusicFile.file = file;
+        currentMusicFile.absolutePath = file.getAbsolutePath().replaceAll("\\\\", "/");
+
+        musicFileDAO.updateEntity(currentMusicFile);
+
+        return open(currentMusicFile);
     }
 }

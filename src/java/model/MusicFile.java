@@ -40,6 +40,9 @@ public class MusicFile {
 
     @ESLField(name = "path")
     public String path;
+    
+    @ESLField(name = "version")
+    public int version = 1;
 
     public File file;
 
@@ -118,6 +121,14 @@ public class MusicFile {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public File getFile() {
