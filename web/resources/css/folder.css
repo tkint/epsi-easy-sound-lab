@@ -173,3 +173,16 @@ and open the template in the editor.
 .checkmusicfile input:checked + span {
     visibility: visible;
 }
+
+#player {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-top: -10px;
+    text-align: center;
+}
+
+#audio-player {
+    border: 1px solid black;
+}

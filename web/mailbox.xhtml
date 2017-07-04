@@ -34,29 +34,29 @@
                             <c:when test="#{mailboxBean.display == 'new'}">
 
                                 <div id="newmail" class="container">
-                                    <h:form id="signupform" role="form">
+                                    <h:form id="mailboxform" role="form">
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6">
                                                 <div class="input-group">
                                                     <h:inputText id="user-search-input" class="form-control input-lg" p:placeholder="To" p:autocomplete="off" onkeyup="sendInfo(); return false" p:aria-describedby="clear-cross"/>
                                                     <span id="clear-cross" class="input-group-addon" onClick="clearField()"><span class="glyphicon glyphicon-remove"></span></span>
                                                 </div>
-                                                <span id="user-search-result"></span>
+                                                <span id="user-search-result" class="col-xs-11 col-sm-11 col-md-11"></span>
                                                 <h:inputHidden id="mailtarget" value="#{mailboxBean.idTarget}" />
                                                 <h:message showSummary="true" showDetail="false" for="mailtarget"/>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6">
                                                 <h:inputText id="mailtitle" class="form-control input-lg" p:placeholder="Title" value="#{mailboxBean.title}" p:required="required" requiredMessage="Required" />
                                                 <h:message showSummary="true" showDetail="false" for="mailtitle"/>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                                <h:inputTextarea id="mailcontent" class="form-control input-lg" p:placeholder="Content" value="#{mailboxBean.content}" p:required="required" requiredMessage="Required" />
+                                            <div class="form-group col-xs-12 col-sm-12 col-md-12">
+                                                <h:inputTextarea id="mailcontent" class="form-control" rows="15" p:placeholder="Content" value="#{mailboxBean.content}" p:required="required" requiredMessage="Required" />
                                                 <h:message showSummary="true" showDetail="false" for="mailcontent"/>
                                             </div>
                                         </div>

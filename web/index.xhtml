@@ -16,19 +16,21 @@
                         <div class="container">
                             <div id="feed">
                                 <div class="feed-list">
-                                    <ui:repeat value="#{userBean.currentUser}" var="u">
-                                        <ui:repeat value="#{u.playlists}" var="p">
-                                            <div class="feed-list-item">
-                                                <div class="thumbnail">
-                                                    <img src="resources/images/Sound.jpg" alt="sound" />
-
-                                                    <div class="caption">
-                                                        <h3><h:outputLabel value="#{p.name}" /></h3>
+                                    <h:form>
+                                        <ui:repeat value="#{userBean.userDAO.entities}" var="u">
+                                            <ui:repeat value="#{userBean.playlistDAO.getSharedPlaylistsByIdUser(u.id, userBean.currentUser.id)}" var="p">
+                                                <h:commandLink action="#{playlistBean.open(p)}">
+                                                    <div class="feed-list-item">
+                                                        <div class="thumbnail">
+                                                            <div class="caption">
+                                                                <h3><h:outputLabel value="#{p.name}" /></h3>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </h:commandLink>
+                                            </ui:repeat>
                                         </ui:repeat>
-                                    </ui:repeat>
+                                    </h:form>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +39,9 @@
                     <c:otherwise>
 
                         <div id="visitor-layer">
-                            
+                            <div style="position: relative; top: 30%">
+                                The unique way to share your very own sound
+                            </div>
                         </div>
 
                     </c:otherwise>

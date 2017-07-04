@@ -134,4 +134,16 @@ public class UserDAO extends MainDAO<User> {
         }
         return false;
     }
+    
+    @Override
+    public int deleteEntity(User entity) {
+        for (Follow follower : followDAO.getFollowersByIdUser(entity.id)) {
+            followDAO.deleteEntity(follower);
+        }
+        for (Follow following : followDAO.getFollowingsByIdUser(entity.id)) {
+            followDAO.deleteEntity(following);
+        }
+        
+        return super.deleteEntity(entity);
+    }
 }

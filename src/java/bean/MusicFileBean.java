@@ -18,6 +18,7 @@ import model.MusicFile;
 import model.User;
 import model.config.MainConfig;
 import servlet.MusicFileServlet;
+import soundmodification.SoundFunction;
 
 /**
  *
@@ -32,12 +33,16 @@ public class MusicFileBean implements Serializable {
     private String newMusicFileName;
     private int version;
 
+    private int start;
+    private int end;
+
     private MusicFileDAO musicFileDAO;
 
     /**
      * Creates a new instance of MusicFileBean
      */
     public MusicFileBean() {
+        version = 1;
         musicFileDAO = MusicFileDAO.getInstance();
     }
 
@@ -73,10 +78,32 @@ public class MusicFileBean implements Serializable {
         this.version = version;
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
     public String open(MusicFile musicFile) {
         if (musicFile != null) {
+            start = 0;
+            end = musicFile.duration;
+
             currentMusicFile = musicFile;
             currentMusicFileNewName = musicFile.name;
+            if (version > musicFile.version) {
+                version = musicFile.version;
+            }
 
             currentMusicFile.file = new File("musicfiles/" + getFilePath(null));
 
@@ -91,6 +118,8 @@ public class MusicFileBean implements Serializable {
 
     public String rename() {
         currentMusicFile.name = currentMusicFileNewName;
+
+        musicFileDAO.updateEntity(currentMusicFile);
 
         return open(currentMusicFile);
     }
@@ -111,7 +140,7 @@ public class MusicFileBean implements Serializable {
 
             User user = userBean.getCurrentUser();
 
-            path = user.id + "/" + musicFile.idFolder + "/" + musicFile.id + "/" + musicFile.id + "_" + musicFile.version + musicFile.extension;
+            path = user.id + "/" + musicFile.idFolder + "/" + musicFile.id + "/" + musicFile.id + "_" + version + musicFile.extension;
 
         } catch (NamingException ex) {
             System.out.println(ex.getMessage());
@@ -166,7 +195,7 @@ public class MusicFileBean implements Serializable {
         for (int i = 0; i < files.size(); i++) {
             File file = files.get(i);
             String filename = file.getName();
-            versions.add(Integer.valueOf(filename.substring(2, filename.length() - 4)));
+            versions.add(Integer.valueOf(filename.substring(filename.indexOf("_") + 1, filename.length() - 4)));
         }
 
         return versions;
@@ -177,7 +206,41 @@ public class MusicFileBean implements Serializable {
         File file = MusicFileServlet.getFile(currentMusicFile, version);
         currentMusicFile.file = file;
         currentMusicFile.absolutePath = file.getAbsolutePath().replaceAll("\\\\", "/");
+        currentMusicFile.duration = MusicFileServlet.getDuration(currentMusicFile, version);
 
+        musicFileDAO.updateEntity(currentMusicFile);
+
+        return open(currentMusicFile);
+    }
+
+    public String extract() {
+        int duration = end - start;
+        if (start < currentMusicFile.duration && duration > 0 && duration <= currentMusicFile.duration - start) {
+            String filePath = currentMusicFile.path + "/" + currentMusicFile.id + "_" + version + currentMusicFile.extension;
+            version = currentMusicFile.version;
+            version++;
+            String tmpPath = currentMusicFile.path + "/" + currentMusicFile.id + "_" + version + currentMusicFile.extension;
+            File file = new File(tmpPath);
+
+            currentMusicFile.file = file;
+            currentMusicFile.absolutePath = filePath;
+            currentMusicFile.version = version;
+
+            musicFileDAO.updateEntity(currentMusicFile);
+
+            SoundFunction.copyCutAudio(currentMusicFile.absolutePath, tmpPath, start, duration);
+        }
+        return loadVersion(version);
+    }
+
+    public String deleteVersion() {
+        MusicFileServlet.deleteVersion(currentMusicFile, version);
+
+        return open(currentMusicFile);
+    }
+
+    public String share() {
+        currentMusicFile.shared = !currentMusicFile.shared;
         musicFileDAO.updateEntity(currentMusicFile);
 
         return open(currentMusicFile);

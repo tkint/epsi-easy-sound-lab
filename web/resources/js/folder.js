@@ -97,5 +97,3 @@ function clearField() {
 document.getElementById('audio-player').onended = function() {
   document.getElementById('playlistcontrol:next').click();
 };
-
-//document.getElementById('playlistcontrol:before').click();

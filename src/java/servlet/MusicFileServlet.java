@@ -66,7 +66,7 @@ public class MusicFileServlet extends HttpServlet {
     public void init() throws ServletException {
 
         this.musicFileDAO = MusicFileDAO.getInstance();
-        
+
         try {
             this.disk = MainConfig.getInstance().getDisk();
         } catch (NamingException ex) {
@@ -263,7 +263,7 @@ public class MusicFileServlet extends HttpServlet {
 
         return deleted;
     }
-    
+
     public static void saveVersion(MusicFile musicFile, int version) {
         OutputStream outputStream = null;
         try {
@@ -292,6 +292,14 @@ public class MusicFileServlet extends HttpServlet {
         }
     }
 
+    public static void deleteVersion(MusicFile musicFile, int version) {
+        File file = getFile(musicFile, version);
+
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
     public static void save(MusicFile musicFile) {
         musicFile.version++;
         saveVersion(musicFile, musicFile.version);
@@ -313,5 +321,45 @@ public class MusicFileServlet extends HttpServlet {
         File file = new File(musicFile.getPath() + "/" + musicFile.id + "_" + 1 + musicFile.extension);
 
         return file;
+    }
+
+    public static void deleteTmpFiles(MusicFile musicFile) {
+        List<File> files = getFiles(musicFile);
+
+        for (File file : files) {
+            if (file.exists() && file.getName().contains("_tmp")) {
+                file.delete();
+            }
+        }
+    }
+
+    public static int getDuration(MusicFile musicFile, int version) {
+        AudioInputStream audioStream = null;
+        try {
+            File file = getFile(musicFile, version);
+            
+            audioStream = AudioSystem.getAudioInputStream(file);
+            AudioFormat format = audioStream.getFormat();
+
+            long frames = audioStream.getFrameLength();
+            double duration = (frames + 0.0) / format.getFrameRate();
+
+            musicFile.duration = (int) duration;
+            
+            MusicFileDAO musicFileDAO = MusicFileDAO.getInstance();
+            musicFileDAO.updateEntity(musicFile);
+        } catch (UnsupportedAudioFileException ex) {
+            Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                audioStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MusicFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return musicFile.duration;
     }
 }

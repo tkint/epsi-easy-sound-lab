@@ -12,11 +12,13 @@ and open the template in the editor.
     display: block;
     position: absolute;
     background-color: white;
+    padding: 0;
     z-index: 1;
 }
 
 #user-search-result ul {
     padding: 0;
+    margin: 0;
     border: 1px black solid;
 }
 

@@ -25,22 +25,34 @@
                             </div>
                             <div id="folder-tools" class="btn-group">
                                 <h:form style="float: left">
-                                    <h:commandLink action="#{playlistBean.delete()}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash" /></h:commandLink>
+                                    <h:commandLink action="#{playlistBean.delete()}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash" /> Delete</h:commandLink>
                                 </h:form>
-                            </div>
-                            <div id="player">
-                                <audio id="audio-player" autoplay="autoplay" controls="controls" src="#{playlistBean.currentIndexMusicFile.file}" type="audio/wav"></audio>
+                                <h:form style="float: left">
+                                    <c:choose>
+                                        <c:when test="#{playlistBean.currentPlaylist.shared}">
+                                            <h:commandLink action="#{playlistBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-check" /> Shared</h:commandLink>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h:commandLink action="#{playlistBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share" /> Share</h:commandLink>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </h:form>
                             </div>
                         </div>
 
                         <div id="folder-list">
+
                             <div id="folder-list-items" class="row">
                                 <h:form id="playlistcontrol">
                                     <div id="playlistformaction" class="form-inline">
                                         <div class="input-group">
-                                            <h:commandButton id="before" action="#{playlistBean.before()}" value="Before" class="btn btn-info btn-lg"  />
+                                            <h:commandButton id="previous" action="#{playlistBean.previous()}" value="Previous" class="btn btn-info btn-lg"  />
                                             <h:commandButton id="next" action="#{playlistBean.next()}" value="Next" class="btn btn-info btn-lg"  />
                                         </div>
+                                    </div>
+
+                                    <div id="player">
+                                        <audio id="audio-player" autoplay="autoplay" controls="controls" src="#{playlistBean.currentIndexMusicFile.file}" type="audio/wav"></audio>
                                     </div>
 
                                     <ui:repeat value="#{playlistBean.currentPlaylist.musicFiles}" var="m">

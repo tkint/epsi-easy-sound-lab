@@ -1,7 +1,7 @@
 var request;
 function sendInfo()
 {
-    var v = document.getElementById('signupform:user-search-input').value;
+    var v = document.getElementById('mailboxform:user-search-input').value;
     var url = "jsp/usersearch.jsp?value=" + v;
 
     if (window.XMLHttpRequest) {
@@ -50,15 +50,15 @@ function getInfo() {
 }
 
 function setIdTarget(id, value) {
-    document.getElementById('signupform:mailtarget').value = id;
-    document.getElementById('signupform:user-search-input').value = value;
-    document.getElementById('signupform:user-search-input').readOnly = true;
+    document.getElementById('mailboxform:mailtarget').value = id;
+    document.getElementById('mailboxform:user-search-input').value = value;
+    document.getElementById('mailboxform:user-search-input').readOnly = true;
     document.getElementById('user-search-result').innerHTML = "";
 }
 
 function clearField() {
-    document.getElementById('signupform:user-search-input').value = "";
-    document.getElementById('signupform:user-search-input').readOnly = false;
+    document.getElementById('mailboxform:user-search-input').value = "";
+    document.getElementById('mailboxform:user-search-input').readOnly = false;
     document.getElementById('user-search-result').innerHTML = "";
     document.getElementById('clear-cross').style.color = "";
 }

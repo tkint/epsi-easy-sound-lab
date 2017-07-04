@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
 
@@ -13,37 +14,95 @@
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
 
-                        <div class="dropdown">
-                            <a data-toggle="collapse" href="#history">
-                                #{musicFileBean.currentMusicFile.version}
-                            </a>
-                            <ul>
-                                <h:form>
-                                    <ui:repeat value="#{musicFileBean.versions}" var="v">
-                                        <li><h:commandLink action="#{musicFileBean.loadVersion(v)}" value="#{v}" /></li>
-                                    </ui:repeat>
+                        <div id="musicfile-top-panel">
+                            <div class="musicfile-name">
+                                <h:form id="musicfile-name-form" class="hidden">
+                                    <h:inputText id="musicfile-name-input" value="#{musicFileBean.currentMusicFileNewName}" />
+                                    <h:commandButton id="musicfile-name-submit" action="#{musicFileBean.rename()}" class="hidden"/>
                                 </h:form>
-                            </ul>
+                                <h1>
+                                    <h:outputLabel id="musicfile-name-text" value="#{musicFileBean.currentMusicFile.name}"> <span id="musicfile-name-glyph" class="glyphicon glyphicon-pencil" /></h:outputLabel>
+                                </h1>
+                            </div>
+                            <div id="musicfile-tools" class="btn-group">
+                                <h:form style="float: left">
+                                    <h:commandLink action="#{musicFileBean.delete()}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash" /> Delete</h:commandLink>
+                                </h:form>
+                                <h:form style="float: left">
+                                    <h:commandLink action="#{musicFileBean.saveVersion()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-floppy-disk" /> Save</h:commandLink>
+                                </h:form>
+                                <h:form style="float: left">
+                                    <h:commandLink action="#{musicFileBean.save()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-floppy-save" /> Clone</h:commandLink>
+                                </h:form>
+                                <h:form style="float: left">
+                                    <c:choose>
+                                        <c:when test="#{musicFileBean.currentMusicFile.shared}">
+                                            <h:commandLink action="#{musicFileBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-check" /> Shared</h:commandLink>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h:commandLink action="#{musicFileBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share" /> Share</h:commandLink>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </h:form>
+                            </div>
                         </div>
 
-                        #{musicFileBean.currentMusicFile.absolutePath}
-                        #{musicFileBean.currentMusicFile.name}
+                        <div id="musicfile-content">
+                            <div id="musicfile-version-panel">
+                                <div class="btn-pref btn-group btn-group-vertical btn-group-lg">
+                                    <h:form>
+                                        <div class="btn-group" role="group">
+                                            <h:commandLink action="#{musicFileBean.loadVersion(musicFileBean.currentMusicFile.version)}" class="btn btn-default btn-xs">
+                                                <div align="left">
+                                                    <h4>Last Version : #{musicFileBean.currentMusicFile.version}</h4>
+                                                </div>
+                                            </h:commandLink>
+                                        </div>
+                                        <ui:repeat value="#{musicFileBean.versions}" var="v">
+                                            <div class="btn-group" role="group">
+                                                <ui:fragment rendered="#{v == musicFileBean.version}">
+                                                    <h:commandLink action="#{musicFileBean.loadVersion(v)}" class="btn btn-default btn-xs active">
+                                                        <div align="left">
+                                                            <h4>#{v}</h4>
+                                                        </div>
+                                                    </h:commandLink>
+                                                </ui:fragment>
+                                                <ui:fragment rendered="#{v != musicFileBean.version}">
+                                                    <h:commandLink action="#{musicFileBean.loadVersion(v)}" class="btn btn-default btn-xs">
+                                                        <div align="left">
+                                                            <h4>#{v}</h4>
+                                                        </div>
+                                                    </h:commandLink>
+                                                </ui:fragment>
+                                            </div>
+                                        </ui:repeat>
+                                    </h:form>
+                                </div>
+                            </div>
 
-                        <audio controls="x">
-                            <source src="#{musicFileBean.currentMusicFile.file}" type="audio/wav" />
-                        </audio>
+                            <div id="musicfile-editor-panel">
+                                <audio controls="x">
+                                    <source src="#{musicFileBean.currentMusicFile.file}" type="audio/wav" />
+                                </audio>
+                                <br/>
 
-                        <h:form>
-                            <h:commandButton value="Delete" action="#{musicFileBean.delete()}" />
-                        </h:form>
-                        
-                        <h:form>
-                            <h:commandButton value="Save" action="#{musicFileBean.saveVersion()}" />
-                        </h:form>
+                                Extract :
+                                <br/>
+                                <h:form style="float: left">
+                                    <div class="row">
 
-                        <h:form>
-                            <h:commandButton value="Save Version" action="#{musicFileBean.save()}" />
-                        </h:form>
+                                        <h:panelGrid columns="1" style="margin-bottom: 10px">
+                                            <h:outputText id="displayRange" value="Between #{musicFileBean.start} and #{musicFileBean.end}" />
+                                            <p:slider for="txt6,txt7" display="displayRange" style="width: 400px" range="true" displayTemplate="Between {min} and {max}" maxValue="#{musicFileBean.end}" />
+                                        </h:panelGrid>
+                                        <h:inputHidden id="txt6" value="#{musicFileBean.start}" />
+                                        <h:inputHidden id="txt7" value="#{musicFileBean.end}" />
+                                    </div>
+                                    <h:commandButton class="btn btn-info btn-block btn-lg" value="Extract" action="#{musicFileBean.extract()}" />
+
+                                </h:form>
+                            </div> 
+                        </div>
 
                     </c:when>
                 </c:choose>

@@ -106,7 +106,9 @@ public class PlaylistBean implements Serializable {
         MusicFile musicFile = null;
         
         if (currentPlaylist.musicFiles.size() > 0) {
+            musicFileBean.setVersion(1);
             musicFile = currentPlaylist.musicFiles.get(index);
+            
             musicFile.file = new File("musicfiles/" + musicFileBean.getFilePath(musicFile));
         }
 
@@ -224,12 +226,19 @@ public class PlaylistBean implements Serializable {
         return open(currentPlaylist);
     }
     
-    public String before() {
+    public String previous() {
         index--;
         if (index < 0) {
             index = currentPlaylist.musicFiles.size() - 1;
         }
         
+        return open(currentPlaylist);
+    }
+    
+    public String share() {
+        currentPlaylist.shared = !currentPlaylist.shared;
+        playlistDAO.updateEntity(currentPlaylist);
+
         return open(currentPlaylist);
     }
 }
