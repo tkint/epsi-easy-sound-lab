@@ -23,16 +23,7 @@ public class MainConfig {
         return config;
     }
 
-    private String filesPath;
     private String disk;
-
-    public String getFilesPath() {
-        return filesPath;
-    }
-
-    public void setFilesPath(String path) {
-        this.filesPath = path;
-    }
 
     public String getDisk() {
         return disk;

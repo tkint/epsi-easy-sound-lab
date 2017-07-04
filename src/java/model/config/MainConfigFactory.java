@@ -24,10 +24,8 @@ public class MainConfigFactory implements ObjectFactory {
 
         Reference reference = (Reference) obj;
 
-        String filesPath = (String) reference.get("filespath").getContent();
         String disk = (String) reference.get("disk").getContent();
 
-        config.setFilesPath(filesPath);
         config.setDisk(disk);
 
         return config;
