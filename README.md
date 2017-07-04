@@ -16,9 +16,9 @@ IMPORTANT: Après une modification de JNDI, il faut redémarrer le serveur et il
 ### JDBC-Config
 Nom: JDBC-Config
 
-Type: model.ConnexionConfig
+Type: model.config.ConnexionConfig
 
-Factory: model.ConnexionConfigFactory
+Factory: model.config.ConnexionConfigFactory
 
 Description: Configure le driver MySQL.
 
@@ -32,9 +32,9 @@ Propriétés:
 ### DATABASE-Config
 Nom: DATABASE-Config
 
-Type: model.DatabaseConfig
+Type: model.config.DatabaseConfig
 
-Factory: model.DatabaseConfigFactory
+Factory: model.config.DatabaseConfigFactory
 
 Description: Défini le nom des tables de la base de données à utiliser pour les différents objets. Le nom des propriétés correspond au nom qu'ont les entités dans l'annotation @ESLEntity.
 
@@ -44,6 +44,20 @@ Propriétés:
  - playlist : playlist
  - musicfile : musicfile
  - mail : mail
+ - follow : follow
+ - playlistmusicfile : playlist_musicfile
+
+### MAIN-Config
+Nom: MAIN-Config
+
+Type: model.config.MainConfig
+
+Factory: model.config.MainConfigFactory
+
+Description: Défini le disque dans lequel seront stockés les fichiers. Il doit être le même que celui de l'installation de Glassfish.
+
+Propriétés:
+ - disk : c:
 
 # Hébergement des fichiers son
 Les fichiers sont accessibles depuis une servlet à l'adresse "musicfiles".
