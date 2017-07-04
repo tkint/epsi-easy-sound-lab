@@ -142,6 +142,10 @@ public class PlaylistBean implements Serializable {
 
         PlaylistMusicFile playlistMusicFile = new PlaylistMusicFile(currentPlaylist.id, musicFile.id);
         playlistMusicFileDAO.deleteEntity(playlistMusicFile);
+        
+        if (currentPlaylist.musicFiles.get(index).id == musicFile.id && currentPlaylist.getLastMusicFileId() == musicFile.id) {
+            
+        }
 
         return "";
     }
@@ -211,5 +215,21 @@ public class PlaylistBean implements Serializable {
         playlistDAO.deleteEntity(currentPlaylist);
 
         return open(playlist);
+    }
+    
+    public String next() {
+        index++;
+        index %= currentPlaylist.musicFiles.size();
+        
+        return open(currentPlaylist);
+    }
+    
+    public String before() {
+        index--;
+        if (index < 0) {
+            index = currentPlaylist.musicFiles.size() - 1;
+        }
+        
+        return open(currentPlaylist);
     }
 }

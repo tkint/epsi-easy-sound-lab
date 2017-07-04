@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
     <body>
 
@@ -28,26 +29,36 @@
                                 </h:form>
                             </div>
                             <div id="player">
-                                <audio controls="x">
-                                    <source src="#{playlistBean.currentIndexMusicFile.file}" type="audio/wav" />
-                                </audio>
+                                <audio id="audio-player" autoplay="autoplay" controls="controls" src="#{playlistBean.currentIndexMusicFile.file}" type="audio/wav"></audio>
                             </div>
                         </div>
 
                         <div id="folder-list">
-                            <ui:repeat value="#{playlistBean.currentPlaylist.musicFiles}" var="m">
-                                <h:form>
-                                    <div class="thumbnail">
-
-                                        <div class="caption">
-                                            <h3><h:outputLabel value="#{m.name}" /></h3>
-                                            <h6><h:outputLabel value="#{m.duration}" /></h6>
+                            <div id="folder-list-items" class="row">
+                                <h:form id="playlistcontrol">
+                                    <div id="playlistformaction" class="form-inline">
+                                        <div class="input-group">
+                                            <h:commandButton id="before" action="#{playlistBean.before()}" value="Before" class="btn btn-info btn-lg"  />
+                                            <h:commandButton id="next" action="#{playlistBean.next()}" value="Next" class="btn btn-info btn-lg"  />
                                         </div>
                                     </div>
 
-                                    <h:commandButton action="#{playlistBean.removeusicFiles(m)}" class="btn btn-danger btn-sm" value="-" style="position: absolute; right: 0; margin-right: 20px; z-index: 999; margin-top: -50px"/>
+                                    <ui:repeat value="#{playlistBean.currentPlaylist.musicFiles}" var="m">
+                                        <div class="list-item col-xs-2 col-lg-2">
+                                            <h:commandLink action="#{musicFileBean.open(m)}">
+                                                <div class="thumbnail">
+
+                                                    <div class="caption">
+                                                        <h3><h:outputLabel value="#{m.name}" /></h3>
+                                                        <h6><h:outputLabel value="#{m.duration}" /></h6>
+                                                    </div>
+                                                </div>
+                                            </h:commandLink>
+                                            <h:commandButton action="#{playlistBean.removeusicFiles(m)}" class="btn btn-danger btn-sm" value="-" style="position: absolute; right: 0; margin-right: 20px; z-index: 999; margin-top: -50px"/>
+                                        </div>
+                                    </ui:repeat>
                                 </h:form>
-                            </ui:repeat>
+                            </div>
                         </div>
 
                     </c:when>

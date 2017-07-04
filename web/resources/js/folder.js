@@ -93,3 +93,9 @@ function clearField() {
     document.getElementById('playlist-search-result').innerHTML = "";
     document.getElementById('clear-cross').style.color = "";
 }
+
+document.getElementById('audio-player').onended = function() {
+  document.getElementById('playlistcontrol:next').click();
+};
+
+//document.getElementById('playlistcontrol:before').click();
