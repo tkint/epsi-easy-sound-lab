@@ -12,37 +12,103 @@
             <ui:define name="content">
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
+                        <c:choose>
+                            <c:when test="#{userBean.display == 'followers'}">
+                                <div id="user-list">
+                                    <div id="user-list-items" class="row">
+                                        <ui:repeat value="#{userBean.userDAO.entities}" var="u">  
+                                            <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(userBean.currentUser, u)}">
+                                                <div class="grid-item col-xs-3 col-lg-3">
+                                                    <h:form>
+                                                        <h:commandLink action="#{userBean.profile(u)}">
+                                                            <div class="thumbnail">
+                                                                <img src="resources/images/Sound.jpg" alt="sound" />
 
-                        <div id="user-list">
-                            <div id="user-list-items" class="row">
-                                <ui:repeat value="#{userBean.userDAO.entities}" var="u">
-                                    <div class="grid-item col-xs-3 col-lg-3">
-                                        <h:form>
-                                            <h:commandLink action="#{userBean.profile(u)}">
-                                                <div class="thumbnail">
-                                                    <img src="resources/images/Sound.jpg" alt="sound" />
-
-                                                    <div class="caption">
-                                                        <h3><h:outputLabel value="#{u.pseudo}" /></h3>
-                                                        <ui:fragment rendered="#{userBean.currentUser.id != u.id}" transient="true">
-                                                            <h:commandLink class="btn btn-default" action="#{userBean.follow(u)}">
-                                                                <ui:fragment rendered="#{!userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
-                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true" /> Follow
-                                                                </ui:fragment>
-                                                                <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
-                                                                    <span class="glyphicon glyphicon-minus" aria-hidden="true" /> Unfollow
-                                                                </ui:fragment>
-                                                            </h:commandLink>
-                                                        </ui:fragment>
-                                                    </div>
+                                                                <div class="caption">
+                                                                    <h3><h:outputLabel value="#{u.pseudo}" /></h3>
+                                                                    <h:commandLink class="btn btn-default" action="#{userBean.follow(u)}">
+                                                                        <ui:fragment rendered="#{!userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                            <span class="glyphicon glyphicon-plus" /> Follow
+                                                                        </ui:fragment>
+                                                                        <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                            <span class="glyphicon glyphicon-minus" /> Unfollow
+                                                                        </ui:fragment>
+                                                                    </h:commandLink>
+                                                                </div>
+                                                            </div>
+                                                        </h:commandLink>
+                                                    </h:form>
                                                 </div>
-                                            </h:commandLink>
-                                        </h:form>
+                                            </ui:fragment>
+                                        </ui:repeat>
                                     </div>
-                                </ui:repeat>
-                            </div>
-                        </div>
+                                </div>
 
+                            </c:when>
+                            <c:when test="#{userBean.display == 'following'}">
+
+                                <div id="user-list">
+                                    <div id="user-list-items" class="row">
+                                        <ui:repeat value="#{userBean.userDAO.entities}" var="u"> 
+                                            <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                <div class="grid-item col-xs-3 col-lg-3">
+                                                    <h:form>
+                                                        <h:commandLink action="#{userBean.profile(u)}">
+                                                            <div class="thumbnail">
+                                                                <img src="resources/images/Sound.jpg" alt="sound" />
+
+                                                                <div class="caption">
+                                                                    <h3><h:outputLabel value="#{u.pseudo}" /></h3>
+                                                                    <h:commandLink class="btn btn-default" action="#{userBean.follow(u)}">
+                                                                        <ui:fragment rendered="#{!userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                            <span class="glyphicon glyphicon-plus" /> Follow
+                                                                        </ui:fragment>
+                                                                        <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                            <span class="glyphicon glyphicon-minus" /> Unfollow
+                                                                        </ui:fragment>
+                                                                    </h:commandLink>
+                                                                </div>
+                                                            </div>
+                                                        </h:commandLink>
+                                                    </h:form>
+                                                </div>
+                                            </ui:fragment>
+                                        </ui:repeat>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div id="user-list">
+                                    <div id="user-list-items" class="row">
+                                        <ui:repeat value="#{userBean.userDAO.entities}" var="u">
+                                            <ui:fragment rendered="#{userBean.currentUser.id != u.id}" transient="true">
+                                                <div class="grid-item col-xs-3 col-lg-3">
+                                                    <h:form>
+                                                        <h:commandLink action="#{userBean.profile(u)}">
+                                                            <div class="thumbnail">
+                                                                <img src="resources/images/Sound.jpg" alt="sound" />
+
+                                                                <div class="caption">
+                                                                    <h3><h:outputLabel value="#{u.pseudo}" /></h3>
+                                                                    <h:commandLink class="btn btn-default" action="#{userBean.follow(u)}">
+                                                                        <ui:fragment rendered="#{!userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                            <span class="glyphicon glyphicon-plus" /> Follow
+                                                                        </ui:fragment>
+                                                                        <ui:fragment rendered="#{userBean.userDAO.isUserFollowedByUser(u, userBean.currentUser)}">
+                                                                            <span class="glyphicon glyphicon-minus" /> Unfollow
+                                                                        </ui:fragment>
+                                                                    </h:commandLink>
+                                                                </div>
+                                                            </div>
+                                                        </h:commandLink>
+                                                    </h:form>
+                                                </div>
+                                            </ui:fragment>
+                                        </ui:repeat>
+                                    </div>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>                        
                     </c:when>
                     <c:otherwise>
 

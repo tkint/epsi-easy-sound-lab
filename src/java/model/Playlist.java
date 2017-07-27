@@ -35,7 +35,7 @@ public class Playlist {
     public Playlist() {
         this.musicFiles = new ArrayList<>();
     }
-    
+
     public Playlist(int idUser, String name) {
         this.idUser = idUser;
         this.name = name;
@@ -57,6 +57,14 @@ public class Playlist {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getName() {
@@ -103,11 +111,11 @@ public class Playlist {
     public void addMusicFile(MusicFile musicFile) {
         musicFiles.add(musicFile);
     }
-    
+
     public void deleteMusicFile(MusicFile musicFile) {
         musicFiles.remove(getMusicFileById(musicFile.id));
     }
-    
+
     public MusicFile getMusicFileById(int id) {
         int i = 0;
         MusicFile musicFile = null;

@@ -39,6 +39,7 @@ public class UserBean implements Serializable {
     private PlaylistDAO playlistDAO;
     private MusicFileDAO musicFileDAO;
     private FollowDAO followDAO;
+    private String display;
 
     /**
      * Creates a new instance of UserBean
@@ -171,6 +172,14 @@ public class UserBean implements Serializable {
         this.musicFileDAO = musicFileDAO;
     }
 
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
     public String signIn() {
         User user = userDAO.getUserByEmailAndPassword(email, password);
 
@@ -266,11 +275,11 @@ public class UserBean implements Serializable {
         if (publicEmail != null && !publicEmail.equals("")) {
             currentUser.publicEmail = publicEmail;
         }
-        
+
         if (pseudo != null && !pseudo.equals("")) {
             currentUser.pseudo = pseudo;
         }
-        
+
         if (publicName != null && !publicName.equals("")) {
             currentUser.publicName = publicName;
         }
@@ -318,14 +327,17 @@ public class UserBean implements Serializable {
     }
 
     public String users() {
+        display = "users";
         return "users?faces-redirect=true";
     }
 
     public String followers() {
+        display = "followers";
         return "users?faces-redirect=true";
     }
 
     public String following() {
+        display = "following";
         return "users?faces-redirect=true";
 
     }

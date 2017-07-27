@@ -189,10 +189,18 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><a href="#">Following</a></td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Following" action="#{userBean.following()}" />
+                                                    </h:form>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td><a href="#">Followers</a></td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Followers" action="#{userBean.followers()}" />
+                                                    </h:form>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>

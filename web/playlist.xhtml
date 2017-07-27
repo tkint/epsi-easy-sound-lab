@@ -12,31 +12,44 @@
             <ui:define name="content">
                 <c:choose>
                     <c:when test="#{userBean.currentUser.id != -1}">
-
                         <div id="folder-top-panel">
                             <div class="folder-name">
-                                <h:form id="folder-name-form" class="hidden">
-                                    <h:inputText id="folder-name-input" value="#{playlistBean.currentPlaylistNewName}" />
-                                    <h:commandButton id="folder-name-submit" action="#{playlistBean.rename()}" class="hidden"/>
-                                </h:form>
-                                <h1>
-                                    <h:outputLabel id="folder-name-text" value="#{playlistBean.currentPlaylist.name}"> <span id="folder-name-glyph" class="glyphicon glyphicon-pencil" /></h:outputLabel>
-                                </h1>
+                                <c:choose>
+                                    <c:when test="#{userBean.currentUser.id == playlistBean.currentPlaylist.idUser}">
+                                        <h:form id="folder-name-form" class="hidden">
+                                            <h:inputText id="folder-name-input" value="#{playlistBean.currentPlaylistNewName}" />
+                                            <h:commandButton id="folder-name-submit" action="#{playlistBean.rename()}" class="hidden"/>
+                                        </h:form>
+                                        <h1>
+                                            <h:outputLabel id="folder-name-text" value="#{playlistBean.currentPlaylist.name}"> <span id="folder-name-glyph" class="glyphicon glyphicon-pencil" /></h:outputLabel>
+                                        </h1>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h1>
+                                            <h:outputLabel id="folder-name" value="#{playlistBean.currentPlaylist.name}"></h:outputLabel>
+                                        </h1>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </div>
                             <div id="folder-tools" class="btn-group">
-                                <h:form style="float: left">
-                                    <h:commandLink action="#{playlistBean.delete()}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash" /> Delete</h:commandLink>
-                                </h:form>
-                                <h:form style="float: left">
-                                    <c:choose>
-                                        <c:when test="#{playlistBean.currentPlaylist.shared}">
-                                            <h:commandLink action="#{playlistBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-check" /> Shared</h:commandLink>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <h:commandLink action="#{playlistBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share" /> Share</h:commandLink>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </h:form>
+                                <c:choose>
+                                    <c:when test="#{userBean.currentUser.id == playlistBean.currentPlaylist.idUser}">
+                                        <h:form style="float: left">
+                                            <h:commandLink action="#{playlistBean.delete()}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash" /> Delete</h:commandLink>
+                                        </h:form>
+                                        <h:form style="float: left">
+                                            <c:choose>
+                                                <c:when test="#{playlistBean.currentPlaylist.shared}">
+                                                    <h:commandLink action="#{playlistBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-check" /> Shared</h:commandLink>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <h:commandLink action="#{playlistBean.share()}"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share" /> Share</h:commandLink>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </h:form>
+                                    </c:when>
+                                </c:choose>
                             </div>
                         </div>
 

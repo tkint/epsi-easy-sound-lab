@@ -104,11 +104,11 @@ public class PlaylistBean implements Serializable {
         MusicFileBean musicFileBean = context.getApplication().evaluateExpressionGet(context, "#{musicFileBean}", MusicFileBean.class);
 
         MusicFile musicFile = null;
-        
+
         if (currentPlaylist.musicFiles.size() > 0) {
             musicFileBean.setVersion(1);
             musicFile = currentPlaylist.musicFiles.get(index);
-            
+
             musicFile.file = new File("musicfiles/" + musicFileBean.getFilePath(musicFile));
         }
 
@@ -144,9 +144,9 @@ public class PlaylistBean implements Serializable {
 
         PlaylistMusicFile playlistMusicFile = new PlaylistMusicFile(currentPlaylist.id, musicFile.id);
         playlistMusicFileDAO.deleteEntity(playlistMusicFile);
-        
+
         if (currentPlaylist.musicFiles.get(index).id == musicFile.id && currentPlaylist.getLastMusicFileId() == musicFile.id) {
-            
+
         }
 
         return "";
@@ -218,23 +218,27 @@ public class PlaylistBean implements Serializable {
 
         return open(playlist);
     }
-    
+
     public String next() {
-        index++;
-        index %= currentPlaylist.musicFiles.size();
-        
-        return open(currentPlaylist);
-    }
-    
-    public String previous() {
-        index--;
-        if (index < 0) {
-            index = currentPlaylist.musicFiles.size() - 1;
+        if (currentPlaylist.musicFiles.size() > 0) {
+            index++;
+            index %= currentPlaylist.musicFiles.size();
         }
-        
+
         return open(currentPlaylist);
     }
-    
+
+    public String previous() {
+        if (currentPlaylist.musicFiles.size() > 0) {
+            index--;
+            if (index < 0) {
+                index = currentPlaylist.musicFiles.size() - 1;
+            }
+        }
+
+        return open(currentPlaylist);
+    }
+
     public String share() {
         currentPlaylist.shared = !currentPlaylist.shared;
         playlistDAO.updateEntity(currentPlaylist);
